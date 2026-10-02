@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Русские шашки</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
+.game{max-width:520px;margin:auto;padding:10px}
+.players{display:flex;justify-content:space-between;align-items:center;background:#171a1d;border:1px solid #34383c;border-radius:13px;padding:10px;font-weight:bold}
+.p{display:flex;align-items:center;gap:7px}.dot{width:25px;height:25px;border-radius:50%;border:2px solid #555}
+.white{background:#eee}.black{background:#181818}.timer{font-variant-numeric:tabular-nums}
+.turn{text-align:center;background:#18301b;border:1px solid #39743d;border-radius:20px;padding:8px;margin:8px 0;font-weight:bold}
+.frame{display:grid;grid-template-columns:24px 1fr;gap:3px;background:#4d2c1a;border:3px solid #754625;border-radius:9px;padding:5px}
+.nums{display:grid;grid-template-rows:repeat(8,1fr);align-items:center;text-align:center;color:#e5c487;font-weight:bold}
+.board{display:grid;grid-template-columns:repeat(8,1fr);aspect-ratio:1}
+.cell{display:flex;align-items:center;justify-content:center}
+.light{background:#e6c38a}.dark{background:#744521}
+.sel{box-shadow:inset 0 0 0 4px #f1d16b}
+.possible{box-shadow:inset 0 0 0 4px #9fbd55}
+.piece{width:76%;height:76%;border-radius:50%;border:2px solid #555;box-shadow:inset 0 3px 4px #fff5,0 3px 5px #0008}
+.piece.black{background:radial-gradient(circle at 35% 28%,#555,#101010 68%)}
+.piece.white{background:radial-gradient(circle at 35% 28%,#fff,#d0cbc0 70%)}
+.king:after{content:"♛";height:100%;display:flex;align-items:center;justify-content:center;color:#c49b45;font-size:21px}
+.letters{display:grid;grid-template-columns:24px repeat(8,1fr);text-align:center;color:#e5c487;font-weight:bold;font-size:13px;margin-top:3px}
+.msg{text-align:center;background:#171a1d;border-radius:9px;padding:8px;margin-top:8px;color:#ccc;font-size:13px}
+.buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;font-size:14px}
+.draw{background:#28751d}.resign{background:#ad2922}
+</style>
+</head>
+<body>
+<div class="game">
+<div class="players">
+<div class="p"><span class="dot white"></span>Игрок 1</div>
+<span id="t1" class="timer">15:00</span>
+<div class="p"><span id="t2" class="timer">15:00</span><span class="dot black"></span>Игрок 2</div>
+</div>
+
+<div id="turn" class="turn">⚪ Ход игрока 1</div>
+
+<div class="frame">
+<div class="nums"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
+<div id="board" class="board"></div>
+</div>
+
+<div class="letters">
+<span></span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
+</div>
+
+<div id="msg" class="msg">Выберите белую шашку.</div>
+
+<div class="buttons">
+<button id="draw" class="draw">🤝 Предложить ничью</button>
+<button id="resign" class="resign">🏳️ Сдаться</button>
+</div>
+</div>
+
+<script>
+const board=document.getElementById("board");
+const turn=document.getElementById("turn");
+const msg=document.getElementById("msg");
+
+let B=Array.from({length:8},()=>Array(8).fill(null));
+let current="white",selected=null,gameOver=false;
+let time={white:900,black:900};
+
+for(let r=0;r<3;r++)
+ for(let c=0;c<8;c++)
+  if((r+c)%2)B[r][c]={color:"black",king:false};
+
+for(let r=5;r<8;r++)
+ for(let c=0;c<8;c++)
+  if((r+c)%2)B[r][c]={color:"white",king:false};
+
+const inside=(r,c)=>r>=0&&r<8&&c>=0&&c<8;
+
+function captures(r,c){
+ const p=B[r][c],out=[];
+ if(!p)return out;
+
+ for(const dr of[-1,1])
+  for(const dc of[-1,1]){
+   let nr=r+dr,nc=c+dc,enemy=null;
+
+   while(inside(nr,nc)){
+    const q=B[nr][nc];
+
+    if(!q){
+     if(enemy)out.push({r:nr,c:nc,cr:enemy.r,cc:enemy.c});
+     nr+=dr;nc+=dc;continue;
+    }
+
+    if(!enemy){
+     if(q.color===p.color)break;
+     enemy={r:nr,c:nc};
+     nr+=dr;nc+=dc;continue;
+    }
+
+    break;
+   }
+  }
+
+ return out;
+}
+
+function capturesMan(r,c){
+ const p=B[r][c],out=[];
+ for(const dr of[-1,1])
+  for(const dc of[-1,1]){
+   const er=r+dr,ec=c+dc,lr=r+2*dr,lc=c+2*dc;
+   if(inside(er,ec)&&inside(lr,lc)&&B[er][ec]&&B[er][ec].color!==p.color&&!B[lr][lc])
+    out.push({r:lr,c:lc,cr:er,cc:ec});
+  }
+ return out;
+}
+
+function getCaptures(r,c){
+ return B[r][c]?.king?captures(r,c):capturesMan(r,c);
+}
+
+function quiet(r,c){
+ const p=B[r][c],out=[];
+ if(!p)return out;
+
+ if(p.king){
+  for(const dr of[-1,1])
+   for(const dc of[-1,1]){
+    let nr=r+dr,nc=c+dc;
+    while(inside(nr,nc)&&!B[nr][nc]){
+     out.push({r:nr,c:nc});
+     nr+=dr;nc+=dc;
+    }
+   }
+ }else{
+  const dr=p.color==="white"?-1:1;
+  for(const dc of[-1,1]){
+   const nr=r+dr,nc=c+dc;
+   if(inside(nr,nc)&&!B[nr][nc])out.push({r:nr,c:nc});
+  }
+ }
+
+ return out;
+}
+
+function anyCapture(color){
+ for(let r=0;r<8;r++)
+  for(let c=0;c<8;c++)
+   if(B[r][c]?.color===color&&getCaptures(r,c).length)return true;
+ return false;
+}
+
+function legal(r,c){
+ if(!B[r][c]||B[r][c].color!==current)return[];
+ return anyCapture(current)?getCaptures(r,c):quiet(r,c);
+}
+
+function render(){
+ board.innerHTML="";
+
+ for(let r=0;r<8;r++)
+  for(let c=0;c<8;c++){
+   const cell=document.createElement("div");
+   cell.className="cell "+((r+c)%2?"dark":"light");
+
+   if(selected&&selected.r===r&&selected.c===c)
+    cell.classList.add("sel");
+
+   if(selected&&legal(selected.r,selected.c).some(m=>m.r===r&&m.c===c))
+    cell.classList.add("possible");
+
+   const p=B[r][c];
+
+   if(p){
+    const piece=document.createElement("div");
+    piece.className="piece "+p.color+(p.king?" king":"");
+    piece.onclick=e=>{e.stopPropagation();select(r,c)};
+    cell.appendChild(piece);
+   }
+
+   cell.onclick=()=>move(r,c);
+   board.appendChild(cell);
+  }
+}
+
+function select(r,c){
+ if(gameOver)return;
+ if(!B[r][c]||B[r][c].color!==current)return;
+
+ if(anyCapture(current)&&!getCaptures(r,c).length){
+  msg.textContent="⚠️ Нужно обязательно съесть шашку.";
+  return;
+ }
+
+ selected={r,c};
+ msg.textContent=anyCapture(current)?"Выберите клетку, куда бить.":"Выберите клетку для хода.";
+ render();
+}
+
+function move(r,c){
+ if(gameOver||!selected)return;
+
+ const sr=selected.r,sc=selected.c;
+ const m=legal(sr,sc).find(x=>x.r===r&&x.c===c);
+
+ if(!m)return;
+
+ const p=B[sr][sc];
+ const isCapture=m.cr!==undefined;
+
+ B[sr][sc]=null;
+ B[r][c]=p;
+
+ if(isCapture)B[m.cr][m.cc]=null;
+
+ if(!p.king&&((p.color==="white"&&r===0)||(p.color==="black"&&r===7)))
+  p.king=true;
+
+ if(isCapture&&getCaptures(r,c).length){
+  selected={r,c};
+  msg.textContent="⚔️ Можно продолжить взятие.";
+  render();
+  return;
+ }
+
+ selected=null;
+ current=current==="white"?"black":"white";
+
+ if(!hasPieces(current)||!hasMove(current)){
+  gameOver=true;
+  turn.textContent=current==="white"?"🏆 Победили чёрные":"🏆 Победили белые";
+  msg.textContent="Игра окончена.";
+ }else{
+  turn.textContent=current==="white"?"⚪ Ход игрока 1":"⚫ Ход игрока 2";
+  msg.textContent=anyCapture(current)?"⚔️ Обязательно нужно бить.":"Выберите шашку.";
+ }
+
+ render();
+}
+
+function hasPieces(color){
+ return B.some(row=>row.some(p=>p&&p.color===color));
+}
+
+function hasMove(color){
+ const old=current;
+ current=color;
+
+ for(let r=0;r<8;r++)
+  for(let c=0;c<8;c++)
+   if(B[r][c]?.color===color&&legal(r,c).length){
+    current=old;
+    return true;
+   }
+
+ current=old;
+ return false;
+}
+
+render();
+
+document.getElementById("draw").onclick=()=>{
+ if(!gameOver)msg.textContent="🤝 Предложение ничьей отправлено.";
+};
+
+document.getElementById("resign").onclick=()=>{
+ if(gameOver)return;
+ gameOver=true;
+ turn.textContent=current==="white"?"🏳️ Белые сдались":"🏳️ Чёрные сдались";
+ msg.textContent="Игра окончена.";
+};
+
+setInterval(()=>{
+ if(gameOver)return;
+
+ time[current]--;
+
+ const t=Math.max(0,time[current]);
+ document.getElementById(current==="white"?"t1":"t2").textContent=
+ String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0");
+
+ if(t<=0){
+  gameOver=true;
+  turn.textContent=current==="white"?"⏱️ Победили чёрные":"⏱️ Победили белые";
+  msg.textContent="Время вышло.";
+ }
+},1000);
+</script>
+</body>
+</html>
