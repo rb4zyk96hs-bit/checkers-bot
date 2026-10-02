@@ -287,5 +287,25 @@ setInterval(()=>{
  }
 },1000);
 </script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyC4LV3TdimAkJBEPtr-On5QYr4e6X0Ptg",
+  authDomain: "checkersbot-c6311.firebaseapp.com",
+  databaseURL: "https://checkersbot-c6311-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "checkersbot-c6311",
+  storageBucket: "checkersbot-c6311.firebasestorage.app",
+  messagingSenderId: "677213113683",
+  appId: "1:677213113683:web:55e4158ad11dfb656de5a6"
+};
+
+firebase.initializeApp(firebaseConfig);
+
+firebase.auth().signInAnonymously()
+  .then(() => console.log("Firebase подключён"))
+  .catch(error => console.error("Firebase ошибка:", error));
+</script>
 </body>
 </html>
