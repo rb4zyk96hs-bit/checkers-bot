@@ -4,892 +4,380 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Русские шашки</title>
-
 <style>
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  background:#101315;
-  color:white;
-  font-family:Arial,sans-serif
-}
-
-.game{
-  max-width:520px;
-  margin:auto;
-  padding:10px
-}
-
-.players{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:#171a1d;
-  border:1px solid #34383c;
-  border-radius:13px;
-  padding:10px;
-  font-weight:bold
-}
-
-.p{
-  display:flex;
-  align-items:center;
-  gap:7px
-}
-
-.dot{
-  width:25px;
-  height:25px;
-  border-radius:50%;
-  border:2px solid #555
-}
-
-.white{background:#eee}
-.black{background:#181818}
-
-.timer{
-  font-variant-numeric:tabular-nums
-}
-
-.turn{
-  text-align:center;
-  background:#18301b;
-  border:1px solid #39743d;
-  border-radius:20px;
-  padding:8px;
-  margin:8px 0;
-  font-weight:bold
-}
-
-.frame{
-  display:grid;
-  grid-template-columns:24px 1fr;
-  gap:3px;
-  background:#4d2c1a;
-  border:3px solid #754625;
-  border-radius:9px;
-  padding:5px
-}
-
-.nums{
-  display:grid;
-  grid-template-rows:repeat(8,1fr);
-  align-items:center;
-  text-align:center;
-  color:#e5c487;
-  font-weight:bold
-}
-
-.board{
-  display:grid;
-  grid-template-columns:repeat(8,1fr);
-  aspect-ratio:1
-}
-
-.cell{
-  display:flex;
-  align-items:center;
-  justify-content:center
-}
-
-.light{background:#e6c38a}
-.dark{background:#744521}
-
-.sel{
-  box-shadow:inset 0 0 0 4px #f1d16b
-}
-
-.possible{
-  box-shadow:inset 0 0 0 4px #9fbd55
-}
-
-.piece{
-  width:76%;
-  height:76%;
-  border-radius:50%;
-  border:2px solid #555;
-  box-shadow:inset 0 3px 4px #fff5,0 3px 5px #0008
-}
-
-.piece.black{
-  background:radial-gradient(circle at 35% 28%,#555,#101010 68%)
-}
-
-.piece.white{
-  background:radial-gradient(circle at 35% 28%,#fff,#d0cbc0 70%)
-}
-
-.king:after{
-  content:"♛";
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#c49b45;
-  font-size:21px
-}
-
-.letters{
-  display:grid;
-  grid-template-columns:24px repeat(8,1fr);
-  text-align:center;
-  color:#e5c487;
-  font-weight:bold;
-  font-size:13px;
-  margin-top:3px
-}
-
-.msg{
-  text-align:center;
-  background:#171a1d;
-  border-radius:9px;
-  padding:8px;
-  margin-top:8px;
-  color:#ccc;
-  font-size:13px
-}
-
-.buttons{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:8px;
-  margin-top:8px
-}
-
-button{
-  border:0;
-  border-radius:10px;
-  padding:12px;
-  color:white;
-  font-weight:bold;
-  font-size:14px
-}
-
-.draw{background:#28751d}
-.resign{background:#ad2922}
+body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
+.game{max-width:520px;margin:auto;padding:10px}
+.players{display:flex;justify-content:space-between;align-items:center;background:#171a1d;border:1px solid #34383c;border-radius:13px;padding:10px;font-weight:bold}
+.p{display:flex;align-items:center;gap:7px}.dot{width:25px;height:25px;border-radius:50%;border:2px solid #555}
+.white{background:#eee}.black{background:#181818}.timer{font-variant-numeric:tabular-nums}
+.turn{text-align:center;background:#18301b;border:1px solid #39743d;border-radius:20px;padding:8px;margin:8px 0;font-weight:bold}
+.frame{display:grid;grid-template-columns:24px 1fr;gap:3px;background:#4d2c1a;border:3px solid #754625;border-radius:9px;padding:5px}
+.nums{display:grid;grid-template-rows:repeat(8,1fr);align-items:center;text-align:center;color:#e5c487;font-weight:bold}
+.board{display:grid;grid-template-columns:repeat(8,1fr);aspect-ratio:1}
+.cell{display:flex;align-items:center;justify-content:center}
+.light{background:#e6c38a}.dark{background:#744521}
+.sel{box-shadow:inset 0 0 0 4px #f1d16b}
+.possible{box-shadow:inset 0 0 0 4px #9fbd55}
+.piece{width:76%;height:76%;border-radius:50%;border:2px solid #555;box-shadow:inset 0 3px 4px #fff5,0 3px 5px #0008}
+.piece.black{background:radial-gradient(circle at 35% 28%,#555,#101010 68%)}
+.piece.white{background:radial-gradient(circle at 35% 28%,#fff,#d0cbc0 70%)}
+.king:after{content:"♛";height:100%;display:flex;align-items:center;justify-content:center;color:#c49b45;font-size:21px}
+.letters{display:grid;grid-template-columns:24px repeat(8,1fr);text-align:center;color:#e5c487;font-weight:bold;font-size:13px;margin-top:3px}
+.msg{text-align:center;background:#171a1d;border-radius:9px;padding:8px;margin-top:8px;color:#ccc;font-size:13px}
+.buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;font-size:14px}
+.draw{background:#28751d}.resign{background:#ad2922}
 </style>
 </head>
-
 <body>
-
 <div class="game">
-
-  <div class="players">
-    <div class="p">
-      <span class="dot white"></span>
-      Игрок 1
-    </div>
-
-    <span id="t1" class="timer">15:00</span>
-
-    <div class="p">
-      <span id="t2" class="timer">15:00</span>
-      <span class="dot black"></span>
-      Игрок 2
-    </div>
-  </div>
-
-  <div id="turn" class="turn">
-    ⚪ Ход игрока 1
-  </div>
-
-  <div class="frame">
-
-    <div class="nums" id="nums">
-      <span>8</span>
-      <span>7</span>
-      <span>6</span>
-      <span>5</span>
-      <span>4</span>
-      <span>3</span>
-      <span>2</span>
-      <span>1</span>
-    </div>
-
-    <div id="board" class="board"></div>
-
-  </div>
-
-  <div class="letters" id="letters">
-    <span></span>
-    <span>A</span>
-    <span>B</span>
-    <span>C</span>
-    <span>D</span>
-    <span>E</span>
-    <span>F</span>
-    <span>G</span>
-    <span>H</span>
-  </div>
-
-  <div id="msg" class="msg">
-    Подключение к игре...
-  </div>
-
-  <div class="buttons">
-    <button id="draw" class="draw">
-      🤝 Предложить ничью
-    </button>
-
-    <button id="resign" class="resign">
-      🏳️ Сдаться
-    </button>
-  </div>
-
+<div class="players">
+<div class="p"><span class="dot white"></span>Игрок 1</div>
+<span id="t1" class="timer">15:00</span>
+<div class="p"><span id="t2" class="timer">15:00</span><span class="dot black"></span>Игрок 2</div>
 </div>
 
-<!-- Firebase -->
+<div id="turn" class="turn">⚪ Ход игрока 1</div>
 
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<div class="frame">
+<div class="nums"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
+<div id="board" class="board"></div>
+</div>
+
+<div class="letters">
+<span></span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
+</div>
+
+<div id="msg" class="msg">Выберите белую шашку.</div>
+
+<div class="buttons">
+<button id="draw" class="draw">🤝 Предложить ничью</button>
+<button id="resign" class="resign">🏳️ Сдаться</button>
+</div>
+</div>
+
+<script>
+const board=document.getElementById("board");
+const turn=document.getElementById("turn");
+const msg=document.getElementById("msg");
+
+let B=Array.from({length:8},()=>Array(8).fill(null));
+let current="white",selected=null,gameOver=false;
+let time={white:900,black:900};
+
+for(let r=0;r<3;r++)
+ for(let c=0;c<8;c++)
+  if((r+c)%2)B[r][c]={color:"black",king:false};
+
+for(let r=5;r<8;r++)
+ for(let c=0;c<8;c++)
+  if((r+c)%2)B[r][c]={color:"white",king:false};
+
+const inside=(r,c)=>r>=0&&r<8&&c>=0&&c<8;
+
+function captures(r,c){
+ const p=B[r][c],out=[];
+ if(!p)return out;
+
+ for(const dr of[-1,1])
+  for(const dc of[-1,1]){
+   let nr=r+dr,nc=c+dc,enemy=null;
+
+   while(inside(nr,nc)){
+    const q=B[nr][nc];
+
+    if(!q){
+     if(enemy)out.push({r:nr,c:nc,cr:enemy.r,cc:enemy.c});
+     nr+=dr;nc+=dc;continue;
+    }
+
+    if(!enemy){
+     if(q.color===p.color)break;
+     enemy={r:nr,c:nc};
+     nr+=dr;nc+=dc;continue;
+    }
+
+    break;
+   }
+  }
+
+ return out;
+}
+
+function capturesMan(r,c){const p=B[r][c],out=[];
+ for(const dr of[-1,1])
+  for(const dc of[-1,1]){
+   const er=r+dr,ec=c+dc,lr=r+2*dr,lc=c+2*dc;
+   if(inside(er,ec)&&inside(lr,lc)&&B[er][ec]&&B[er][ec].color!==p.color&&!B[lr][lc])
+    out.push({r:lr,c:lc,cr:er,cc:ec});
+  }
+ return out;
+}
+
+function getCaptures(r,c){
+ return B[r][c]?.king?captures(r,c):capturesMan(r,c);
+}
+
+function quiet(r,c){
+ const p=B[r][c],out=[];
+ if(!p)return out;
+
+ if(p.king){
+  for(const dr of[-1,1])
+   for(const dc of[-1,1]){
+    let nr=r+dr,nc=c+dc;
+    while(inside(nr,nc)&&!B[nr][nc]){
+     out.push({r:nr,c:nc});
+     nr+=dr;nc+=dc;
+    }
+   }
+ }else{
+  const dr=p.color==="white"?-1:1;
+  for(const dc of[-1,1]){
+   const nr=r+dr,nc=c+dc;
+   if(inside(nr,nc)&&!B[nr][nc])out.push({r:nr,c:nc});
+  }
+ }
+
+ return out;
+}
+
+function anyCapture(color){
+ for(let r=0;r<8;r++)
+  for(let c=0;c<8;c++)
+   if(B[r][c]?.color===color&&getCaptures(r,c).length)return true;
+ return false;
+}
+
+function legal(r,c){
+ if(!B[r][c]||B[r][c].color!==current)return[];
+ return anyCapture(current)?getCaptures(r,c):quiet(r,c);
+}
+
+function render(){
+ board.innerHTML="";
+
+ for(let r=0;r<8;r++)
+  for(let c=0;c<8;c++){
+   const cell=document.createElement("div");
+   cell.className="cell "+((r+c)%2?"dark":"light");
+
+   if(selected&&selected.r===r&&selected.c===c)
+    cell.classList.add("sel");
+
+   if(selected&&legal(selected.r,selected.c).some(m=>m.r===r&&m.c===c))
+    cell.classList.add("possible");
+
+   const p=B[r][c];
+
+   if(p){
+    const piece=document.createElement("div");
+    piece.className="piece "+p.color+(p.king?" king":"");
+    piece.onclick=e=>{e.stopPropagation();select(r,c)};
+    cell.appendChild(piece);
+   }
+
+   cell.onclick=()=>move(r,c);
+   board.appendChild(cell);
+  }
+}
+
+function select(r,c){
+ if(gameOver)return;
+ if(!B[r][c]||B[r][c].color!==current)return;
+
+ if(anyCapture(current)&&!getCaptures(r,c).length){
+  msg.textContent="⚠️ Нужно обязательно съесть шашку.";
+  return;
+ }
+
+ selected={r,c};
+ msg.textContent=anyCapture(current)?"Выберите клетку, куда бить.":"Выберите клетку для хода.";
+ render();
+}
+
+function move(r,c){
+ if(gameOver||!selected)return;
+
+ const sr=selected.r,sc=selected.c;
+ const m=legal(sr,sc).find(x=>x.r===r&&x.c===c);
+
+ if(!m)return;
+
+ const p=B[sr][sc];
+ const isCapture=m.cr!==undefined;
+
+ B[sr][sc]=null;
+ B[r][c]=p;
+
+ if(isCapture)B[m.cr][m.cc]=null;
+
+ if(!p.king&&((p.color==="white"&&r===0)||(p.color==="black"&&r===7)))
+  p.king=true;
+
+ if(isCapture&&getCaptures(r,c).length){
+  selected={r,c};
+  msg.textContent="⚔️ Можно продолжить взятие.";
+  render();
+  return;
+ }
+
+ selected=null;
+ current=current==="white"?"black":"white";
+
+ if(!hasPieces(current)||!hasMove(current)){
+  gameOver=true;
+  turn.textContent=current==="white"?"🏆 Победили чёрные":"🏆 Победили белые";
+  msg.textContent="Игра окончена.";
+ }else{
+  turn.textContent=current==="white"?"⚪ Ход игрока 1":"⚫ Ход игрока 2";
+  msg.textContent=anyCapture(current)?"⚔️ Обязательно нужно бить.":"Выберите шашку.";
+ }
+
+ render();
+}
+
+function hasPieces(color){
+ return B.some(row=>row.some(p=>p&&p.color===color));
+}
+
+function hasMove(color){
+ const old=current;
+ current=color;
+
+ for(let r=0;r<8;r++)
+  for(let c=0;c<8;c++)
+   if(B[r][c]?.color===color&&legal(r,c).length){
+    current=old;
+    return true;
+   }
+
+ current=old;
+ return false;
+}
+
+render();
+
+document.getElementById("draw").onclick=()=>{
+ if(!gameOver)msg.textContent="🤝 Предложение ничьей отправлено.";
+};
+
+document.getElementById("resign").onclick=()=>{
+ if(gameOver)return;
+ gameOver=true;
+ turn.textContent=current==="white"?"🏳️ Белые сдались":"🏳️ Чёрные сдались";
+ msg.textContent="Игра окончена.";
+};
+
+setInterval(()=>{
+ if(gameOver)return;
+
+ time[current]--;
+
+ const t=Math.max(0,time[current]);
+ document.getElementById(current==="white"?"t1":"t2").textContent=
+ String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0");
+
+ if(t<=0){
+  gameOver=true;
+  turn.textContent=current==="white"?"⏱️ Победили чёрные":"⏱️ Победили белые";
+  msg.textContent="Время вышло.";
+ }
+},1000);
+</script>
+ <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <script>
-
-const board = document.getElementById("board");
-const turn = document.getElementById("turn");
-const msg = document.getElementById("msg");
-const nums = document.getElementById("nums");
-const letters = document.getElementById("letters");
-
-let B = Array.from(
-  {length:8},
-  () => Array(8).fill(null)
-);
-
-let current = "white";
-let selected = null;
-let gameOver = false;
-
-let time = {
-  white:900,
-  black:900
-};
-
 let myColor = null;
 let onlineReady = false;
 
-let gameRef = null;
-
-
-/* =========================
-   НАЧАЛЬНАЯ ДОСКА
-========================= */
-
-function createStartBoard(){
-
-  B = Array.from(
-    {length:8},
-    () => Array(8).fill(null)
-  );
-
-  for(let r=0;r<3;r++){
-
-    for(let c=0;c<8;c++){
-
-      if((r+c)%2){
-
-        B[r][c] = {
-          color:"black",
-          king:false
-        };
-
-      }
-
-    }
-
-  }
-
-  for(let r=5;r<8;r++){
-
-    for(let c=0;c<8;c++){
-
-      if((r+c)%2){
-
-        B[r][c] = {
-          color:"white",
-          king:false
-        };
-
-      }
-
-    }
-
-  }
-
-}
-
-createStartBoard();
-
-
-/* =========================
-   ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
-========================= */
-
-const inside = (r,c) =>
-  r>=0 && r<8 && c>=0 && c<8;
-
-
-/* =========================
-   ВЗЯТИЕ ДЛЯ ДАМКИ
-========================= */
-
-function captures(r,c){
-
-  const p = B[r][c];
-  const out = [];
-
-  if(!p) return out;
-
-  for(const dr of [-1,1]){
-
-    for(const dc of [-1,1]){
-
-      let nr = r + dr;
-      let nc = c + dc;
-      let enemy = null;
-
-      while(inside(nr,nc)){
-
-        const q = B[nr][nc];
-
-        if(!q){
-
-          if(enemy){
-
-            out.push({
-              r:nr,
-              c:nc,
-              cr:enemy.r,
-              cc:enemy.c
-            });
-
-          }
-
-          nr += dr;
-          nc += dc;
-          continue;
-        }
-
-        if(!enemy){
-
-          if(q.color === p.color)
-            break;
-
-          enemy = {
-            r:nr,
-            c:nc
-          };
-
-          nr += dr;
-          nc += dc;
-          continue;
-
-        }
-
-        break;
-
-      }
-
-    }
-
-  }
-
-  return out;
-
-}
-
-
-/* =========================
-   ВЗЯТИЕ ДЛЯ ОБЫЧНОЙ ШАШКИ
-========================= */
-
-function capturesMan(r,c){
-
-  const p = B[r][c];
-  const out = [];
-
-  for(const dr of [-1,1]){
-
-    for(const dc of [-1,1]){
-
-      const er = r + dr;
-      const ec = c + dc;
-
-      const lr = r + 2*dr;
-      const lc = c + 2*dc;
-
-      if(
-        inside(er,ec) &&
-        inside(lr,lc) &&
-        B[er][ec] &&
-        B[er][ec].color !== p.color &&
-        !B[lr][lc]
-      ){
-
-        out.push({
-          r:lr,
-          c:lc,
-          cr:er,
-          cc:ec
-        });
-
-      }
-
-    }
-
-  }
-
-  return out;
-
-}
-
-
-function getCaptures(r,c){
-
-  if(!B[r][c])
-    return [];
-
-  return B[r][c].king
-    ? captures(r,c)
-    : capturesMan(r,c);
-
-}
-
-
-/* =========================
-   ТИХИЙ ХОД
-========================= */
-
-function quiet(r,c){
-
-  const p = B[r][c];
-  const out = [];
-
-  if(!p)
-    return out;
-
-  if(p.king){
-
-    for(const dr of [-1,1]){
-
-      for(const dc of [-1,1]){
-
-        let nr = r + dr;
-        let nc = c + dc;
-
-        while(
-          inside(nr,nc) &&
-          !B[nr][nc]
-        ){
-
-          out.push({
-            r:nr,
-            c:nc
-          });
-
-          nr += dr;
-          nc += dc;
-
-        }
-
-      }
-
-    }
-
-  }else{
-
-    const dr =
-      p.color === "white"
-        ? -1
-        : 1;
-
-    for(const dc of [-1,1]){
-
-      const nr = r + dr;
-      const nc = c + dc;
-
-      if(
-        inside(nr,nc) &&
-        !B[nr][nc]
-      ){
-
-        out.push({
-          r:nr,
-          c:nc
-        });
-
-      }
-
-    }
-
-  }
-
-  return out;
-
-}
-
-
-/* =========================
-   ЕСТЬ ЛИ ОБЯЗАТЕЛЬНОЕ ВЗЯТИЕ
-========================= */
-
-function anyCapture(color){
-
-  for(let r=0;r<8;r++){
-
-    for(let c=0;c<8;c++){
-
-      if(
-        B[r][c] &&
-        B[r][c].color === color &&
-        getCaptures(r,c).length
-      ){
-
-        return true;
-
-      }
-
-    }
-
-  }
-
-  return false;
-
-}
-
-
-/* =========================
-   ДОПУСТИМЫЕ ХОДЫ
-========================= */
-
-function legal(r,c){
-
-  if(
-    !B[r][c] ||
-    B[r][c].color !== current
-  ){
-
-    return [];
-
-  }
-
-  return anyCapture(current)
-    ? getCaptures(r,c)
-    : quiet(r,c);
-
-}
-
-
-/* =========================
-   ОТОБРАЖЕНИЕ ДОСКИ
-========================= */
-
-function render(){
-
-  board.innerHTML = "";
-
-  const flip =
-    myColor === "black";
-
-  for(let vr=0;vr<8;vr++){
-
-    for(let vc=0;vc<8;vc++){
-
-      const r =
-        flip ? 7-vr : vr;
-
-      const c =
-        flip ? 7-vc : vc;
-
-      const cell =
-        document.createElement("div");
-
-      cell.className =
-        "cell " +
-        ((r+c)%2 ? "dark" : "light");
-
-      if(
-        selected &&
-        selected.r === r &&
-        selected.c === c
-      ){
-
-        cell.classList.add("sel");
-
-      }
-
-      if(
-        selected &&
-        legal(
-          selected.r,
-          selected.c
-        ).some(
-          m => m.r === r && m.c === c
-        )
-      ){
-
-        cell.classList.add("possible");
-
-      }
-
-      const p = B[r][c];
-
-      if(p){
-
-        const piece =
-          document.createElement("div");
-
-        piece.className =
-          "piece " +
-          p.color +
-          (p.king ? " king" : "");
-
-        piece.onclick = function(e){
-
-          e.stopPropagation();
-
-          select(r,c);
-
-        };
-
-        cell.appendChild(piece);
-
-      }
-
-      cell.onclick = function(){
-
-        move(r,c);
-
-      };
-
-      board.appendChild(cell);
-
-    }
-
-  }
-
-  updateCoordinates();
-
-}
-
-
-/* =========================
-   КООРДИНАТЫ
-========================= */
-
-function updateCoordinates(){
-
-  if(myColor === "black"){
-
-    nums.innerHTML = `
-      <span>1</span>
-      <span>2</span>
-      <span>3</span>
-      <span>4</span>
-      <span>5</span>
-      <span>6</span>
-      <span>7</span>
-      <span>8</span>
-    `;
-
-    letters.innerHTML = `
-      <span></span>
-      <span>H</span>
-      <span>G</span>
-      <span>F</span>
-      <span>E</span>
-      <span>D</span>
-      <span>C</span>
-      <span>B</span>
-      <span>A</span>
-    `;
-
-  }else{
-
-    nums.innerHTML = `
-      <span>8</span>
-      <span>7</span>
-      <span>6</span>
-      <span>5</span>
-      <span>4</span>
-      <span>3</span>
-      <span>2</span>
-      <span>1</span>
-    `;
-
-    letters.innerHTML = `
-      <span></span>
-      <span>A</span>
-      <span>B</span>
-      <span>C</span>
-      <span>D</span>
-      <span>E</span>
-      <span>F</span>
-      <span>G</span>
-      <span>H</span>
-    `;
-
-  }
-
-}
-
-
-/* =========================
-   ВЫБОР ШАШКИ
-========================= */
-
-function select(r,c){
-
-  if(gameOver)
-    return;
-
-  if(!B[r][c])
-    return;
-
-  if(B[r][c].color !== current)
-    return;
-
-  if(B[r][c].color !== myColor){
-
-    msg.textContent =
-      "Это шашки соперника.";
-
-    return;
-
-  }
-
-  if(
-    anyCapture(current) &&
-    !getCaptures(r,c).length
-  ){
-
-    msg.textContent =
-      "⚠️ Нужно обязательно съесть шашку.";
-
-    return;
-
-  }
-
-  selected = {
-    r:r,
-    c:c
+window.addEventListener("load", function () {
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyA8USWXMVE4EEOUGWcMeu_RHButvCZRewQ",
+    authDomain: "checkersbot-c6311.firebaseapp.com",
+    databaseURL: "https://checkersbot-c6311-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "checkersbot-c6311",
+    storageBucket: "checkersbot-c6311.firebasestorage.app",
+    messagingSenderId: "677213113683",
+    appId: "1:677213113683:web:55e4158ad11dfb656de5a6"
   };
 
-  msg.textContent =
-    anyCapture(current)
-      ? "Выберите клетку, куда бить."
-      : "Выберите клетку для хода.";
+  firebase.initializeApp(firebaseConfig);
 
-  render();
+  firebase.auth().signInAnonymously().then(async function(result) {
 
-}
+    const uid = result.user.uid;
+    const gameRef = firebase.database().ref("games/checkers");
 
+    const playersRef = gameRef.child("players");
 
-/* =========================
-   ХОД
-========================= */
+    await playersRef.transaction(function(players) {
 
-function move(r,c){
+      players = players || {};
 
-  if(!onlineReady)
-    return;
+      if (players.white === uid) return players;
+      if (players.black === uid) return players;
 
-  if(gameOver)
-    return;
+      if (!players.white) {
+        players.white = uid;
+        return players;
+      }
 
-  if(myColor !== current){
+      if (!players.black) {
+        players.black = uid;
+        return players;
+      }
 
-    msg.textContent =
-      "⏳ Сейчас ход соперника.";
+      return;
+    });
 
-    return;
+    const playersSnap = await playersRef.once("value");
+    const players = playersSnap.val() || {};
 
-  }
+    if (players.white === uid) {
+      myColor = "white";
+    } else if (players.black === uid) {
+      myColor = "black";
+    } else {
+      alert("❌ Игра уже заполнена двумя игроками.");
+      return;
+    }
 
-  if(!selected)
-    return;
+    const gameSnap = await gameRef.once("value");
 
-  const sr = selected.r;
-  const sc = selected.c;
+    if (!gameSnap.exists() || !gameSnap.val().board) {
 
-  const m =
-    legal(sr,sc).find(
-      x => x.r === r && x.c === c
-    );
+      await gameRef.set({
+        board: B,
+        current: "white",
+        gameOver: false,
+        whiteTime: 900,
+        blackTime: 900,
+        players: players
+      });
 
-  if(!m)
-    return;
+    } else {
 
-  const p = B[sr][sc];
+      const data = gameSnap.val();
 
-  const isCapture =
-    m.cr !== undefined;
+      B = data.board;
+      current = data.current || "white";
+      gameOver = data.gameOver || false;
 
-  B[sr][sc] = null;
+      if (data.whiteTime !== undefined)
+        time.white = data.whiteTime;
 
-  B[r][c] = p;
+      if (data.blackTime !== undefined)
+        time.black = data.blackTime;
 
-  if(isCapture)
-    B[m.cr][m.cc] = null;
+      render();
+    }
 
-  if(
-    !p.king &&
-    (
-      (p.color === "white" && r === 0) ||
-      (p.color === "black" && r === 7)
-    )
-  ){
-
-    p.king = true;
-
-  }
-
-  if(
-    isCapture &&
-    getCaptures(r,c).length
-  ){
-
-    selected = {
-      r:r,
-      c:c
-    };
-
-    msg.textContent =
-      "⚔️ Можно продолжить взятие.";
-
-    render();
-
-    saveGame();
-
-    return;
-
-  }
-
-  selected = null;
-
-  current =
-    current === "white"
-      ? "black"
-      : "white";
-
-  if(
-    !hasPieces(current) ||
-    !hasMove(current)
-  ){
-
-    gameOver = true;
-
-    turn.textContent =
-      current === "white"
-        ? "🏆 Победили чёрные"
-        : "🏆 Победили белые";
-
-    msg.textContent =
-      "Игра окончена.";
-
-  }else{
+    onlineReady = true;
 
     turn.textContent =
       current === "white"
@@ -898,522 +386,94 @@ function move(r,c){
 
     msg.textContent =
       myColor === current
-        ? (
-          anyCapture(current)
-            ? "⚔️ Обязательно нужно бить."
-            : "Выберите свою шашку."
-        )
+        ? "Ваш ход. Выберите свою шашку."
         : "⏳ Ход соперника.";
 
-  }
+    render();
 
-  render();
+    gameRef.on("value", function(snapshot) {
 
-  saveGame();
+      const data = snapshot.val();
 
-}
+      if (!data || !data.board) return;
 
+      B = data.board;
+      current = data.current || "white";
+      gameOver = data.gameOver || false;
 
-/* =========================
-   ПРОВЕРКА ИГРЫ
-========================= */
+      if (data.whiteTime !== undefined)
+        time.white = data.whiteTime;
 
-function hasPieces(color){
+      if (data.blackTime !== undefined)
+        time.black = data.blackTime;
 
-  return B.some(
-    row =>
-      row.some(
-        p =>
-          p &&
-          p.color === color
-      )
-  );
+      selected = null;
 
-}
+      render();
 
+      turn.textContent =
+        current === "white"
+          ? "⚪ Ход игрока 1"
+          : "⚫ Ход игрока 2";
 
-function hasMove(color){
+      msg.textContent =
+        myColor === current
+          ? "Ваш ход. Выберите свою шашку."
+          : "⏳ Ход соперника.";
 
-  const old = current;
+    });
 
-  current = color;
+    const originalMove = move;
 
-  for(let r=0;r<8;r++){
+    move = function(r,c) {
 
-    for(let c=0;c<8;c++){
+      if (!onlineReady) return;
 
-      if(
-        B[r][c] &&
-        B[r][c].color === color &&
-        legal(r,c).length
-      ){
-
-        current = old;
-
-        return true;
-
+      if (myColor !== current) {
+        msg.textContent = "⏳ Сейчас ход соперника.";
+        return;
       }
 
-    }
-
-  }
-
-  current = old;
-
-  return false;
-
-}
-
-
-/* =========================
-   FIREBASE СОХРАНЕНИЕ
-========================= */
-
-function saveGame(){
-
-  if(!onlineReady || !gameRef)
-    return;
-
-  gameRef.update({
-
-    board:B,
-    current:current,
-    gameOver:gameOver,
-    whiteTime:time.white,
-    blackTime:time.black
-
-  });
-
-}
-
-
-/* =========================
-   КНОПКИ
-========================= */
-
-document.getElementById("draw").onclick =
-function(){
-
-  if(!gameOver){
-
-    msg.textContent =
-      "🤝 Предложение ничьей отправлено.";
-
-  }
-
-};
-
-
-document.getElementById("resign").onclick =
-function(){
-
-  if(gameOver)
-    return;
-
-  gameOver = true;
-
-  turn.textContent =
-    current === "white"
-      ? "🏳️ Белые сдались"
-      : "🏳️ Чёрные сдались";
-
-  msg.textContent =
-    "Игра окончена.";
-
-  saveGame();
-
-};
-
-
-/* =========================
-   FIREBASE
-========================= */
-
-window.addEventListener(
-"load",
-function(){
-
-  const firebaseConfig = {
-
-    apiKey:
-      "AIzaSyA8USWXMVE4EEOUGWcMeu_RHButvCZRewQ",
-
-    authDomain:
-      "checkersbot-c6311.firebaseapp.com",
-
-    databaseURL:
-      "https://checkersbot-c6311-default-rtdb.europe-west1.firebasedatabase.app",
-
-    projectId:
-      "checkersbot-c6311",
-
-    storageBucket:
-      "checkersbot-c6311.firebasestorage.app",
-
-    messagingSenderId:
-      "677213113683",
-
-    appId:
-      "1:677213113683:web:55e4158ad11dfb656de5a6"
-
-  };
-
-
-  try{
-
-    firebase.initializeApp(
-      firebaseConfig
-    );
-
-
-    firebase.auth()
-      .signInAnonymously()
-      .then(
-      async function(result){
-
-        const uid =
-          result.user.uid;
-
-        gameRef =
-          firebase.database()
-          .ref("games/checkers");
-
-
-        const playersRef =
-          gameRef.child("players");
-
-
-        await playersRef.transaction(
-        function(players){
-
-          players = players || {};
-
-
-          if(players.white === uid)
-            return players;
-
-          if(players.black === uid)
-            return players;
-
-
-          if(!players.white){
-
-            players.white = uid;
-
-            return players;
-
-          }
-
-
-          if(!players.black){
-
-            players.black = uid;
-
-            return players;
-
-          }
-
-
-          return;
-
-        });
-
-
-        const playersSnap =
-          await playersRef.once(
-            "value"
-          );
-
-        const players =
-          playersSnap.val() || {};
-
-
-        if(players.white === uid){
-
-          myColor = "white";
-
-        }else if(players.black === uid){
-
-          myColor = "black";
-
-        }else{
-
-          alert(
-            "❌ Игра уже заполнена двумя игроками."
-          );
-
-          return;
-
-        }
-
-
-        const gameSnap =
-          await gameRef.once(
-            "value"
-          );
-
-
-        if(
-          !gameSnap.exists() ||
-          !gameSnap.val().board
-        ){
-
-          createStartBoard();
-
-          current = "white";
-          gameOver = false;
-
-          time = {
-            white:900,
-            black:900
-          };
-
-
-          await gameRef.set({
-
-            board:B,
-            current:"white",
-            gameOver:false,
-            whiteTime:900,
-            blackTime:900,
-
-            players:players
-
-          });
-
-
-        }else{
-
-          const data =
-            gameSnap.val();
-
-
-          if(
-            Array.isArray(data.board)
-          ){
-
-            B = data.board;
-
-          }else{
-
-            createStartBoard();
-
-          }
-
-
-          current =
-            data.current || "white";
-
-          gameOver =
-            data.gameOver || false;
-
-
-          if(
-            data.whiteTime !== undefined
-          ){
-
-            time.white =
-              data.whiteTime;
-
-          }
-
-
-          if(
-            data.blackTime !== undefined
-          ){
-
-            time.black =
-              data.blackTime;
-
-          }
-
-        }
-
-
-        onlineReady = true;
-
-
-        render();
-
-
-        turn.textContent =
-          current === "white"
-            ? "⚪ Ход игрока 1"
-            : "⚫ Ход игрока 2";
-
-
-        msg.textContent =
-          myColor === current
-            ? "Ваш ход. Выберите свою шашку."
-            : "⏳ Ход соперника.";
-
-
-        gameRef.on(
-        "value",
-        function(snapshot){
-
-          const data =
-            snapshot.val();
-
-
-          if(
-            !data ||
-            !Array.isArray(data.board)
-          ){
-
-            return;
-
-          }
-
-
-          B = data.board;
-
-          current =
-            data.current || "white";
-
-          gameOver =
-            data.gameOver || false;
-
-
-          if(
-            data.whiteTime !== undefined
-          ){
-
-            time.white =
-              data.whiteTime;
-
-          }
-
-
-          if(
-            data.blackTime !== undefined
-          ){
-
-            time.black =
-              data.blackTime;
-
-          }
-
-
-          selected = null;
-
-
-          render();
-
-
-          turn.textContent =
-            current === "white"
-              ? "⚪ Ход игрока 1"
-              : "⚫ Ход игрока 2";
-
-
-          if(gameOver){
-
-            msg.textContent =
-              "Игра окончена.";
-
-          }else{
-
-            msg.textContent =
-              myColor === current
-                ? "Ваш ход. Выберите свою шашку."
-                : "⏳ Ход соперника.";
-
-          }
-
-        });
-
-
-      })
-      .catch(
-      function(error){
-
-        alert(
-          "❌ Firebase ошибка:\n" +
-          error.code +
-          "\n" +
-          error.message
-        );
-
+      originalMove(r,c);
+
+      gameRef.update({
+        board: B,
+        current: current,
+        gameOver: gameOver,
+        whiteTime: time.white,
+        blackTime: time.black
       });
+    };
 
+    const originalSelect = select;
 
-  }catch(error){
+    select = function(r,c) {
 
-    alert(
-      "❌ Ошибка запуска Firebase:\n" +
+      if (!onlineReady) return;
+
+      if (myColor !== current) {
+        msg.textContent = "⏳ Сейчас ход соперника.";
+        return;
+      }
+
+      if (!B[r][c] || B[r][c].color !== myColor) {
+        msg.textContent = "Это шашки соперника.";
+        return;
+      }
+
+      originalSelect(r,c);
+    };
+
+  }).catch(function(error) {
+
+    alert("❌ Firebase ошибка:\n" +
+      error.code + "\n" +
       error.message
     );
 
-  }
+  });
 
 });
-
-
-/* =========================
-   ТАЙМЕР
-========================= */
-
-setInterval(
-function(){
-
-  if(
-    !onlineReady ||
-    gameOver
-  )
-    return;
-
-
-  time[current]--;
-
-
-  const t =
-    Math.max(
-      0,
-      time[current]
-    );
-
-
-  document.getElementById(
-    current === "white"
-      ? "t1"
-      : "t2"
-  ).textContent =
-
-    String(
-      Math.floor(t/60)
-    ).padStart(2,"0")
-
-    + ":" +
-
-    String(
-      t%60
-    ).padStart(2,"0");
-
-
-  if(t <= 0){
-
-    gameOver = true;
-
-    turn.textContent =
-      current === "white"
-        ? "⏱️ Победили чёрные"
-        : "⏱️ Победили белые";
-
-    msg.textContent =
-      "Время вышло.";
-
-    saveGame();
-
-  }
-
-},
-1000);
-
-
-/* Первый локальный рендер */
-render();
-
 </script>
 
 </body>
