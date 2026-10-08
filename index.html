@@ -330,4 +330,18 @@ window.addEventListener("load", function () {
 });
 </script>
 </body>
+ <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+
+<script>
+firebase.database().ref("test").set({
+  connected: true,
+  time: Date.now()
+})
+.then(() => {
+  alert("✅ База Firebase подключена!");
+})
+.catch(error => {
+  alert("❌ Ошибка базы: " + error.message);
+});
+</script>
 </html>
