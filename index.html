@@ -158,14 +158,8 @@ function legal(r,c){
 function render(){
  board.innerHTML="";
 
- const flip = myColor === "black";
-
- for(let vr=0;vr<8;vr++)
-  for(let vc=0;vc<8;vc++){
-
-   const r = flip ? 7-vr : vr;
-   const c = flip ? 7-vc : vc;
-
+ for(let r=0;r<8;r++)
+  for(let c=0;c<8;c++){
    const cell=document.createElement("div");
    cell.className="cell "+((r+c)%2?"dark":"light");
 
@@ -179,51 +173,15 @@ function render(){
 
    if(p){
     const piece=document.createElement("div");
-
     piece.className="piece "+p.color+(p.king?" king":"");
-
-    piece.onclick=e=>{
-     e.stopPropagation();
-     select(r,c);
-    };
-
+    piece.onclick=e=>{e.stopPropagation();select(r,c)};
     cell.appendChild(piece);
    }
 
    cell.onclick=()=>move(r,c);
-
    board.appendChild(cell);
   }
-
- // Координаты слева
- const nums=document.getElementById("nums");
-
- if(nums){
-  nums.innerHTML="";
-
-  for(let i=0;i<8;i++){
-   const span=document.createElement("span");
-   span.textContent=flip ? i+1 : 8-i;
-   nums.appendChild(span);
-  }
- }
-
- // Буквы снизу
- const letters=document.getElementById("letters");
-
- if(letters){
-  letters.innerHTML="";
-
-  for(let i=0;i<8;i++){
-   const span=document.createElement("span");
-   span.textContent=String.fromCharCode(
-    flip ? 72-i : 65+i
-   );
-   letters.appendChild(span);
-  }
- }
 }
-
 document.getElementById("draw").onclick=()=>{
  if(!gameOver)msg.textContent="🤝 Предложение ничьей отправлено.";
 };
