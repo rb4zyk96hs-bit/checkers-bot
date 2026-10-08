@@ -329,48 +329,55 @@ window.addEventListener("load", function () {
 
 });
 </script>
- <script>
+<script>
 const gameRef = firebase.database().ref("games/test");
 
-function saveGame() {
+let onlineReady = false;
+
+function saveOnlineGame() {
+  if (!onlineReady) return;
+
   gameRef.set({
     board: B,
     current: current,
     gameOver: gameOver,
-    updated: Date.now()
+    whiteTime: time.white,
+    blackTime: time.black,
+    updated: firebase.database.ServerValue.TIMESTAMP
   });
 }
 
-gameRef.on("value", snapshot => {
+gameRef.on("value", function(snapshot) {
+
   const data = snapshot.val();
 
   if (!data) {
-    saveGame();
+    onlineReady = true;
+    saveOnlineGame();
     return;
   }
 
-  if (data.board) {
-    B = data.board;
-    current = data.current || "white";
-    gameOver = data.gameOver || false;
+  B = data.board;
+  current = data.current || "white";
+  gameOver = data.gameOver || false;
 
-    selected = null;
-    render();
+  if (data.whiteTime !== undefined)
+    time.white = data.whiteTime;
 
-    turn.textContent =
-      current === "white"
-        ? "⚪ Ход игрока 1"
-        : "⚫ Ход игрока 2";
-  }
+  if (data.blackTime !== undefined)
+    time.black = data.blackTime;
+
+  selected = null;
+
+  render();
+
+  turn.textContent =
+    current === "white"
+      ? "⚪ Ход игрока 1"
+      : "⚫ Ход игрока 2";
+
+  onlineReady = true;
 });
-
-const oldMove = move;
-
-move = function(r, c) {
-  oldMove(r, c);
-  saveGame();
-};
- 
 </script>
 </body>
 </html>
