@@ -297,11 +297,6 @@ setInterval(()=>{
 <script>
 window.addEventListener("load", function () {
 
-  if (typeof firebase === "undefined") {
-    alert("Ошибка: Firebase не загрузился");
-    return;
-  }
-
   const firebaseConfig = {
     apiKey: "AIzaSyA8USWXMVE4EEOUGWcMeu_RHButvCZRewQ",
     authDomain: "checkersbot-c6311.firebaseapp.com",
@@ -313,24 +308,169 @@ window.addEventListener("load", function () {
   };
 
   try {
+
     firebase.initializeApp(firebaseConfig);
 
-   firebase.database().ref("test").set({
-  hello: "world",
-  time: Date.now()
-})
-.then(() => alert("✅ Запись в Firebase создана"))
-.catch(e => alert("❌ " + e.message));
-   firebase.auth().signInAnonymously()
-      .then(function () {
-        alert("✅ Firebase подключён!");
-      })
-      .catch(function (error) {
-        alert("❌ Firebase ошибка: " + error.code);
+    firebase.auth().signInAnonymously().then(async function(result) {
+
+      const uid = result.user.uid;
+      const gameRef = firebase.database().ref("games/checkers");
+
+      let myColor = null;
+      let onlineReady = false;
+
+      /* Назначаем цвет игроку */
+      await gameRef.child("players").transaction(function(players) {
+
+        players = players || {};
+
+        if (players.white === uid) {
+          myColor = "white";
+          return players;
+        }
+
+        if (players.black === uid) {
+          myColor = "black";
+          return players;
+        }
+
+        if (!players.white) {
+          myColor = "white";
+          players.white = uid;
+          return players;
+        }
+
+        if (!players.black) {
+          myColor = "black";
+          players.black = uid;
+          return players;
+        }
+
+        return;
       });
 
+      /* Если оба места уже заняты */
+      if (!myColor) {
+        alert("❌ Игра уже заполнена двумя игроками.");
+        return;
+      }
+
+      /* Создаём доску один раз */
+      const firstGame = await gameRef.once("value");
+
+      if (!firstGame.exists()) {
+
+        await gameRef.set({
+          board: B,
+          current: "white",
+          gameOver: false,
+          players: {
+            white: myColor === "white" ? uid : null,
+            black: myColor === "black" ? uid : null
+          }
+        });
+
+      } else {
+
+        const data = firstGame.val();
+
+        if (data.board) B = data.board;
+        if (data.current) current = data.current;
+        if (data.gameOver !== undefined) gameOver = data.gameOver;
+
+        render();
+      }
+
+      onlineReady = true;
+
+      alert(
+        myColor === "white"
+          ? "⚪ Вы играете белыми"
+          : "⚫ Вы играете чёрными"
+      );
+
+      /* Получаем изменения второго игрока */
+      gameRef.on("value", function(snapshot) {
+
+        const data = snapshot.val();
+
+        if (!data || !data.board) return;
+
+        B = data.board;
+        current = data.current || "white";
+        gameOver = data.gameOver || false;
+
+        selected = null;
+
+        render();
+
+        if (current === "white") {
+          turn.textContent = "⚪ Ход белых";
+        } else {
+          turn.textContent = "⚫ Ход чёрных";
+        }
+
+      });
+
+      /* Сохраняем ход в Firebase */
+      const oldMove = move;
+
+      move = function(r, c) {
+
+        if (!onlineReady) return;
+
+        if (myColor !== current) {
+          msg.textContent = "⏳ Сейчас ход соперника.";
+          return;
+        }
+
+        oldMove(r, c);
+
+        gameRef.update({
+          board: B,
+          current: current,
+          gameOver: gameOver
+        });
+
+      };
+
+      /* Не позволяем выбирать чужие шашки */
+      const oldSelect = select;
+
+      select = function(r, c) {
+
+        if (!onlineReady) return;
+
+        if (myColor !== current) {
+          msg.textContent = "⏳ Сейчас ход соперника.";
+          return;
+        }
+
+        if (!B[r][c] || B[r][c].color !== myColor) {
+          msg.textContent = "Это шашки соперника.";
+          return;
+        }
+
+        oldSelect(r, c);
+      };
+
+    }).catch(function(error) {
+
+      alert(
+        "❌ Firebase ошибка:\n" +
+        error.code + "\n" +
+        error.message
+      );
+
+    });
+
   } catch (error) {
-    alert("❌ Ошибка запуска Firebase: " + error.message);
+
+    alert(
+      "❌ Ошибка запуска Firebase:\n" +
+      error.message
+    );
+
   }
 
 });
