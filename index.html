@@ -378,6 +378,12 @@ gameRef.on("value", function(snapshot) {
 
   onlineReady = true;
 });
+const originalMove = move;
+
+move = function(r, c) {
+  originalMove(r, c);
+  saveOnlineGame();
+};
 </script>
 </body>
 </html>
