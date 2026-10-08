@@ -158,8 +158,14 @@ function legal(r,c){
 function render(){
  board.innerHTML="";
 
- for(let r=0;r<8;r++)
-  for(let c=0;c<8;c++){
+ const flip = myColor === "black";
+
+ for(let vr=0;vr<8;vr++)
+  for(let vc=0;vc<8;vc++){
+
+   const r = flip ? 7-vr : vr;
+   const c = flip ? 7-vc : vc;
+
    const cell=document.createElement("div");
    cell.className="cell "+((r+c)%2?"dark":"light");
 
@@ -173,91 +179,50 @@ function render(){
 
    if(p){
     const piece=document.createElement("div");
+
     piece.className="piece "+p.color+(p.king?" king":"");
-    piece.onclick=e=>{e.stopPropagation();select(r,c)};
+
+    piece.onclick=e=>{
+     e.stopPropagation();
+     select(r,c);
+    };
+
     cell.appendChild(piece);
    }
 
    cell.onclick=()=>move(r,c);
+
    board.appendChild(cell);
   }
-}
 
-function select(r,c){
- if(gameOver)return;
- if(!B[r][c]||B[r][c].color!==current)return;
+ // Координаты слева
+ const nums=document.getElementById("nums");
 
- if(anyCapture(current)&&!getCaptures(r,c).length){
-  msg.textContent="⚠️ Нужно обязательно съесть шашку.";
-  return;
+ if(nums){
+  nums.innerHTML="";
+
+  for(let i=0;i<8;i++){
+   const span=document.createElement("span");
+   span.textContent=flip ? i+1 : 8-i;
+   nums.appendChild(span);
+  }
  }
 
- selected={r,c};
- msg.textContent=anyCapture(current)?"Выберите клетку, куда бить.":"Выберите клетку для хода.";
- render();
-}
+ // Буквы снизу
+ const letters=document.getElementById("letters");
 
-function move(r,c){
- if(gameOver||!selected)return;
+ if(letters){
+  letters.innerHTML="";
 
- const sr=selected.r,sc=selected.c;
- const m=legal(sr,sc).find(x=>x.r===r&&x.c===c);
-
- if(!m)return;
-
- const p=B[sr][sc];
- const isCapture=m.cr!==undefined;
-
- B[sr][sc]=null;
- B[r][c]=p;
-
- if(isCapture)B[m.cr][m.cc]=null;
-
- if(!p.king&&((p.color==="white"&&r===0)||(p.color==="black"&&r===7)))
-  p.king=true;
-
- if(isCapture&&getCaptures(r,c).length){
-  selected={r,c};
-  msg.textContent="⚔️ Можно продолжить взятие.";
-  render();
-  return;
+  for(let i=0;i<8;i++){
+   const span=document.createElement("span");
+   span.textContent=String.fromCharCode(
+    flip ? 72-i : 65+i
+   );
+   letters.appendChild(span);
+  }
  }
-
- selected=null;
- current=current==="white"?"black":"white";
-
- if(!hasPieces(current)||!hasMove(current)){
-  gameOver=true;
-  turn.textContent=current==="white"?"🏆 Победили чёрные":"🏆 Победили белые";
-  msg.textContent="Игра окончена.";
- }else{
-  turn.textContent=current==="white"?"⚪ Ход игрока 1":"⚫ Ход игрока 2";
-  msg.textContent=anyCapture(current)?"⚔️ Обязательно нужно бить.":"Выберите шашку.";
- }
-
- render();
 }
-
-function hasPieces(color){
- return B.some(row=>row.some(p=>p&&p.color===color));
-}
-
-function hasMove(color){
- const old=current;
- current=color;
-
- for(let r=0;r<8;r++)
-  for(let c=0;c<8;c++)
-   if(B[r][c]?.color===color&&legal(r,c).length){
-    current=old;
-    return true;
-   }
-
- current=old;
- return false;
-}
-
-render();
 
 document.getElementById("draw").onclick=()=>{
  if(!gameOver)msg.textContent="🤝 Предложение ничьей отправлено.";
