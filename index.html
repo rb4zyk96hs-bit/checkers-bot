@@ -287,14 +287,14 @@ setInterval(()=>{
  }
 },1000);
 </script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+ <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script>
+let myColor = null;
+let onlineReady = false;
+
 window.addEventListener("load", function () {
 
   const firebaseConfig = {
@@ -307,173 +307,176 @@ window.addEventListener("load", function () {
     appId: "1:677213113683:web:55e4158ad11dfb656de5a6"
   };
 
-  try {
+  firebase.initializeApp(firebaseConfig);
 
-    firebase.initializeApp(firebaseConfig);
+  firebase.auth().signInAnonymously().then(async function(result) {
 
-    firebase.auth().signInAnonymously().then(async function(result) {
+    const uid = result.user.uid;
+    const gameRef = firebase.database().ref("games/checkers");
 
-      const uid = result.user.uid;
-      const gameRef = firebase.database().ref("games/checkers");
+    const playersRef = gameRef.child("players");
 
-      let myColor = null;
-      let onlineReady = false;
+    await playersRef.transaction(function(players) {
 
-      /* Назначаем цвет игроку */
-      await gameRef.child("players").transaction(function(players) {
+      players = players || {};
 
-        players = players || {};
+      if (players.white === uid) return players;
+      if (players.black === uid) return players;
 
-        if (players.white === uid) {
-          myColor = "white";
-          return players;
-        }
-
-        if (players.black === uid) {
-          myColor = "black";
-          return players;
-        }
-
-        if (!players.white) {
-          myColor = "white";
-          players.white = uid;
-          return players;
-        }
-
-        if (!players.black) {
-          myColor = "black";
-          players.black = uid;
-          return players;
-        }
-
-        return;
-      });
-
-      /* Если оба места уже заняты */
-      if (!myColor) {
-        alert("❌ Игра уже заполнена двумя игроками.");
-        return;
+      if (!players.white) {
+        players.white = uid;
+        return players;
       }
 
-      /* Создаём доску один раз */
-      const firstGame = await gameRef.once("value");
-
-      if (!firstGame.exists()) {
-
-        await gameRef.set({
-          board: B,
-          current: "white",
-          gameOver: false,
-          players: {
-            white: myColor === "white" ? uid : null,
-            black: myColor === "black" ? uid : null
-          }
-        });
-
-      } else {
-
-        const data = firstGame.val();
-
-        if (data.board) B = data.board;
-        if (data.current) current = data.current;
-        if (data.gameOver !== undefined) gameOver = data.gameOver;
-
-        render();
+      if (!players.black) {
+        players.black = uid;
+        return players;
       }
 
-      onlineReady = true;
+      return;
+    });
 
-      alert(
-        myColor === "white"
-          ? "⚪ Вы играете белыми"
-          : "⚫ Вы играете чёрными"
-      );
+    const playersSnap = await playersRef.once("value");
+    const players = playersSnap.val() || {};
 
-      /* Получаем изменения второго игрока */
-      gameRef.on("value", function(snapshot) {
+    if (players.white === uid) {
+      myColor = "white";
+    } else if (players.black === uid) {
+      myColor = "black";
+    } else {
+      alert("❌ Игра уже заполнена двумя игроками.");
+      return;
+    }
 
-        const data = snapshot.val();
+    const gameSnap = await gameRef.once("value");
 
-        if (!data || !data.board) return;
+    if (!gameSnap.exists() || !gameSnap.val().board) {
 
-        B = data.board;
-        current = data.current || "white";
-        gameOver = data.gameOver || false;
-
-        selected = null;
-
-        render();
-
-        if (current === "white") {
-          turn.textContent = "⚪ Ход белых";
-        } else {
-          turn.textContent = "⚫ Ход чёрных";
-        }
-
+      await gameRef.set({
+        board: B,
+        current: "white",
+        gameOver: false,
+        whiteTime: 900,
+        blackTime: 900,
+        players: players
       });
 
-      /* Сохраняем ход в Firebase */
-      const oldMove = move;
+    } else {
 
-      move = function(r, c) {
+      const data = gameSnap.val();
 
-        if (!onlineReady) return;
+      B = data.board;
+      current = data.current || "white";
+      gameOver = data.gameOver || false;
 
-        if (myColor !== current) {
-          msg.textContent = "⏳ Сейчас ход соперника.";
-          return;
-        }
+      if (data.whiteTime !== undefined)
+        time.white = data.whiteTime;
 
-        oldMove(r, c);
+      if (data.blackTime !== undefined)
+        time.black = data.blackTime;
 
-        gameRef.update({
-          board: B,
-          current: current,
-          gameOver: gameOver
-        });
+      render();
+    }
 
-      };
+    onlineReady = true;
 
-      /* Не позволяем выбирать чужие шашки */
-      const oldSelect = select;
+    turn.textContent =
+      current === "white"
+        ? "⚪ Ход игрока 1"
+        : "⚫ Ход игрока 2";
 
-      select = function(r, c) {
+    msg.textContent =
+      myColor === current
+        ? "Ваш ход. Выберите свою шашку."
+        : "⏳ Ход соперника.";
 
-        if (!onlineReady) return;
+    render();
 
-        if (myColor !== current) {
-          msg.textContent = "⏳ Сейчас ход соперника.";
-          return;
-        }
+    gameRef.on("value", function(snapshot) {
 
-        if (!B[r][c] || B[r][c].color !== myColor) {
-          msg.textContent = "Это шашки соперника.";
-          return;
-        }
+      const data = snapshot.val();
 
-        oldSelect(r, c);
-      };
+      if (!data || !data.board) return;
 
-    }).catch(function(error) {
+      B = data.board;
+      current = data.current || "white";
+      gameOver = data.gameOver || false;
 
-      alert(
-        "❌ Firebase ошибка:\n" +
-        error.code + "\n" +
-        error.message
-      );
+      if (data.whiteTime !== undefined)
+        time.white = data.whiteTime;
+
+      if (data.blackTime !== undefined)
+        time.black = data.blackTime;
+
+      selected = null;
+
+      render();
+
+      turn.textContent =
+        current === "white"
+          ? "⚪ Ход игрока 1"
+          : "⚫ Ход игрока 2";
+
+      msg.textContent =
+        myColor === current
+          ? "Ваш ход. Выберите свою шашку."
+          : "⏳ Ход соперника.";
 
     });
 
-  } catch (error) {
+    const originalMove = move;
+
+    move = function(r,c) {
+
+      if (!onlineReady) return;
+
+      if (myColor !== current) {
+        msg.textContent = "⏳ Сейчас ход соперника.";
+        return;
+      }
+
+      originalMove(r,c);
+
+      gameRef.update({
+        board: B,
+        current: current,
+        gameOver: gameOver,
+        whiteTime: time.white,
+        blackTime: time.black
+      });
+    };
+
+    const originalSelect = select;
+
+    select = function(r,c) {
+
+      if (!onlineReady) return;
+
+      if (myColor !== current) {
+        msg.textContent = "⏳ Сейчас ход соперника.";
+        return;
+      }
+
+      if (!B[r][c] || B[r][c].color !== myColor) {
+        msg.textContent = "Это шашки соперника.";
+        return;
+      }
+
+      originalSelect(r,c);
+    };
+
+  }).catch(function(error) {
 
     alert(
-      "❌ Ошибка запуска Firebase:\n" +
+      "❌ Firebase ошибка:\n" +
+      error.code + "\n" +
       error.message
     );
 
-  }
+  });
 
 });
 </script>
+
 </body>
 </html>
