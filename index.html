@@ -330,18 +330,46 @@ window.addEventListener("load", function () {
 });
 </script>
 </body>
- <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
 <script>
-firebase.database().ref("test").set({
-  connected: true,
-  time: Date.now()
-})
-.then(() => {
-  alert("✅ База Firebase подключена!");
-})
-.catch(error => {
-  alert("❌ Ошибка базы: " + error.message);
+const gameRef = firebase.database().ref("games/test");
+
+function saveGame() {
+  gameRef.set({
+    board: B,
+    current: current,
+    gameOver: gameOver,
+    updated: Date.now()
+  });
+}
+
+gameRef.on("value", snapshot => {
+  const data = snapshot.val();
+
+  if (!data) {
+    saveGame();
+    return;
+  }
+
+  if (data.board) {
+    B = data.board;
+    current = data.current || "white";
+    gameOver = data.gameOver || false;
+
+    selected = null;
+    render();
+
+    turn.textContent =
+      current === "white"
+        ? "⚪ Ход игрока 1"
+        : "⚫ Ход игрока 2";
+  }
 });
+
+const oldMove = move;
+
+move = function(r, c) {
+  oldMove(r, c);
+  saveGame();
+};
 </script>
 </html>
