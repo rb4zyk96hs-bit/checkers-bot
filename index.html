@@ -881,7 +881,7 @@ window.addEventListener("load",function(){
 
       gameOver=
         data.gameOver===true;
-
+document.getElementById("restart").style.display=gameOver?"block":"none";
 
       if(data.whiteTime!==undefined){
 
