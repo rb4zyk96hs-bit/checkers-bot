@@ -1002,13 +1002,15 @@ document.getElementById("restart").style.display=gameOver?"block":"none";
 
 
         if(gameOver){
-
+document.getElementById("restart").style.display="block";
           turn.textContent=
             "🏁 Игра окончена.";
 
           msg.textContent=
             "Игра завершена.";
-
+document.getElementById("restart").onclick=function(){
+  location.reload();
+};
           return;
         }
 
