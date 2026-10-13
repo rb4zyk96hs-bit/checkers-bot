@@ -332,9 +332,10 @@ function render(){
 
   board.innerHTML="";
 
-  for(let r=0;r<8;r++){
-
-    for(let c=0;c<8;c++){
+for(let i=0;i<8;i++){
+  for(let j=0;j<8;j++){
+    const r=myColor==="black"?7-i:i;
+    const c=myColor==="black"?7-j:j;
 
       const cell=document.createElement("div");
 
