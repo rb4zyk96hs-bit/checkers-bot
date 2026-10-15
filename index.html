@@ -18,7 +18,13 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 .turn{text-align:center;background:#18301b;border:1px solid #39743d;border-radius:20px;padding:8px;margin:8px 0;font-weight:bold}
 .frame{display:grid;grid-template-columns:24px 1fr;gap:3px;background:#4d2c1a;border:3px solid #754625;border-radius:9px;padding:5px}
 .nums{display:grid;grid-template-rows:repeat(8,1fr);align-items:center;text-align:center;color:#e5c487;font-weight:bold}
-.board{display:grid;grid-template-columns:repeat(8,1fr);aspect-ratio:1}
+.board{
+  display:grid;
+  grid-template-columns:repeat(8,minmax(0,1fr));
+  grid-template-rows:repeat(8,minmax(0,1fr));
+  aspect-ratio:1;
+  overflow:hidden;
+}
 .cell{display:flex;align-items:center;justify-content:center}
 .light{background:#e6c38a}
 .dark{background:#744521}
