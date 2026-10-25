@@ -18,13 +18,7 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 .turn{text-align:center;background:#18301b;border:1px solid #39743d;border-radius:20px;padding:8px;margin:8px 0;font-weight:bold}
 .frame{display:grid;grid-template-columns:24px 1fr;gap:3px;background:#4d2c1a;border:3px solid #754625;border-radius:9px;padding:5px}
 .nums{display:grid;grid-template-rows:repeat(8,1fr);align-items:center;text-align:center;color:#e5c487;font-weight:bold}
-.board{
-  display:grid;
-  grid-template-columns:repeat(8,minmax(0,1fr));
-  grid-template-rows:repeat(8,minmax(0,1fr));
-  aspect-ratio:1;
-  overflow:hidden;
-}
+.board{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));grid-template-rows:repeat(8,minmax(0,1fr));aspect-ratio:1;overflow:hidden}
 .cell{display:flex;align-items:center;justify-content:center}
 .light{background:#e6c38a}
 .dark{background:#744521}
@@ -33,1209 +27,624 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 .piece{width:76%;height:76%;border-radius:50%;border:2px solid #555;box-shadow:inset 0 3px 4px #fff5,0 3px 5px #0008}
 .piece.black{background:radial-gradient(circle at 35% 28%,#555,#101010 68%)}
 .piece.white{background:radial-gradient(circle at 35% 28%,#fff,#d0cbc0 70%)}
-.king{
-border:3px solid #c49b45;
-}
+.king{border:3px solid #c49b45}
 .letters{display:grid;grid-template-columns:24px repeat(8,1fr);text-align:center;color:#e5c487;font-weight:bold;font-size:13px;margin-top:3px}
 .msg{text-align:center;background:#171a1d;border-radius:9px;padding:8px;margin-top:8px;color:#ccc;font-size:13px}
 .buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
-button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;font-size:14px}
+button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;font-size:14px;cursor:pointer}
 .draw{background:#28751d}
 .resign{background:#ad2922}
+.restart{background:#2a4f8a;grid-column:1/-1}
 </style>
 </head>
-
 <body>
 
 <div class="game">
+  <div class="players">
+    <div class="p"><span class="dot white"></span>Игрок 1</div>
+    <span id="t1" class="timer">15:00</span>
+    <div class="p"><span id="t2" class="timer">15:00</span><span class="dot black"></span>Игрок 2</div>
+  </div>
 
-<div class="players">
-<div class="p"><span class="dot white"></span>Игрок 1</div>
-<span id="t1" class="timer">15:00</span>
-<div class="p"><span id="t2" class="timer">15:00</span><span class="dot black"></span>Игрок 2</div>
+  <div id="turn" class="turn">⚪ Ход игрока 1</div>
+
+  <div class="frame">
+    <div class="nums">
+      <span>8</span><span>7</span><span>6</span><span>5</span>
+      <span>4</span><span>3</span><span>2</span><span>1</span>
+    </div>
+    <div id="board" class="board"></div>
+  </div>
+
+  <div class="letters">
+    <span></span><span>A</span><span>B</span><span>C</span>
+    <span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
+  </div>
+
+  <div id="msg" class="msg">Выберите белую шашку.</div>
+
+  <div class="buttons">
+    <button id="draw" class="draw">🤝 Предложить ничью</button>
+    <button id="resign" class="resign">🏳️ Сдаться</button>
+    <button id="restart" class="restart" style="display:none">🔄 Новая игра</button>
+  </div>
 </div>
 
-<div id="turn" class="turn">⚪ Ход игрока 1</div>
-
-<div class="frame">
-<div class="nums">
-<span>8</span><span>7</span><span>6</span><span>5</span>
-<span>4</span><span>3</span><span>2</span><span>1</span>
-</div>
-
-<div id="board" class="board"></div>
-</div>
-
-<div class="letters">
-<span></span><span>A</span><span>B</span><span>C</span>
-<span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
-</div>
-
-<div id="msg" class="msg">Выберите белую шашку.</div>
-
-<div class="buttons">
-<button id="draw" class="draw">🤝 Предложить ничью</button>
-<button id="resign" class="resign">🏳️ Сдаться</button>
-<button id="restart" class="restart" style="display:none">🔄 Новая игра</button>
-
-</div>
-
-<script>
-const board=document.getElementById("board");
-const turn=document.getElementById("turn");
-const msg=document.getElementById("msg");
-
-let B=Array.from({length:8},()=>Array(8).fill(null));
-let current="white";
-let selected=null;
-let gameOver=false;
-
-let time={
-  white:900,
-  black:900
-};
-
-for(let r=0;r<3;r++){
-  for(let c=0;c<8;c++){
-    if((r+c)%2){
-      B[r][c]={
-        color:"black",
-        king:false
-      };
-    }
-  }
-}
-
-for(let r=5;r<8;r++){
-  for(let c=0;c<8;c++){
-    if((r+c)%2){
-      B[r][c]={
-        color:"white",
-        king:false
-      };
-    }
-  }
-}
-
-const inside=(r,c)=>{
-  return r>=0&&r<8&&c>=0&&c<8;
-};
-
-
-/* =========================
-   ВЗЯТИЕ ДЛЯ ДАМКИ
-========================= */
-
-function captures(r,c){
-
-  const p=B[r]?.[c];
-  const out=[];
-
-  if(!p)return out;
-
-  for(const dr of[-1,1]){
-    for(const dc of[-1,1]){
-
-      let nr=r+dr;
-      let nc=c+dc;
-      let enemy=null;
-
-      while(inside(nr,nc)){
-
-        const q=B[nr]?.[nc];
-
-        if(!q){
-
-          if(enemy){
-            out.push({
-              r:nr,
-              c:nc,
-              cr:enemy.r,
-              cc:enemy.c
-            });
-          }
-
-          nr+=dr;
-          nc+=dc;
-          continue;
-        }
-
-        if(!enemy){
-
-          if(q.color===p.color)break;
-
-          enemy={
-            r:nr,
-            c:nc
-          };
-
-          nr+=dr;
-          nc+=dc;
-          continue;
-        }
-
-        break;
-      }
-    }
-  }
-
-  return out;
-}
-
-
-/* =========================
-   ВЗЯТИЕ ДЛЯ ОБЫЧНОЙ ШАШКИ
-========================= */
-
-function capturesMan(r,c){
-
-  const p=B[r]?.[c];
-  const out=[];
-
-  if(!p)return out;
-
-  for(const dr of[-1,1]){
-    for(const dc of[-1,1]){
-
-      const er=r+dr;
-      const ec=c+dc;
-
-      const lr=r+2*dr;
-      const lc=c+2*dc;
-
-      if(
-        inside(er,ec)&&
-        inside(lr,lc)&&
-        B[er]?.[ec]&&
-        B[er][ec].color!==p.color&&
-        !B[lr]?.[lc]
-      ){
-
-        out.push({
-          r:lr,
-          c:lc,
-          cr:er,
-          cc:ec
-        });
-      }
-    }
-  }
-
-  return out;
-}
-
-
-function getCaptures(r,c){
-
-  const p=B[r]?.[c];
-
-  if(!p)return [];
-
-  return p.king
-    ? captures(r,c)
-    : capturesMan(r,c);
-}
-
-
-/* =========================
-   ОБЫЧНЫЙ ХОД
-========================= */
-
-function quiet(r,c){
-
-  const p=B[r]?.[c];
-  const out=[];
-
-  if(!p)return out;
-
-  if(p.king){
-
-    for(const dr of[-1,1]){
-      for(const dc of[-1,1]){
-
-        let nr=r+dr;
-        let nc=c+dc;
-
-        while(
-          inside(nr,nc)&&
-          !B[nr]?.[nc]
-        ){
-
-          out.push({
-            r:nr,
-            c:nc
-          });
-
-          nr+=dr;
-          nc+=dc;
-        }
-      }
-    }
-
-  }else{
-
-    const dr=p.color==="white"?-1:1;
-
-    for(const dc of[-1,1]){
-
-      const nr=r+dr;
-      const nc=c+dc;
-
-      if(
-        inside(nr,nc)&&
-        !B[nr]?.[nc]
-      ){
-
-        out.push({
-          r:nr,
-          c:nc
-        });
-      }
-    }
-  }
-
-  return out;
-}
-
-
-function anyCapture(color){
-
-  for(let r=0;r<8;r++){
-    for(let c=0;c<8;c++){
-
-      if(
-        B[r]?.[c]?.color===color&&
-        getCaptures(r,c).length
-      ){
-        return true;
-      }
-    }
-  }
-
-  return false;
-}
-
-
-function legal(r,c){
-
-  const p=B[r]?.[c];
-
-  if(!p||p.color!==current){
-    return [];
-  }
-
-  return anyCapture(current)
-    ? getCaptures(r,c)
-    : quiet(r,c);
-}
-
-
-/* =========================
-   ОТРИСОВКА
-========================= */
-
-function render(){
-
-  board.innerHTML="";
-
-for(let i=0;i<8;i++){
-  for(let j=0;j<8;j++){
-    const r=myColor==="black"?7-i:i;
-    const c=myColor==="black"?7-j:j;
-
-      const cell=document.createElement("div");
-
-      cell.className=
-        "cell "+
-        ((r+c)%2?"dark":"light");
-
-      if(
-        selected&&
-        selected.r===r&&
-        selected.c===c
-      ){
-        cell.classList.add("sel");
-      }
-
-      if(
-        selected&&
-        legal(
-          selected.r,
-          selected.c
-        ).some(
-          m=>m.r===r&&m.c===c
-        )
-      ){
-        cell.classList.add("possible");
-      }
-
-      const p=B[r]?.[c];
-
-      if(p){
-
-        const piece=document.createElement("div");
-
-        piece.className=
-          "piece "+
-          p.color+
-          (p.king?" king":"");
-
-        piece.onclick=e=>{
-          e.stopPropagation();
-          select(r,c);
-        };
-
-        cell.appendChild(piece);
-      }
-
-      cell.onclick=()=>{
-        move(r,c);
-      };
-
-      board.appendChild(cell);
-    }
-  }
-}
-
-
-/* =========================
-   ВЫБОР ШАШКИ
-========================= */
-
-function select(r,c){
-
-  const p=B[r]?.[c];
-
-  if(!p)return;
-
-  if(p.color!==current){
-
-    msg.textContent="Это шашки соперника.";
-
-    return;
-  }
-
-  const moves=legal(r,c);
-
-  if(!moves.length){
-
-    msg.textContent="Эта шашка сейчас не может ходить.";
-
-    return;
-  }
-
-  selected={
-    r:r,
-    c:c
-  };
-
-  msg.textContent=
-    "Выберите клетку для хода.";
-
-  render();
-}
-
-
-/* =========================
-   ХОД
-========================= */
-
-function move(r,c){
-
-  if(gameOver)return;
-
-  if(!selected){
-
-    if(B[r]?.[c]){
-      select(r,c);
-    }
-
-    return;
-  }
-
-  const moves=legal(
-    selected.r,
-    selected.c
-  );
-
-  const target=moves.find(
-    m=>m.r===r&&m.c===c
-  );
-
-  if(!target){
-
-    msg.textContent="❌ Недопустимый ход.";
-
-    return;
-  }
-
-  const fromR=selected.r;
-  const fromC=selected.c;
-
-  const p=B[fromR]?.[fromC];
-
-  if(!p)return;
-
-  B[r][c]=p;
-  B[fromR][fromC]=null;
-
-  /* Если было взятие */
-  if(
-    target.cr!==undefined&&
-    target.cc!==undefined
-  ){
-
-    B[target.cr][target.cc]=null;
-  }
-
-  /* Дамка */
-  if(
-    !B[r][c].king&&
-    (
-      (B[r][c].color==="white"&&r===0)||
-      (B[r][c].color==="black"&&r===7)
-    )
-  ){
-
-    B[r][c].king=true;
-  }
-
-  /* Проверяем продолжение взятия */
-  if(
-    target.cr!==undefined&&
-    getCaptures(r,c).length
-  ){
-
-    selected={
-      r:r,
-      c:c
-    };
-
-    msg.textContent=
-      "🔄 Продолжите взятие.";
-
-    render();
-
-    return;
-  }
-
-  selected=null;
-
-  current=
-    current==="white"
-      ?"black"
-      :"white";
-
-  if(!hasPieces(current)){
-
-    gameOver=true;
-
-    turn.textContent=
-      current==="white"
-        ?"🏆 Победили чёрные"
-        :"🏆 Победили белые";
-
-    msg.textContent=
-      "У соперника не осталось шашек.";
-
-    render();
-
-    return;
-  }
-
-  if(!hasMove(current)){
-
-    gameOver=true;
-
-    turn.textContent=
-      current==="white"
-        ?"🏆 Победили чёрные"
-        :"🏆 Победили белые";
-
-    msg.textContent=
-      "У соперника нет возможных ходов.";
-
-    render();
-
-    return;
-  }
-
-  turn.textContent=
-    current==="white"
-      ?"⚪ Ход игрока 1"
-      :"⚫ Ход игрока 2";
-
-  msg.textContent=
-    current==="white"
-      ?"Ход белых."
-      :"Ход чёрных.";
-
-  render();
-}
-
-
-/* =========================
-   ПРОВЕРКА ШАШЕК
-========================= */
-
-function hasPieces(color){
-
-  for(let r=0;r<8;r++){
-    for(let c=0;c<8;c++){
-
-      if(B[r]?.[c]?.color===color){
-        return true;
-      }
-    }
-  }
-
-  return false;
-}
-
-
-function hasMove(color){
-
-  for(let r=0;r<8;r++){
-    for(let c=0;c<8;c++){
-
-      if(B[r]?.[c]?.color===color){
-
-        if(
-          getCaptures(r,c).length||
-          quiet(r,c).length
-        ){
-          return true;
-        }
-      }
-    }
-  }
-
-  return false;
-}
-
-
-/* =========================
-   КНОПКИ
-========================= */
-
-document.getElementById("draw").onclick=()=>{
-
-  if(!gameOver){
-
-    msg.textContent=
-      "🤝 Предложение ничьей отправлено.";
-  }
-};
-
-
-document.getElementById("resign").onclick=()=>{
-
-  if(gameOver)return;
-
-  gameOver=true;
-
-  turn.textContent=
-    current==="white"
-      ?"🏳️ Белые сдались"
-      :"🏳️ Чёрные сдались";
-
-  msg.textContent=
-    "Игра окончена.";
-
-};
-
-/* =========================
-   ТАЙМЕР
-========================= */
-
-setInterval(()=>{
-
-  if(gameOver)return;
-
-  time[current]--;
-
-  const t=
-    Math.max(
-      0,
-      time[current]
-    );
-
-  document.getElementById(
-    current==="white"
-      ?"t1"
-      :"t2"
-  ).textContent=
-    String(
-      Math.floor(t/60)
-    ).padStart(2,"0")
-    +":"+
-    String(
-      t%60
-    ).padStart(2,"0");
-
-  if(t<=0){
-
-    gameOver=true;
-
-    turn.textContent=
-      current==="white"
-        ?"⏱️ Победили чёрные"
-        :"⏱️ Победили белые";
-
-    msg.textContent=
-      "Время вышло.";
-  }
-
-},1000);
-
-render();
-
-</script>
-
-
-<!-- FIREBASE -->
-
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
-
 <script>
+/* ============================================================
+   ГЛОБАЛЬНОЕ СОСТОЯНИЕ
+============================================================ */
 
-let myColor=null;
-let onlineReady=false;
+const boardEl = document.getElementById("board");
+const turnEl  = document.getElementById("turn");
+const msgEl   = document.getElementById("msg");
+const restartBtn = document.getElementById("restart");
 
-window.addEventListener("load",function(){
+let B = Array.from({length:8}, () => Array(8).fill(null));
+let current   = "white";
+let selected  = null;
+let gameOver  = false;
 
-  const firebaseConfig={
+let time = { white: 900, black: 900 };
 
-    apiKey:"AIzaSyA8USWXMVE4EEOUGWcMeu_RHButvCZRewQ",
+let myColor     = null;   // "white" | "black"
+let onlineReady = false;
+let gameRef     = null;   // firebase ref
+let lastSyncedBoardHash = ""; // для защиты от лишних render
 
-    authDomain:
-      "checkersbot-c6311.firebaseapp.com",
+/* ============================================================
+   ИНИЦИАЛИЗАЦИЯ ДОСКИ
+============================================================ */
 
-    databaseURL:
-      "https://checkersbot-c6311-default-rtdb.europe-west1.firebasedatabase.app",
+function makeFreshBoard() {
+  const b = Array.from({length:8}, () => Array(8).fill(null));
+  for (let r = 0; r < 3; r++)
+    for (let c = 0; c < 8; c++)
+      if ((r + c) % 2 === 1) b[r][c] = { color: "black", king: false };
 
-    projectId:
-      "checkersbot-c6311",
+  for (let r = 5; r < 8; r++)
+    for (let c = 0; c < 8; c++)
+      if ((r + c) % 2 === 1) b[r][c] = { color: "white", king: false };
 
-    storageBucket:
-      "checkersbot-c6311.firebasestorage.app",
+  return b;
+}
 
-    messagingSenderId:
-      "677213113683",
+B = makeFreshBoard();
 
-    appId:
-      "1:677213113683:web:55e4158ad11dfb656de5a"
-  };
+/* ============================================================
+   БАЗОВАЯ ГЕОМЕТРИЯ
+============================================================ */
 
+const inside = (r, c) => r >= 0 && r < 8 && c >= 0 && c < 8;
 
+/* ============================================================
+   ВЗЯТИЯ
+============================================================ */
+
+function capturesKing(r, c) {
+  const p = B[r]?.[c];
+  const out = [];
+  if (!p) return out;
+
+  for (const dr of [-1, 1]) {
+    for (const dc of [-1, 1]) {
+      let nr = r + dr, nc = c + dc;
+      let enemy = null;
+
+      while (inside(nr, nc)) {
+        const q = B[nr][nc];
+
+        if (!q) {
+          if (enemy) out.push({ r: nr, c: nc, cr: enemy.r, cc: enemy.c });
+          nr += dr; nc += dc;
+          continue;
+        }
+
+        if (!enemy) {
+          if (q.color === p.color) break;
+          enemy = { r: nr, c: nc };
+          nr += dr; nc += dc;
+          continue;
+        }
+        break;
+      }
+    }
+  }
+  return out;
+}
+
+function capturesMan(r, c) {
+  const p = B[r]?.[c];
+  const out = [];
+  if (!p) return out;
+
+  for (const dr of [-1, 1]) {
+    for (const dc of [-1, 1]) {
+      const er = r + dr, ec = c + dc;
+      const lr = r + 2*dr, lc = c + 2*dc;
+
+      if (inside(er, ec) && inside(lr, lc) &&
+          B[er][ec] && B[er][ec].color !== p.color &&
+          !B[lr][lc]) {
+        out.push({ r: lr, c: lc, cr: er, cc: ec });
+      }
+    }
+  }
+  return out;
+}
+
+function getCaptures(r, c) {
+  const p = B[r]?.[c];
+  if (!p) return [];
+  return p.king ? capturesKing(r, c) : capturesMan(r, c);
+}
+
+/* ============================================================
+   ОБЫЧНЫЕ ХОДЫ
+============================================================ */
+
+function quiet(r, c) {
+  const p = B[r]?.[c];
+  const out = [];
+  if (!p) return out;
+
+  if (p.king) {
+    for (const dr of [-1, 1]) {
+      for (const dc of [-1, 1]) {
+        let nr = r + dr, nc = c + dc;
+        while (inside(nr, nc) && !B[nr][nc]) {
+          out.push({ r: nr, c: nc });
+          nr += dr; nc += dc;
+        }
+      }
+    }
+  } else {
+    const dr = p.color === "white" ? -1 : 1;
+    for (const dc of [-1, 1]) {
+      const nr = r + dr, nc = c + dc;
+      if (inside(nr, nc) && !B[nr][nc]) out.push({ r: nr, c: nc });
+    }
+  }
+  return out;
+}
+
+function anyCapture(color) {
+  for (let r = 0; r < 8; r++)
+    for (let c = 0; c < 8; c++)
+      if (B[r][c]?.color === color && getCaptures(r, c).length) return true;
+  return false;
+}
+
+function legal(r, c) {
+  const p = B[r]?.[c];
+  if (!p || p.color !== current) return [];
+  return anyCapture(current) ? getCaptures(r, c) : quiet(r, c);
+}
+
+/* ============================================================
+   ОТРИСОВКА
+============================================================ */
+
+function render() {
+  boardEl.innerHTML = "";
+
+  for (let i = 0; i < 8; i++) {
+    for (let j = 0; j < 8; j++) {
+      const r = myColor === "black" ? 7 - i : i;
+      const c = myColor === "black" ? 7 - j : j;
+
+      const cell = document.createElement("div");
+      cell.className = "cell " + ((r + c) % 2 ? "dark" : "light");
+
+      if (selected && selected.r === r && selected.c === c)
+        cell.classList.add("sel");
+
+      if (selected && legal(selected.r, selected.c).some(m => m.r === r && m.c === c))
+        cell.classList.add("possible");
+
+      const p = B[r]?.[c];
+
+      if (p) {
+        const piece = document.createElement("div");
+        piece.className = "piece " + p.color + (p.king ? " king" : "");
+        piece.onclick = e => { e.stopPropagation(); onSelect(r, c); };
+        cell.appendChild(piece);
+      }
+
+      cell.onclick = () => onMove(r, c);
+      boardEl.appendChild(cell);
+    }
+  }
+}
+
+/* ============================================================
+   ВЫБОР ШАШКИ (локально)
+============================================================ */
+
+function localSelect(r, c) {
+  const p = B[r]?.[c];
+  if (!p) return;
+
+  if (p.color !== current) { msgEl.textContent = "Это шашки соперника."; return; }
+
+  const moves = legal(r, c);
+  if (!moves.length) { msgEl.textContent = "Эта шашка сейчас не может ходить."; return; }
+
+  selected = { r, c };
+  msgEl.textContent = "Выберите клетку для хода.";
+  render();
+}
+
+/* ============================================================
+   ХОД (локально)
+============================================================ */
+
+function localMove(r, c) {
+  if (gameOver) return;
+
+  if (!selected) {
+    if (B[r]?.[c]) localSelect(r, c);
+    return;
+  }
+
+  const moves = legal(selected.r, selected.c);
+  const target = moves.find(m => m.r === r && m.c === c);
+
+  if (!target) { msgEl.textContent = "❌ Недопустимый ход."; return; }
+
+  const fromR = selected.r, fromC = selected.c;
+  const p = B[fromR][fromC];
+  if (!p) return;
+
+  B[r][c] = p;
+  B[fromR][fromC] = null;
+
+  if (target.cr !== undefined) B[target.cr][target.cc] = null;
+
+  // превращение в дамку
+  if (!B[r][c].king &&
+      ((B[r][c].color === "white" && r === 0) ||
+       (B[r][c].color === "black" && r === 7))) {
+    B[r][c].king = true;
+  }
+
+  // продолжение взятия
+  if (target.cr !== undefined && getCaptures(r, c).length) {
+    selected = { r, c };
+    msgEl.textContent = "🔄 Продолжите взятие.";
+    render();
+    return;
+  }
+
+  selected = null;
+  current = current === "white" ? "black" : "white";
+
+  if (!hasPieces(current)) {
+    gameOver = true;
+    turnEl.textContent = current === "white" ? "🏆 Победили чёрные" : "🏆 Победили белые";
+    msgEl.textContent = "У соперника не осталось шашек.";
+    showRestart();
+    render();
+    return;
+  }
+
+  if (!hasMove(current)) {
+    gameOver = true;
+    turnEl.textContent = current === "white" ? "🏆 Победили чёрные" : "🏆 Победили белые";
+    msgEl.textContent = "У соперника нет возможных ходов.";
+    showRestart();
+    render();
+    return;
+  }
+
+  turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2";
+  msgEl.textContent  = current === "white" ? "Ход белых." : "Ход чёрных.";
+  render();
+}
+
+/* ============================================================
+   ПРОВЕРКИ
+============================================================ */
+
+function hasPieces(color) {
+  for (let r = 0; r < 8; r++)
+    for (let c = 0; c < 8; c++)
+      if (B[r][c]?.color === color) return true;
+  return false;
+}
+
+function hasMove(color) {
+  // Правило: если есть взятие — только взятия разрешены.
+  if (anyCapture(color)) return true;
+
+  for (let r = 0; r < 8; r++)
+    for (let c = 0; c < 8; c++)
+      if (B[r][c]?.color === color && quiet(r, c).length) return true;
+
+  return false;
+}
+
+/* ============================================================
+   КНОПКА РЕСТАРТА
+============================================================ */
+
+function showRestart() {
+  restartBtn.style.display = "block";
+}
+
+function hideRestart() {
+  restartBtn.style.display = "none";
+}
+
+/* ============================================================
+   FIREBASE
+============================================================ */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA8USWXMVE4EEOUGWcMeu_RHButvCZRewQ",
+  authDomain: "checkersbot-c6311.firebaseapp.com",
+  databaseURL: "https://checkersbot-c6311-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "checkersbot-c6311",
+  storageBucket: "checkersbot-c6311.firebasestorage.app",
+  messagingSenderId: "677213113683",
+  appId: "1:677213113683:web:55e4158ad11dfb656de5a"
+};
+
+window.addEventListener("load", () => {
   firebase.initializeApp(firebaseConfig);
 
+  firebase.auth().signInAnonymously()
+    .then(async result => {
+      const uid = result.user.uid;
+      gameRef = firebase.database().ref("games/checkers");
+      const playersRef = gameRef.child("players");
 
-  firebase.auth()
-  .signInAnonymously()
-
-  .then(async function(result){
-
-    const uid=result.user.uid;
-
-    const gameRef=
-      firebase.database()
-      .ref("games/checkers");
-
-    const playersRef=
-      gameRef.child("players");
-
-
-    /* =========================
-       ИЩЕМ МЕСТО ИГРОКА
-    ========================= */
-
-    await playersRef.transaction(function(players){
-
-      players=players||{};
-
-      if(players.white===uid){
-        return players;
-      }
-
-      if(players.black===uid){
-        return players;
-      }
-
-      if(!players.white){
-
-        players.white=uid;
-
-        return players;
-      }
-
-      if(!players.black){
-
-        players.black=uid;
-
-        return players;
-      }
-
-      return;
-    });
-
-
-    const playersSnap=
-      await playersRef.once("value");
-
-    const players=
-      playersSnap.val()||{};
-
-
-    if(players.white===uid){
-
-      myColor="white";
-
-    }else if(players.black===uid){
-
-      myColor="black";
-
-    }else{
-
-      alert(
-        "❌ Игра уже заполнена двумя игроками."
-      );
-
-      return;
-    }
-
-
-    /* =========================
-       ЗАГРУЖАЕМ ИГРУ
-    ========================= */
-
-    const gameSnap=
-      await gameRef.once("value");
-
-
-    if(
-      !gameSnap.exists()||
-      !gameSnap.val()||
-      !gameSnap.val().board
-    ){
-
-      await gameRef.set({
-
-        board:B,
-
-        current:"white",
-
-        gameOver:false,
-
-        whiteTime:900,
-
-        blackTime:900,
-
-        players:players
-
+      // Занимаем свободное место
+      await playersRef.transaction(players => {
+        players = players || {};
+        if (players.white === uid || players.black === uid) return players;
+        if (!players.white) { players.white = uid; return players; }
+        if (!players.black) { players.black = uid; return players; }
+        return; // мест нет
       });
 
-    }else{
+      const players = (await playersRef.once("value")).val() || {};
 
-      const data=
-        gameSnap.val();
-
-
-      /*
-       * ВАЖНО:
-       * Firebase иногда возвращает массив
-       * как объект с числовыми ключами.
-       * Поэтому здесь полностью
-       * восстанавливаем доску 8×8.
-       */
-
-      const firebaseBoard=
-        data.board;
-
-
-      const newBoard=
-        Array.from(
-          {length:8},
-          (_,r)=>
-            Array.from(
-              {length:8},
-              (_,c)=>{
-
-                if(
-                  firebaseBoard &&
-                  firebaseBoard[r] &&
-                  firebaseBoard[r][c]!==undefined
-                ){
-
-                  return firebaseBoard[r][c];
-                }
-
-                return null;
-              }
-            )
-        );
-
-
-      B=newBoard;
-
-
-      current=
-        data.current||"white";
-
-
-      gameOver=
-        data.gameOver===true;
-document.getElementById("restart").style.display=gameOver?"block":"none";
-
-      if(data.whiteTime!==undefined){
-
-        time.white=
-          Number(data.whiteTime)||900;
+      if (players.white === uid)      myColor = "white";
+      else if (players.black === uid) myColor = "black";
+      else {
+        alert("❌ Игра уже заполнена двумя игроками.");
+        return;
       }
 
-
-      if(data.blackTime!==undefined){
-
-        time.black=
-          Number(data.blackTime)||900;
+      // Первичная инициализация игры (если её ещё нет)
+      const gameSnap = await gameRef.once("value");
+      if (!gameSnap.exists() || !gameSnap.val()?.board) {
+        await gameRef.set({
+          board: makeFreshBoard(),
+          current: "white",
+          gameOver: false,
+          whiteTime: 900,
+          blackTime: 900,
+          players
+        });
+      } else {
+        applyServerState(gameSnap.val());
       }
 
-    }
+      onlineReady = true;
 
+      if (!gameOver) {
+        turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2";
+        msgEl.textContent  = myColor === current
+          ? "Ваш ход. Выберите свою шашку."
+          : "⏳ Ход соперника.";
+      }
 
-    onlineReady=true;
+      render();
 
+      // Подписка на изменения
+      gameRef.on("value", snapshot => {
+        const data = snapshot.val();
+        if (!data?.board) return;
 
-    if(!gameOver){
+        applyServerState(data);
 
-      turn.textContent=
-        current==="white"
-          ?"⚪ Ход игрока 1"
-          :"⚫ Ход игрока 2";
-
-      msg.textContent=
-        myColor===current
-          ?"Ваш ход. Выберите свою шашку."
-          :"⏳ Ход соперника.";
-
-    }
-
-
-    render();
-
-
-    /* =========================
-       СИНХРОНИЗАЦИЯ
-    ========================= */
-
-    gameRef.on(
-      "value",
-      function(snapshot){
-
-        const data=
-          snapshot.val();
-
-        if(
-          !data||
-          !data.board
-        ){
+        if (gameOver) {
+          showRestart();
+          turnEl.textContent = "🏁 Игра окончена.";
+          msgEl.textContent  = "Игра завершена.";
+          render();
           return;
         }
 
+        turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2";
+        msgEl.textContent  = myColor === current
+          ? "Ваш ход. Выберите свою шашку."
+          : "⏳ Ход соперника.";
 
-        const firebaseBoard=
-          data.board;
-
-
-        /*
-         * Защита от B[r][c] undefined
-         */
-
-        const newBoard=
-          Array.from(
-            {length:8},
-            (_,r)=>
-              Array.from(
-                {length:8},
-                (_,c)=>{
-
-                  if(
-                    firebaseBoard &&
-                    firebaseBoard[r] &&
-                    firebaseBoard[r][c]!==undefined
-                  ){
-
-                    return firebaseBoard[r][c];
-                  }
-
-                  return null;
-                }
-              )
-          );
-
-
-        B=newBoard;
-
-
-        current=
-          data.current||"white";
-
- document.getElementById("restart").style.display=gameOver?"block":"none";      
-        
-        gameOver=
-          data.gameOver===true;
-
-
-        if(data.whiteTime!==undefined){
-
-          time.white=
-            Number(data.whiteTime)||0;
-        }
-
-
-        if(data.blackTime!==undefined){
-
-          time.black=
-            Number(data.blackTime)||0;
-        }
-
-
-        selected=null;
-
-
+        selected = null;
         render();
-
-
-if(gameOver){
-  document.getElementById("restart").style.display="block";
-  turn.textContent="🏁 Игра окончена.";
-  msg.textContent="Игра завершена.";
-
-  document.getElementById("restart").onclick=async function(){
-    const freshBoard=Array.from({length:8},()=>Array(8).fill(null));
-
-    for(let r=0;r<3;r++){
-      for(let c=0;c<8;c++){
-        if((r+c)%2===1) freshBoard[r][c]={color:"black",king:false};
-      }
-    }
-
-    for(let r=5;r<8;r++){
-      for(let c=0;c<8;c++){
-        if((r+c)%2===1) freshBoard[r][c]={color:"white",king:false};
-      }
-    }
-
-    const snap = await gameRef.once("value");
-const data = snap.val();
-
-if (!data || !data.players || !data.players.white || !data.players.black) {
-  alert("Не удалось определить игроков.");
-  return;
-}
-
-const freshBoard = Array.from({length:8},()=>Array(8).fill(null));
-
-for (let r = 0; r < 3; r++) {
-  for (let c = 0; c < 8; c++) {
-    if ((r + c) % 2 === 1) {
-      freshBoard[r][c] = {color:"black", king:false};
-    }
-  }
-}
-
-for (let r = 5; r < 8; r++) {
-  for (let c = 0; c < 8; c++) {
-    if ((r + c) % 2 === 1) {
-      freshBoard[r][c] = {color:"white", king:false};
-    }
-  }
-}
-
-  await gameRef.update({
-  players: {
-    white: data.players.black,
-    black: data.players.white
-  },
-  board: freshBoard,
-  current: "white",
-  gameOver: false,
-  whiteTime: 900,
-  blackTime: 900
-});
-  };
-
-  return;
-}  
-
-
-        turn.textContent=
-          current==="white"
-            ?"⚪ Ход игрока 1"
-            :"⚫ Ход игрока 2";
-
-
-        msg.textContent=
-          myColor===current
-            ?"Ваш ход. Выберите свою шашку."
-            :"⏳ Ход соперника.";
-
-      }
-    );
-
-
-    /* =========================
-       ОНЛАЙН MOVE
-    ========================= */
-
-    const localMove=move;
-
-
-    move=function(r,c){
-
-      if(!onlineReady)return;
-
-
-      if(myColor!==current){
-
-        msg.textContent=
-          "⏳ Сейчас ход соперника.";
-
-        return;
-      }
-
-
-      localMove(r,c);
-
-
-      gameRef.update({
-
-        board:B,
-
-        current:current,
-
-        gameOver:gameOver,
-
-        whiteTime:time.white,
-
-        blackTime:time.black
-
       });
 
-    };
+      // ============ ОНЛАЙН-ОБЁРТКИ ============
 
+      window.onSelect = function(r, c) {
+        if (!onlineReady) return;
+        if (myColor !== current) {
+          msgEl.textContent = "⏳ Сейчас ход соперника.";
+          return;
+        }
+        const p = B[r]?.[c];
+        if (!p) return;
+        if (p.color !== myColor) {
+          msgEl.textContent = "Это шашки соперника.";
+          return;
+        }
+        localSelect(r, c);
+      };
 
-    /* =========================
-       ОНЛАЙН SELECT
-    ========================= */
+      window.onMove = function(r, c) {
+        if (!onlineReady) return;
+        if (gameOver) return;
+        if (myColor !== current) {
+          msgEl.textContent = "⏳ Сейчас ход соперника.";
+          return;
+        }
+        const beforeSelected = selected ? {...selected} : null;
+        localMove(r, c);
 
-    const localSelect=select;
+        // Если был ход (selected изменился / сбросился) — синхронизируем
+        if (!gameOver || beforeSelected) {
+          gameRef.update({
+            board: B,
+            current,
+            gameOver,
+            whiteTime: time.white,
+            blackTime: time.black
+          });
+        }
+      };
 
+      // ============ РЕСТАРТ ============
 
-    select=function(r,c){
+      restartBtn.onclick = async () => {
+        if (!onlineReady) { msgEl.textContent = "Игра ещё подключается."; return; }
+        if (!gameOver)    { msgEl.textContent = "Сначала заверши игру."; return; }
 
-      if(!onlineReady)return;
+        try {
+          const snap = await gameRef.once("value");
+          const data = snap.val();
+          if (!data?.players?.white || !data?.players?.black) {
+            msgEl.textContent = "Не найдены оба игрока.";
+            return;
+          }
 
+          await gameRef.update({
+            board: makeFreshBoard(),
+            current: "white",
+            gameOver: false,
+            whiteTime: 900,
+            blackTime: 900
+          });
 
-      if(myColor!==current){
-
-        msg.textContent=
-          "⏳ Сейчас ход соперника.";
-
-        return;
-      }
-
-
-      const p=B[r]?.[c];
-
-
-      if(!p){
-
-        return;
-      }
-
-
-      if(p.color!==myColor){
-
-        msg.textContent=
-          "Это шашки соперника.";
-
-        return;
-      }
-
-
-      localSelect(r,c);
-document.getElementById("restart").onclick = async () => {
-  if (!onlineReady || !myColor) {
-    msg.textContent = "Игра ещё подключается.";
-    return;
-  }
-
-  if (!gameOver) {
-    msg.textContent = "Сначала заверши игру.";
-    return;
-  }
-
-  try {
-    const gameRef = firebase.database().ref("games/checkers");
-    const snap = await gameRef.once("value");
-    const data = snap.val();
-
-    if (!data || !data.players?.white || !data.players?.black) {
-      msg.textContent = "Не найдены оба игрока.";
-      return;
-    }
-
-    const newBoard = Array.from({length: 8}, () => Array(8).fill(null));
-
-    for (let r = 0; r < 3; r++) {
-      for (let c = 0; c < 8; c++) {
-        if ((r + c) % 2) newBoard[r][c] = {color: "black", king: false};
-      }
-    }
-
-    for (let r = 5; r < 8; r++) {
-      for (let c = 0; c < 8; c++) {
-        if ((r + c) % 2) newBoard[r][c] = {color: "white", king: false};
-      }
-    }
-
-    await gameRef.update({
-      board: newBoard,
-      current: "white",
-      gameOver: false,
-      whiteTime: 900,
-      blackTime: 900
+          msgEl.textContent = "Новая партия началась.";
+        } catch (err) {
+          msgEl.textContent = "Ошибка: " + err.message;
+        }
+      };
+    })
+    .catch(error => {
+      alert("❌ Firebase ошибка:\n" + (error.code || "Неизвестная ошибка") + "\n" + (error.message || ""));
     });
-
-    msg.textContent = "Новая партия началась.";
-  } catch (error) {
-    msg.textContent = "Ошибка: " + error.message;
-  }
-};
-    };
-
-
-  })
-
-
-  .catch(function(error){
-
-    alert(
-      "❌ Firebase ошибка:\n"+
-      (error.code||"Неизвестная ошибка")+
-      "\n"+
-      (error.message||"")
-    );
-
-  });
-
 });
 
-</script>
+/* ============================================================
+   ПРИМЕНЕНИЕ СОСТОЯНИЯ С СЕРВЕРА
+============================================================ */
 
+function applyServerState(data) {
+  const fbBoard = data.board || {};
+
+  B = Array.from({length:8}, (_, r) =>
+    Array.from({length:8}, (_, c) => {
+      const v = fbBoard[r]?.[c];
+      return v === undefined || v === null ? null : v;
+    })
+  );
+
+  current  = data.current || "white";
+  gameOver = data.gameOver === true;
+
+  if (data.whiteTime !== undefined) time.white = Number(data.whiteTime) || 0;
+  if (data.blackTime !== undefined) time.black = Number(data.blackTime) || 0;
+
+  if (gameOver) showRestart(); else hideRestart();
+
+  // обновляем таймеры в шапке
+  paintTimers();
+}
+
+function paintTimers() {
+  const fmt = s => String(Math.floor(s/60)).padStart(2,"0") + ":" + String(s%60).padStart(2,"0");
+  document.getElementById("t1").textContent = fmt(Math.max(0, time.white));
+  document.getElementById("t2").textContent = fmt(Math.max(0, time.black));
+}
+
+/* ============================================================
+   КНОПКИ НИЧЬЯ / СДАЧА
+============================================================ */
+
+document.getElementById("draw").onclick = () => {
+  if (!gameOver) msgEl.textContent = "🤝 Предложение ничьей отправлено.";
+};
+
+document.getElementById("resign").onclick = () => {
+  if (gameOver) return;
+  gameOver = true;
+  turnEl.textContent = current === "white" ? "🏳️ Белые сдались" : "🏳️ Чёрные сдались";
+  msgEl.textContent  = "Игра окончена.";
+  showRestart();
+
+  if (gameRef) {
+    gameRef.update({
+      board: B,
+      current,
+      gameOver: true,
+      whiteTime: time.white,
+      blackTime: time.black
+    });
+  }
+};
+
+/* ============================================================
+   ТАЙМЕР — пишет только тот, чей сейчас ход
+============================================================ */
+
+let lastTickSecond = Math.floor(Date.now() / 1000);
+
+setInterval(() => {
+  if (gameOver) return;
+  if (!onlineReady) return;
+  if (myColor !== current) return; // не наша ответственность
+
+  const nowSec = Math.floor(Date.now() / 1000);
+  if (nowSec === lastTickSecond) return;
+  lastTickSecond = nowSec;
+
+  time[current] = Math.max(0, time[current] - 1);
+  paintTimers();
+
+  if (gameRef) {
+    gameRef.update({
+      whiteTime: time.white,
+      blackTime: time.black
+    });
+  }
+
+  if (time[current] <= 0) {
+    gameOver = true;
+    turnEl.textContent = current === "white" ? "⏱️ Победили чёрные" : "⏱️ Победили белые";
+    msgEl.textContent  = "Время вышло.";
+    showRestart();
+
+    if (gameRef) {
+      gameRef.update({ board: B, current, gameOver: true, whiteTime: time.white, blackTime: time.black });
+    }
+  }
+}, 1000);
+
+/* ============================================================
+   Начальный render — до прихода firebase
+============================================================ */
+
+render();
+paintTimers();
+</script>
 </body>
 </html>
