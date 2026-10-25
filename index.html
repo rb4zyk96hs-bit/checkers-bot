@@ -405,35 +405,56 @@ window.addEventListener("load", () => {
       const playersRef = gameRef.child("players");
 
       // Занимаем свободное место
-      await playersRef.transaction(players => {
-        players = players || {};
-        if (players.white === uid || players.black === uid) return players;
-        if (!players.white) { players.white = uid; return players; }
-        if (!players.black) { players.black = uid; return players; }
-        return; // мест нет
-      });
+      await playersRef.transaction(function(players){
+  players=players||{};
+  if(players.white===uid){ return players; }
+  if(players.black===uid){ return players; }
+  if(!players.white){ players.white=uid; return players; }
+  if(!players.black){ players.black=uid; return players; }
+  return;
+});
 
-      const players = (await playersRef.once("value")).val() || {};
+const playersSnap = await playersRef.once("value");
+const players = playersSnap.val()||{};
 
-      if (players.white === uid)      myColor = "white";
-      else if (players.black === uid) myColor = "black";
-      else {
-        alert("❌ Игра уже заполнена двумя игроками.");
-        return;
-      }
+let mySlot = null;
+if (players.white === uid) mySlot = "white";
+else if (players.black === uid) mySlot = "black";
+else { alert("❌ Игра уже заполнена двумя игроками."); return; }
+
+// Рандомно распределяем цвета, если ещё не распределены
+const preSnap = await gameRef.once("value");
+const preData = preSnap.val() || {};
+let colorMap = preData.colorMap;
+
+if (!colorMap || !colorMap[players.white] || !colorMap[players.black]) {
+  const firstIsWhite = Math.random() < 0.5;
+  colorMap = {
+    [players.white]: firstIsWhite ? "white" : "black",
+    [players.black]: firstIsWhite ? "black" : "white"
+  };
+  await gameRef.update({ colorMap });
+}
+
+myColor = colorMap[uid];
 
       // Первичная инициализация игры (если её ещё нет)
       const gameSnap = await gameRef.once("value");
-      if (!gameSnap.exists() || !gameSnap.val()?.board) {
-        await gameRef.set({
-          board: makeFreshBoard(),
-          current: "white",
-          gameOver: false,
-          whiteTime: 900,
-          blackTime: 900,
-          players
-        });
-      } else {
+ if(
+  !gameSnap.exists()||
+  !gameSnap.val()||
+  !gameSnap.val().board
+){
+  await gameRef.update({
+    board: makeFreshBoard(),
+    current:"white",
+    gameOver:false,
+    whiteTime:900,
+    blackTime:900,
+    players:players,
+    colorMap: colorMap
+  });
+}else{
         applyServerState(gameSnap.val());
       }
 
@@ -453,7 +474,12 @@ window.addEventListener("load", () => {
         const data = snapshot.val();
         if (!data?.board) return;
 
-        applyServerState(data);
+        // обновляем свой цвет, если он изменился (после рестарта с перемешиванием)
+if (data.colorMap && data.colorMap[uid] && data.colorMap[uid] !== myColor) {
+  myColor = data.colorMap[uid];
+}
+
+applyServerState(data);
 
         if (gameOver) {
           showRestart();
@@ -524,13 +550,22 @@ window.addEventListener("load", () => {
             return;
           }
 
-          await gameRef.update({
-            board: makeFreshBoard(),
-            current: "white",
-            gameOver: false,
-            whiteTime: 900,
-            blackTime: 900
-          });
+          // перемешиваем цвета заново
+const firstIsWhite = Math.random() < 0.5;
+const newColorMap = {
+  [data.players.white]: firstIsWhite ? "white" : "black",
+  [data.players.black]: firstIsWhite ? "black" : "white"
+};
+
+await gameRef.update({
+  board: makeFreshBoard(),
+  current: "white",
+  gameOver: false,
+  whiteTime: 900,
+  blackTime: 900,
+  colorMap: newColorMap
+});
+      
 
           msgEl.textContent = "Новая партия началась.";
         } catch (err) {
