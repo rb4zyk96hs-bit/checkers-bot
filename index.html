@@ -84,7 +84,77 @@ const boardEl = document.getElementById("board");
 const turnEl  = document.getElementById("turn");
 const msgEl   = document.getElementById("msg");
 const restartBtn = document.getElementById("restart");
+/* ============================================================
+   ЗВУКИ (Web Audio API)
+============================================================ */
 
+let audioCtx = null;
+
+function getAudio() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+  if (audioCtx.state === "suspended") audioCtx.resume();
+  return audioCtx;
+}
+
+// Базовый тон
+function playTone(freq, duration, type = "sine", volume = 0.15) {
+  try {
+    const ctx = getAudio();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = type;
+    osc.frequency.value = freq;
+
+    gain.gain.setValueAtTime(volume, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime + duration);
+  } catch (e) { /* браузер не поддерживает — тихо игнорим */ }
+}
+
+const SFX = {
+  // клик / выбор шашки
+  select() { playTone(600, 0.06, "sine", 0.08); },
+
+  // обычный ход
+  move() { playTone(380, 0.08, "triangle", 0.12); },
+
+  // взятие
+  capture() {
+    playTone(500, 0.06, "square", 0.12);
+    setTimeout(() => playTone(300, 0.1, "square", 0.12), 50);
+  },
+
+  // превращение в дамку
+  king() {
+    playTone(660, 0.08, "sine", 0.12);
+    setTimeout(() => playTone(880, 0.1, "sine", 0.12), 70);
+    setTimeout(() => playTone(1100, 0.12, "sine", 0.12), 150);
+  },
+
+  // победа
+  win() {
+    playTone(523, 0.12, "sine", 0.15);
+    setTimeout(() => playTone(659, 0.12, "sine", 0.15), 120);
+    setTimeout(() => playTone(784, 0.2, "sine", 0.15), 240);
+  },
+
+  // поражение / сдача
+  lose() {
+    playTone(400, 0.15, "sine", 0.15);
+    setTimeout(() => playTone(300, 0.2, "sine", 0.15), 150);
+  },
+
+  // ошибка / недопустимый ход
+  error() { playTone(180, 0.12, "sawtooth", 0.1); }
+};
 let B = Array.from({length:8}, () => Array(8).fill(null));
 let current   = "white";
 let selected  = null;
@@ -272,12 +342,16 @@ function localSelect(r, c) {
 
   if (p.color !== current) { msgEl.textContent = "Это шашки соперника."; return; }
 
-  const moves = legal(r, c);
-  if (!moves.length) { msgEl.textContent = "Эта шашка сейчас не может ходить."; return; }
-
-  selected = { r, c };
-  msgEl.textContent = "Выберите клетку для хода.";
-  render();
+const moves = legal(r, c);
+if (!moves.length) {
+  msgEl.textContent = "Эта шашка сейчас не может ходить.";
+  SFX.error();
+  return;
+}
+selected = { r, c };
+msgEl.textContent = "Выберите клетку для хода.";
+SFX.select();
+render();
 }
 
 /* ============================================================
@@ -295,7 +369,7 @@ function localMove(r, c) {
   const moves = legal(selected.r, selected.c);
   const target = moves.find(m => m.r === r && m.c === c);
 
-  if (!target) { msgEl.textContent = "❌ Недопустимый ход."; return; }
+  if (!target) { msgEl.textContent = "❌ Недопустимый ход."; SFX.error(); return; }
 
   const fromR = selected.r, fromC = selected.c;
   const p = B[fromR][fromC];
@@ -305,13 +379,16 @@ function localMove(r, c) {
   B[fromR][fromC] = null;
 
   if (target.cr !== undefined) B[target.cr][target.cc] = null;
-
+// звук хода: взятие или обычный
+  if (target.cr !== undefined) SFX.capture();
+else SFX.move();
   // превращение в дамку
-  if (!B[r][c].king &&
-      ((B[r][c].color === "white" && r === 0) ||
-       (B[r][c].color === "black" && r === 7))) {
-    B[r][c].king = true;
-  }
+ if (!B[r][c].king &&
+    ((B[r][c].color === "white" && r === 0) ||
+     (B[r][c].color === "black" && r === 7))) {
+  B[r][c].king = true;
+  SFX.king();
+}
 
   // продолжение взятия
   if (target.cr !== undefined && getCaptures(r, c).length) {
@@ -325,22 +402,27 @@ function localMove(r, c) {
   current = current === "white" ? "black" : "white";
 
   if (!hasPieces(current)) {
-    gameOver = true;
-    turnEl.textContent = current === "white" ? "🏆 Победили чёрные" : "🏆 Победили белые";
-    msgEl.textContent = "У соперника не осталось шашек.";
-    showRestart();
-    render();
-    return;
-  }
+  gameOver = true;
+  turnEl.textContent = current === "white" ? "🏆 Победили чёрные" : "🏆 Победили белые";
+  msgEl.textContent = "У соперника не осталось шашек.";
+  // звук: если я выиграл — win, иначе lose
+  const winner = current === "white" ? "black" : "white";
+  if (myColor === winner) SFX.win(); else SFX.lose();
+  showRestart();
+  render();
+  return;
+}
 
   if (!hasMove(current)) {
-    gameOver = true;
-    turnEl.textContent = current === "white" ? "🏆 Победили чёрные" : "🏆 Победили белые";
-    msgEl.textContent = "У соперника нет возможных ходов.";
-    showRestart();
-    render();
-    return;
-  }
+  gameOver = true;
+  turnEl.textContent = current === "white" ? "🏆 Победили чёрные" : "🏆 Победили белые";
+  msgEl.textContent = "У соперника нет возможных ходов.";
+  const winner = current === "white" ? "black" : "white";
+  if (myColor === winner) SFX.win(); else SFX.lose();
+  showRestart();
+  render();
+  return;
+}
 
   turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2";
   msgEl.textContent  = current === "white" ? "Ход белых." : "Ход чёрных.";
@@ -619,7 +701,7 @@ document.getElementById("draw").onclick = () => {
 };
 
 document.getElementById("resign").onclick = () => {
-  if (gameOver) return;
+  if (gameOver) return;SFX.lose();
   gameOver = true;
   turnEl.textContent = current === "white" ? "🏳️ Белые сдались" : "🏳️ Чёрные сдались";
   msgEl.textContent  = "Игра окончена.";
@@ -664,7 +746,7 @@ setInterval(() => {
   if (time[current] <= 0) {
     gameOver = true;
     turnEl.textContent = current === "white" ? "⏱️ Победили чёрные" : "⏱️ Победили белые";
-    msgEl.textContent  = "Время вышло.";
+    msgEl.textContent  = "Время вышло.";SFX.lose();
     showRestart();
 
     if (gameRef) {
@@ -679,6 +761,14 @@ setInterval(() => {
 
 render();
 paintTimers();
+  render();
+paintTimers();
+
+// разблокируем звук при первом касании/клике
+document.addEventListener("pointerdown", function unlock() {
+  getAudio();
+  document.removeEventListener("pointerdown", unlock);
+}, { once: true });
 </script>
 </body>
 </html>
