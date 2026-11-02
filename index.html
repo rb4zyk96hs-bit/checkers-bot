@@ -52,6 +52,7 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 .menu-btn:active{transform:scale(0.98)}
 
 .menu-btn.play{background:linear-gradient(135deg,#28751d,#3aa52a)}
+.menu-btn.create{background:linear-gradient(135deg,#7a2a8a,#a03ac9)}
 .menu-btn.lobbies{background:linear-gradient(135deg,#2a4f8a,#3a6fb8)}
 .menu-btn.shop{background:linear-gradient(135deg,#8a6b2a,#b8903a)}
 .menu-btn.settings{background:linear-gradient(135deg,#444,#666)}
@@ -137,10 +138,11 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
     </div>
   </div>
 
-  <div class="menu-buttons">
-    <button class="menu-btn play"   id="btnPlay">🎮 Быстрая игра</button>
-    <button class="menu-btn lobbies" id="btnLobbies">🔍 Открытые лобби</button>
-    <button class="menu-btn shop"   id="btnShop">🛒 Магазин</button>
+<div class="menu-buttons">
+    <button class="menu-btn play"     id="btnPlay">🎮 Быстрая игра</button>
+    <button class="menu-btn create"   id="btnCreate">➕ Создать лобби</button>
+    <button class="menu-btn lobbies"  id="btnLobbies">🔍 Открытые лобби</button>
+    <button class="menu-btn shop"     id="btnShop">🛒 Магазин</button>
     <button class="menu-btn settings" id="btnSettings">⚙️ Настройки</button>
   </div>
 </div>
@@ -237,6 +239,7 @@ document.getElementById("btnPlay").onclick = () => {
 };
 
 // заглушки для остальных кнопок (следующими шагами сделаем)
+document.getElementById("btnCreate").onclick   = () => { alert("➕ Создать лобби — скоро"); };
 document.getElementById("btnLobbies").onclick  = () => { alert("🔍 Открытые лобби — скоро"); };
 document.getElementById("btnShop").onclick     = () => { alert("🛒 Магазин — скоро"); };
 document.getElementById("btnSettings").onclick = () => { alert("⚙️ Настройки — скоро"); };
