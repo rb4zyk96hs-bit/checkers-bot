@@ -255,7 +255,7 @@ const menuProfileBtn = document.querySelector(".menu-profile");
  
 document.querySelector(".menu-profile").onclick = () => {
   updateProfileUI();
- profileModal.style.display = "flex";
+profileModal.classList.add("open");
  
 function updateProfileUI() {
   document.getElementById("statGames").textContent  = myProfile.wins + myProfile.losses + myProfile.draws;
