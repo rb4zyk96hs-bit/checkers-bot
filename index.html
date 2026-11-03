@@ -14,10 +14,27 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
   position:fixed;inset:0;
   background:linear-gradient(160deg,#101315 0%,#1a2025 100%);
   display:flex;flex-direction:column;
-  padding:20px;z-index:500;
+  padding:20px;z-index:500;overflow-y:auto;
 }
 .menu-screen.hidden{display:none}
-.menu-top{display:flex;justify-content:flex-end;margin-bottom:auto}
+.menu-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:auto;gap:10px}
+.wallet-top{display:flex;flex-direction:column;gap:6px}
+.wallet-line{
+  display:flex;align-items:center;gap:6px;
+  background:#171a1d;border:1px solid #34383c;border-radius:20px;
+  padding:5px 8px 5px 12px;font-weight:bold;font-size:14px;
+}
+.wallet-line.coins{border-color:#b8903a}
+.wallet-line.gems{border-color:#6a3a8a}
+.wallet-line .w-val{color:#f1d16b;min-width:30px}
+.wallet-line .plus{
+  background:#28751d;border:0;border-radius:50%;
+  width:22px;height:22px;font-size:16px;line-height:1;
+  color:white;font-weight:bold;cursor:pointer;padding:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.wallet-line.gems .plus{background:#6a3a8a}
+
 .menu-profile{
   display:flex;align-items:center;gap:8px;
   background:#171a1d;border:1px solid #34383c;
@@ -34,9 +51,10 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
   font-weight:bold;font-size:14px;
   max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
+
 .menu-buttons{
   display:flex;flex-direction:column;gap:14px;
-  max-width:360px;width:100%;margin:0 auto 40px;
+  max-width:360px;width:100%;margin:30px auto 40px;
 }
 .menu-btn{
   border:0;border-radius:14px;padding:18px 20px;
@@ -53,14 +71,39 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 .menu-btn.shop{background:linear-gradient(135deg,#8a6b2a,#b8903a)}
 .menu-btn.settings{background:linear-gradient(135deg,#444,#666)}
 
+/* ============ БОНУС ============ */
+.bonus-box{
+  background:#1c2a1c;border:1px solid #39743d;border-radius:12px;
+  padding:10px 14px;margin:0 auto 10px;max-width:360px;width:100%;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  font-size:13px;
+}
+.bonus-box button{
+  background:#28751d;border:0;border-radius:8px;padding:8px 14px;
+  color:white;font-weight:bold;font-size:13px;cursor:pointer;
+}
+.bonus-box button:disabled{opacity:.5;cursor:not-allowed}
+
 /* ============ ИГРА ============ */
 .game{max-width:520px;margin:auto;padding:10px}
+.game-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.back-btn{
+  background:#34383c;border:0;border-radius:10px;
+  padding:8px 14px;color:white;font-weight:bold;
+  font-size:14px;cursor:pointer;
+}
+.back-btn:hover{background:#4a4f55}
+
 .players{display:flex;justify-content:space-between;align-items:center;background:#171a1d;border:1px solid #34383c;border-radius:13px;padding:10px;font-weight:bold}
-.p{display:flex;align-items:center;gap:7px}
-.dot{width:25px;height:25px;border-radius:50%;border:2px solid #555}
+.p{display:flex;align-items:center;gap:7px;flex:1;min-width:0}
+.p .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.p.right{justify-content:flex-end}
+.dot{width:25px;height:25px;border-radius:50%;border:2px solid #555;flex-shrink:0}
 .white{background:#eee}
 .black{background:#181818}
-.timer{font-variant-numeric:tabular-nums}
+.timer{font-variant-numeric:tabular-nums;flex-shrink:0;padding:0 8px}
+.timer.low{color:#ff5252;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
 .turn{text-align:center;background:#18301b;border:1px solid #39743d;border-radius:20px;padding:8px;margin:8px 0;font-weight:bold}
 .frame{display:grid;grid-template-columns:24px 1fr;gap:3px;background:#4d2c1a;border:3px solid #754625;border-radius:9px;padding:5px}
 .nums{display:grid;grid-template-rows:repeat(8,1fr);align-items:center;text-align:center;color:#e5c487;font-weight:bold}
@@ -70,7 +113,7 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 .dark{background:#744521}
 .sel{box-shadow:inset 0 0 0 4px #f1d16b}
 .possible{box-shadow:inset 0 0 0 4px #9fbd55}
-.piece{width:76%;height:76%;border-radius:50%;border:2px solid #555;box-shadow:inset 0 3px 4px #fff5,0 3px 5px #0008;touch-action:none;user-select:none;-webkit-user-select:none}
+.piece{width:76%;height:76%;border-radius:50%;border:2px solid #555;box-shadow:inset 0 3px 4px #fff5,0 3px 5px #0008;touch-action:none;user-select:none;-webkit-user-select:none;cursor:pointer}
 .piece.black{background:radial-gradient(circle at 35% 28%,#555,#101010 68%)}
 .piece.white{background:radial-gradient(circle at 35% 28%,#fff,#d0cbc0 70%)}
 .king{border:3px solid #c49b45}
@@ -85,25 +128,26 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 .restart{background:#2a4f8a;grid-column:1/-1}
 .profile-btn{width:100%;margin-top:8px;background:#3a3a5c;border-radius:10px;padding:10px;color:white;font-weight:bold;font-size:14px;border:0;cursor:pointer}
 
-/* ============ ПРОФИЛЬ ============ */
-.profile-modal{
+/* ============ МОДАЛКИ ============ */
+.modal{
   position:fixed;inset:0;background:#000a;z-index:1000;
   align-items:center;justify-content:center;padding:20px;
   display:none;
 }
-.profile-modal.open{display:flex}
-.profile-content{
+.modal.open{display:flex}
+.modal-content{
   background:#1c1f22;border:1px solid #34383c;border-radius:15px;
-  padding:20px;max-width:360px;width:100%;color:white;
-  position:relative;
+  padding:20px;max-width:400px;width:100%;color:white;
+  position:relative;max-height:90vh;overflow-y:auto;
 }
-.profile-content h2{margin:0 0 15px;text-align:center;font-size:18px}
-.profile-close{
+.modal-content h2{margin:0 0 15px;text-align:center;font-size:18px}
+.modal-close{
   position:absolute;top:10px;right:10px;
   background:#ad2922;border:0;border-radius:50%;
   width:28px;height:28px;font-size:14px;cursor:pointer;
   color:white;padding:0;
 }
+
 .profile-row{display:flex;gap:6px;margin-bottom:15px}
 .profile-row input{
   flex:1;background:#101315;border:1px solid #34383c;border-radius:8px;
@@ -120,6 +164,72 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 .stat-percent{text-align:center;background:#101315;border:1px solid #34383c;border-radius:10px;padding:10px;font-size:14px}
 .stat-percent b{color:#9fbd55}
 
+.wallet-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.wallet-item{
+  background:#101315;border:1px solid #34383c;border-radius:10px;
+  padding:12px;text-align:center;
+}
+.wallet-item .w-icon{font-size:22px;display:block;margin-bottom:4px}
+.wallet-item span{display:block;font-size:18px;font-weight:bold;color:#f1d16b}
+.wallet-item small{display:block;font-size:10px;color:#888;margin-top:2px}
+
+/* ============ МАГАЗИН / ПОКУПКА ============ */
+.shop-item{
+  background:#101315;border:1px solid #34383c;border-radius:10px;
+  padding:12px;margin-bottom:8px;
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+}
+.shop-item .info{flex:1}
+.shop-item .info .title{font-weight:bold;font-size:14px}
+.shop-item .info .price{font-size:12px;color:#f1d16b;margin-top:2px}
+.shop-item button{
+  background:#28751d;border:0;border-radius:8px;padding:8px 14px;
+  color:white;font-weight:bold;font-size:13px;cursor:pointer;
+  white-space:nowrap;
+}
+.shop-item button:disabled{opacity:.5;cursor:not-allowed;background:#555}
+
+/* ============ ЛОББИ ============ */
+.lobby-list{max-height:60vh;overflow-y:auto}
+.lobby-row{
+  background:#101315;border:1px solid #34383c;border-radius:10px;
+  padding:10px 12px;margin-bottom:8px;
+  display:flex;justify-content:space-between;align-items:center;gap:8px;
+  font-size:13px;
+}
+.lobby-row .bet{font-weight:bold;color:#f1d16b}
+.lobby-row button{
+  background:#28751d;border:0;border-radius:8px;padding:6px 12px;
+  color:white;font-weight:bold;font-size:12px;cursor:pointer;
+}
+.lobby-row button:disabled{opacity:.5;background:#555;cursor:not-allowed}
+
+.bet-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+.bet-btn{
+  background:#101315;border:1px solid #34383c;border-radius:10px;
+  padding:12px;color:#f1d16b;font-weight:bold;font-size:14px;cursor:pointer;
+}
+.bet-btn:hover{border-color:#f1d16b}
+.bet-btn:disabled{opacity:.4;cursor:not-allowed;color:#666;border-color:#34383c}
+
+/* ============ ПОИСК ============ */
+.search-overlay{
+  position:fixed;inset:0;background:#000d;z-index:2000;
+  display:none;flex-direction:column;align-items:center;justify-content:center;
+  color:white;text-align:center;padding:20px;
+}
+.search-overlay.open{display:flex}
+.spinner{
+  width:60px;height:60px;border:6px solid #333;
+  border-top-color:#3aa52a;border-radius:50%;
+  animation:spin 1s linear infinite;margin-bottom:20px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.search-overlay .cancel{
+  margin-top:20px;background:#ad2922;border:0;border-radius:10px;
+  padding:12px 24px;color:white;font-weight:bold;font-size:14px;cursor:pointer;
+}
+
 /* ============ DRAG ============ */
 .drag-ghost{
   position:fixed;width:40px;height:40px;
@@ -133,14 +243,30 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 </head>
 <body>
 
-<!-- ГЛАВНЫЙ ЭКРАН -->
+<!-- ============ ГЛАВНОЕ МЕНЮ ============ -->
 <div id="menuScreen" class="menu-screen">
   <div class="menu-top">
+    <div class="wallet-top">
+      <div class="wallet-line coins">
+        🪙 <span class="w-val" id="menuCoins">0</span>
+        <button class="plus" id="buyCoinsBtn">+</button>
+      </div>
+      <div class="wallet-line gems">
+        💎 <span class="w-val" id="menuGems">0</span>
+        <button class="plus" id="buyGemsBtn">+</button>
+      </div>
+    </div>
     <div class="menu-profile">
       <span class="menu-avatar">👤</span>
       <span id="menuNick">Гость</span>
     </div>
   </div>
+
+  <div class="bonus-box" id="bonusBox" style="display:none">
+    <span>🎁 Бонус за ожидание!</span>
+    <button id="claimBonusBtn">Забрать 1450🪙</button>
+  </div>
+
   <div class="menu-buttons">
     <button class="menu-btn play"     id="btnPlay">🎮 Быстрая игра</button>
     <button class="menu-btn create"   id="btnCreate">➕ Создать лобби</button>
@@ -150,10 +276,10 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
   </div>
 </div>
 
-<!-- МОДАЛКА ПРОФИЛЯ -->
-<div id="profileModal" class="profile-modal">
-  <div class="profile-content">
-    <button id="closeProfileBtn" class="profile-close">✖</button>
+<!-- ============ МОДАЛКА ПРОФИЛЯ ============ -->
+<div id="profileModal" class="modal">
+  <div class="modal-content">
+    <button id="closeProfileBtn" class="modal-close">✖</button>
     <h2>👤 Профиль</h2>
     <div class="profile-row">
       <input id="nameInput" type="text" maxlength="20" placeholder="Введите имя">
@@ -166,16 +292,89 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
       <div class="stat"><span id="statDraws">0</span><small>Ничьих</small></div>
     </div>
     <div class="stat-percent">Процент побед: <b id="statPercent">0%</b></div>
+    <div class="wallet-row">
+      <div class="wallet-item"><span class="w-icon">🪙</span><span id="statCoins">0</span><small>Монеты</small></div>
+      <div class="wallet-item"><span class="w-icon">💎</span><span id="statGems">0</span><small>Гемы</small></div>
+    </div>
   </div>
 </div>
 
-<!-- ЭКРАН ИГРЫ -->
+<!-- ============ МОДАЛКА ПОКУПКИ ГЕМОВ ============ -->
+<div id="buyGemsModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" data-close="buyGemsModal">✖</button>
+    <h2>💎 Купить гемы</h2>
+    <p style="text-align:center;font-size:12px;color:#888;margin:0 0 12px">Покупка через Telegram Stars (в разработке)</p>
+    <div id="gemsShopList"></div>
+  </div>
+</div>
+
+<!-- ============ МОДАЛКА ПОКУПКИ МОНЕТ ============ -->
+<div id="buyCoinsModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" data-close="buyCoinsModal">✖</button>
+    <h2>🪙 Купить монеты</h2>
+    <p style="text-align:center;font-size:12px;color:#888;margin:0 0 12px">Обмен гемов на монеты</p>
+    <div id="coinsShopList"></div>
+  </div>
+</div>
+
+<!-- ============ МОДАЛКА ЛОББИ ============ -->
+<div id="lobbiesModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" data-close="lobbiesModal">✖</button>
+    <h2>🔍 Открытые лобби</h2>
+    <div id="lobbyList" class="lobby-list"></div>
+  </div>
+</div>
+
+<!-- ============ МОДАЛКА СОЗДАНИЯ ЛОББИ ============ -->
+<div id="createModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" data-close="createModal">✖</button>
+    <h2>➕ Создать лобби</h2>
+    <p style="text-align:center;font-size:12px;color:#888;margin:0 0 12px">Выберите ставку</p>
+    <div id="betGrid" class="bet-grid"></div>
+  </div>
+</div>
+
+<!-- ============ МОДАЛКА МАГАЗИНА ============ -->
+<div id="shopModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" data-close="shopModal">✖</button>
+    <h2>🛒 Магазин</h2>
+    <p style="text-align:center;color:#888;padding:20px">Скины скоро...</p>
+  </div>
+</div>
+
+<!-- ============ МОДАЛКА НАСТРОЕК ============ -->
+<div id="settingsModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" data-close="settingsModal">✖</button>
+    <h2>⚙️ Настройки</h2>
+    <p style="text-align:center;color:#888;padding:20px">Скоро...</p>
+  </div>
+</div>
+
+<!-- ============ ЭКРАН ПОИСКА ============ -->
+<div id="searchOverlay" class="search-overlay">
+  <div class="spinner"></div>
+  <div style="font-size:18px;font-weight:bold">Поиск соперника...</div>
+  <div id="searchStatus" style="color:#888;font-size:13px;margin-top:8px">Ищем подходящее лобби</div>
+  <button class="cancel" id="cancelSearchBtn">Отменить</button>
+</div>
+
+<!-- ============ ЭКРАН ИГРЫ ============ -->
 <div id="gameScreen" class="game-screen" style="display:none">
   <div class="game">
+    <div class="game-header">
+      <button id="backBtn" class="back-btn">← Назад</button>
+    </div>
     <div class="players">
-      <div class="p"><span class="dot white"></span>Игрок 1</div>
-      <span id="t1" class="timer">15:00</span>
-      <div class="p"><span id="t2" class="timer">15:00</span><span class="dot black"></span>Игрок 2</div>
+      <div class="p"><span class="dot white"></span><span class="name" id="p1name">Игрок 1</span></div>
+      <span id="t1" class="timer">0:20</span>
+      <div class="p right"><span class="name" id="p2name">Игрок 2</span><span class="dot black"></span></div>
+      <span id="t2" class="timer" style="display:none">0:20</span>
     </div>
     <div id="turn" class="turn">⚪ Ход игрока 1</div>
     <div class="frame">
@@ -189,12 +388,11 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
       <span></span><span>A</span><span>B</span><span>C</span>
       <span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
     </div>
-    <div id="msg" class="msg">Выберите белую шашку.</div>
-    <button id="profileBtn" class="profile-btn">👤 Профиль</button>
+    <div id="msg" class="msg">Ожидание...</div>
     <div class="buttons">
-      <button id="draw" class="draw">🤝 Предложить ничью</button>
+      <button id="draw" class="draw">🤝 Ничья</button>
       <button id="resign" class="resign">🏳️ Сдаться</button>
-      <button id="acceptDraw" class="draw" style="display:none">✅ Принять ничью</button>
+      <button id="acceptDraw" class="draw" style="display:none">✅ Принять</button>
       <button id="declineDraw" class="resign" style="display:none">❌ Отклонить</button>
       <button id="restart" class="restart" style="display:none">🔄 Новая игра</button>
     </div>
@@ -208,25 +406,58 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 
 <script>
 /* ============================================================
+   КОНСТАНТЫ
+============================================================ */
+const MOVE_TIME = 20;
+const START_COINS = 4500;
+const START_GEMS  = 25;
+const HOUR = 3600 * 1000;
+const BONUS_COINS = 1450;
+const BONUS_THRESHOLD = 250;
+
+const GEM_PACKS = [
+  { gems: 55,   stars: 42 },
+  { gems: 165,  stars: 120 },
+  { gems: 560,  stars: 385 },
+  { gems: 1900, stars: 1238 },
+  { gems: 6800, stars: 4067 }
+];
+
+const COIN_PACKS = [
+  { coins: 30000,    gems: 30 },
+  { coins: 100000,   gems: 100 },
+  { coins: 300000,   gems: 300 },
+  { coins: 1100000,  gems: 1000 },
+  { coins: 3000000,  gems: 3000 }
+];
+
+const BET_AMOUNTS = [100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
+
+/* ============================================================
    ГЛОБАЛЬНОЕ СОСТОЯНИЕ
 ============================================================ */
 const boardEl = document.getElementById("board");
-const turnEl  = document.getElementById("turn");
-const msgEl   = document.getElementById("msg");
+const turnEl = document.getElementById("turn");
+const msgEl = document.getElementById("msg");
 const restartBtn = document.getElementById("restart");
 
 let B = Array.from({length:8}, () => Array(8).fill(null));
-let current   = "white";
-let selected  = null;
-let gameOver  = false;
+let current = "white";
+let selected = null;
+let gameOver = false;
 let lastResult = null;
-let time = { white: 900, black: 900 };
+let time = { white: MOVE_TIME, black: MOVE_TIME };
 
 let myColor = null;
 let onlineReady = false;
-let gameRef = null;
+let currentLobbyId = null;
+let lobbyRef = null;
+let lobbyData = null;
 let myUid = null;
-let myProfile = { name: "", wins: 0, losses: 0, draws: 0 };
+let myProfile = { name: "", wins: 0, losses: 0, draws: 0, coins: 0, gems: 0, lastBonus: 0 };
+
+let searching = false;
+let searchListener = null;
 
 /* ============================================================
    ДОСКА
@@ -246,7 +477,7 @@ B = makeFreshBoard();
 const inside = (r, c) => r >= 0 && r < 8 && c >= 0 && c < 8;
 
 /* ============================================================
-   ВЗЯТИЯ
+   ВЗЯТИЯ / ХОДЫ
 ============================================================ */
 function capturesKing(r, c) {
   const p = B[r]?.[c]; const out = [];
@@ -330,68 +561,89 @@ function render() {
     if (p) {
       const piece = document.createElement("div");
       piece.className = "piece " + p.color + (p.king ? " king" : "");
-      piece.onpointerdown = e => { e.preventDefault(); e.stopPropagation(); onPointerDownPiece(r, c, e); };
+      piece.onclick = e => { e.stopPropagation(); onCellClick(r, c); };
+      piece.onpointerdown = e => { onPointerDownPiece(r, c, e); };
       cell.appendChild(piece);
     }
-    cell.onpointerup = e => { e.preventDefault(); onPointerUpCell(r, c, e); };
+    cell.onclick = () => onCellClick(r, c);
     boardEl.appendChild(cell);
   }
 }
 
 /* ============================================================
-   DRAG & DROP
+   КЛИК + DRAG
 ============================================================ */
 let dragging = null;
+let dragStarted = false;
+
 function onPointerDownPiece(r, c, e) {
   if (!onlineReady || gameOver) return;
-  if (myColor !== current) { msgEl.textContent = "⏳ Сейчас ход соперника."; return; }
-  if (B[r]?.[c]?.color !== myColor) { msgEl.textContent = "Это шашки соперника."; return; }
-  localSelect(r, c);
-  const ghost = document.createElement("div");
-  ghost.className = "piece " + B[r][c].color + (B[r][c].king ? " king" : "") + " drag-ghost";
-  ghost.style.left = e.clientX + "px";
-  ghost.style.top  = e.clientY + "px";
-  document.body.appendChild(ghost);
-  dragging = { r, c, ghost, startX: e.clientX, startY: e.clientY, moved: false };
-  const i = myColor === "black" ? 7 - r : r;
-  const j = myColor === "black" ? 7 - c : c;
-  const cellEl = boardEl.children[i * 8 + j];
-  const pieceEl = cellEl?.querySelector(".piece");
-  if (pieceEl) pieceEl.classList.add("drag-origin");
+  if (myColor !== current) return;
+  if (B[r]?.[c]?.color !== myColor) return;
+  dragStarted = false;
+  dragging = { r, c, startX: e.clientX, startY: e.clientY };
   document.addEventListener("pointermove", onPointerMove);
   document.addEventListener("pointerup", onPointerUpGlobal, { once: true });
 }
 function onPointerMove(e) {
   if (!dragging) return;
-  dragging.ghost.style.left = e.clientX + "px";
-  dragging.ghost.style.top  = e.clientY + "px";
-  if (Math.abs(e.clientX - dragging.startX) > 5 || Math.abs(e.clientY - dragging.startY) > 5) dragging.moved = true;
+  const dx = Math.abs(e.clientX - dragging.startX);
+  const dy = Math.abs(e.clientY - dragging.startY);
+  if (!dragStarted && (dx > 8 || dy > 8)) {
+    dragStarted = true;
+    const p = B[dragging.r][dragging.c];
+    if (p) {
+      const ghost = document.createElement("div");
+      ghost.className = "piece " + p.color + (p.king ? " king" : "") + " drag-ghost";
+      ghost.style.left = e.clientX + "px";
+      ghost.style.top  = e.clientY + "px";
+      document.body.appendChild(ghost);
+      dragging.ghost = ghost;
+      localSelect(dragging.r, dragging.c);
+      const i = myColor === "black" ? 7 - dragging.r : dragging.r;
+      const j = myColor === "black" ? 7 - dragging.c : dragging.c;
+      const cellEl = boardEl.children[i * 8 + j];
+      const pieceEl = cellEl?.querySelector(".piece");
+      if (pieceEl) pieceEl.classList.add("drag-origin");
+    }
+  }
+  if (dragging.ghost) {
+    dragging.ghost.style.left = e.clientX + "px";
+    dragging.ghost.style.top  = e.clientY + "px";
+  }
 }
 function onPointerUpGlobal(e) {
   document.removeEventListener("pointermove", onPointerMove);
   if (!dragging) return;
-  const target = document.elementFromPoint(e.clientX, e.clientY);
-  const cellEl = target?.closest(".cell");
-  let dropR = null, dropC = null;
-  if (cellEl) {
-    const idx = Array.from(boardEl.children).indexOf(cellEl);
-    if (idx >= 0) {
-      const i = Math.floor(idx / 8), j = idx % 8;
-      dropR = myColor === "black" ? 7 - i : i;
-      dropC = myColor === "black" ? 7 - j : j;
+  if (dragStarted) {
+    const target = document.elementFromPoint(e.clientX, e.clientY);
+    const cellEl = target?.closest(".cell");
+    let dropR = null, dropC = null;
+    if (cellEl) {
+      const idx = Array.from(boardEl.children).indexOf(cellEl);
+      if (idx >= 0) {
+        const i = Math.floor(idx / 8), j = idx % 8;
+        dropR = myColor === "black" ? 7 - i : i;
+        dropC = myColor === "black" ? 7 - j : j;
+      }
     }
+    if (dragging.ghost) dragging.ghost.remove();
+    const origin = boardEl.querySelector(".drag-origin");
+    if (origin) origin.classList.remove("drag-origin");
+    dragging = null;
+    dragStarted = false;
+    if (dropR !== null) onMove(dropR, dropC);
+  } else {
+    dragging = null;
   }
-  dragging.ghost.remove();
-  const origin = boardEl.querySelector(".drag-origin");
-  if (origin) origin.classList.remove("drag-origin");
-  const wasDragging = dragging.moved;
-  const fromR = dragging.r, fromC = dragging.c;
-  dragging = null;
-  if (dropR === null) return;
-  if (!wasDragging && dropR === fromR && dropC === fromC) return;
-  onMove(dropR, dropC);
 }
-function onPointerUpCell() { /* no-op */ }
+function onCellClick(r, c) {
+  if (!onlineReady || gameOver) return;
+  if (myColor !== current) { msgEl.textContent = "⏳ Сейчас ход соперника."; return; }
+  const p = B[r]?.[c];
+  if (p && p.color === myColor) { localSelect(r, c); return; }
+  if (selected) onMove(r, c);
+}
 
 /* ============================================================
    ВЫБОР / ХОД
@@ -429,22 +681,23 @@ function localMove(r, c) {
   current = current === "white" ? "black" : "white";
   if (!hasPieces(current)) {
     gameOver = true;
-    turnEl.textContent = current === "white" ? "🏆 Победили чёрные" : "🏆 Победили белые";
-    msgEl.textContent = "У соперника не осталось шашек.";
     const winner = current === "white" ? "black" : "white";
+    lastResult = winner;
+    turnEl.textContent = winner === "white" ? "🏆 Победили белые" : "🏆 Победили чёрные";
+    msgEl.textContent = "У соперника не осталось шашек.";
     if (myColor === winner) SFX.win(); else SFX.lose();
-    recordGameResult(winner);
     showRestart(); render(); return;
   }
   if (!hasMove(current)) {
     gameOver = true;
-    turnEl.textContent = current === "white" ? "🏆 Победили чёрные" : "🏆 Победили белые";
-    msgEl.textContent = "У соперника нет возможных ходов.";
     const winner = current === "white" ? "black" : "white";
+    lastResult = winner;
+    turnEl.textContent = winner === "white" ? "🏆 Победили белые" : "🏆 Победили чёрные";
+    msgEl.textContent = "У соперника нет возможных ходов.";
     if (myColor === winner) SFX.win(); else SFX.lose();
-    recordGameResult(winner);
     showRestart(); render(); return;
   }
+  resetMoveTimer();
   turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2";
   msgEl.textContent = current === "white" ? "Ход белых." : "Ход чёрных.";
   updateDrawButtons();
@@ -456,17 +709,6 @@ function localMove(r, c) {
 ============================================================ */
 function showRestart() { restartBtn.style.display = "block"; }
 function hideRestart() { restartBtn.style.display = "none"; }
-
-let statsRecorded = false;
-async function recordGameResult(winner) {
-  if (statsRecorded || !myUid) return;
-  statsRecorded = true;
-  const userRef = firebase.database().ref("users/" + myUid);
-  if (winner === "draw") { myProfile.draws++; await userRef.child("draws").transaction(v => (v||0)+1); }
-  else if (winner === myColor) { myProfile.wins++; await userRef.child("wins").transaction(v => (v||0)+1); }
-  else { myProfile.losses++; await userRef.child("losses").transaction(v => (v||0)+1); }
-  updateProfileUI();
-}
 
 /* ============================================================
    ЗВУКИ
@@ -499,32 +741,149 @@ const SFX = {
 };
 
 /* ============================================================
+   МОДАЛКИ
+============================================================ */
+document.querySelectorAll(".modal-close").forEach(btn => {
+  btn.onclick = () => {
+    const id = btn.dataset.close;
+    if (id) document.getElementById(id).classList.remove("open");
+  };
+});
+document.querySelectorAll(".modal").forEach(m => {
+  m.onclick = (e) => { if (e.target === m) m.classList.remove("open"); };
+});
+
+/* ============================================================
    ПРОФИЛЬ
 ============================================================ */
 const profileModal = document.getElementById("profileModal");
-const profileBtn = document.getElementById("profileBtn");
-const closeProfileBtn = document.getElementById("closeProfileBtn");
-const saveNameBtn = document.getElementById("saveNameBtn");
 const nameInput = document.getElementById("nameInput");
 
 function updateProfileUI() {
-  document.getElementById("statGames").textContent  = myProfile.wins + myProfile.losses + myProfile.draws;
-  document.getElementById("statWins").textContent   = myProfile.wins;
-  document.getElementById("statLosses").textContent = myProfile.losses;
-  document.getElementById("statDraws").textContent  = myProfile.draws;
-  const total = myProfile.wins + myProfile.losses + myProfile.draws;
-  const pct = total ? Math.round((myProfile.wins / total) * 100) : 0;
+  document.getElementById("statGames").textContent  = (myProfile.wins||0) + (myProfile.losses||0) + (myProfile.draws||0);
+  document.getElementById("statWins").textContent   = myProfile.wins || 0;
+  document.getElementById("statLosses").textContent = myProfile.losses || 0;
+  document.getElementById("statDraws").textContent  = myProfile.draws || 0;
+  const total = (myProfile.wins||0) + (myProfile.losses||0) + (myProfile.draws||0);
+  const pct = total ? Math.round(((myProfile.wins||0) / total) * 100) : 0;
   document.getElementById("statPercent").textContent = pct + "%";
   nameInput.value = myProfile.name || "";
-  profileBtn.textContent = "👤 " + (myProfile.name || "Профиль");
-  const menuNick = document.getElementById("menuNick");
-  if (menuNick) menuNick.textContent = myProfile.name || "Гость";
+  document.getElementById("menuNick").textContent = myProfile.name || "Гость";
+  document.getElementById("menuCoins").textContent = (myProfile.coins||0).toLocaleString("ru");
+  document.getElementById("menuGems").textContent = (myProfile.gems||0).toLocaleString("ru");
+  document.getElementById("statCoins").textContent = (myProfile.coins||0).toLocaleString("ru");
+  document.getElementById("statGems").textContent = (myProfile.gems||0).toLocaleString("ru");
+  updateBonusBox();
 }
 
-profileBtn.onclick = () => { updateProfileUI(); profileModal.classList.add("open"); };
-document.querySelector(".menu-profile").onclick = () => { updateProfileUI(); profileModal.classList.add("open"); };
-closeProfileBtn.onclick = () => { profileModal.classList.remove("open"); };
-profileModal.onclick = (e) => { if (e.target === profileModal) profileModal.classList.remove("open"); };
+document.querySelector(".menu-profile").onclick = () => {
+  updateProfileUI();
+  profileModal.classList.add("open");
+};
+
+/* ============================================================
+   МАГАЗИН ГЕМОВ (заглушка)
+============================================================ */
+document.getElementById("buyGemsBtn").onclick = () => {
+  const list = document.getElementById("gemsShopList");
+  list.innerHTML = "";
+  GEM_PACKS.forEach(pack => {
+    const el = document.createElement("div");
+    el.className = "shop-item";
+    el.innerHTML = `
+      <div class="info">
+        <div class="title">💎 ${pack.gems.toLocaleString("ru")} гемов</div>
+        <div class="price">${pack.stars.toLocaleString("ru")} ⭐</div>
+      </div>
+      <button disabled>Скоро</button>
+    `;
+    list.appendChild(el);
+  });
+  document.getElementById("buyGemsModal").classList.add("open");
+};
+
+/* ============================================================
+   МАГАЗИН МОНЕТ (реально)
+============================================================ */
+document.getElementById("buyCoinsBtn").onclick = () => {
+  const list = document.getElementById("coinsShopList");
+  list.innerHTML = "";
+  COIN_PACKS.forEach(pack => {
+    const el = document.createElement("div");
+    el.className = "shop-item";
+    const canBuy = (myProfile.gems||0) >= pack.gems;
+    el.innerHTML = `
+      <div class="info">
+        <div class="title">🪙 ${pack.coins.toLocaleString("ru")} монет</div>
+        <div class="price">${pack.gems.toLocaleString("ru")} 💎</div>
+      </div>
+      <button ${canBuy ? "" : "disabled"}>Купить</button>
+    `;
+    el.querySelector("button").onclick = async () => {
+      await buyCoins(pack.gems, pack.coins);
+    };
+    list.appendChild(el);
+  });
+  document.getElementById("buyCoinsModal").classList.add("open");
+};
+
+async function buyCoins(gemsCost, coinsAmount) {
+  if ((myProfile.gems||0) < gemsCost) { alert("Недостаточно гемов"); return; }
+  if (!myUid) return;
+  const userRef = firebase.database().ref("users/" + myUid);
+  try {
+    await userRef.child("gems").transaction(v => {
+      if ((v||0) < gemsCost) return; // aborted
+      return (v||0) - gemsCost;
+    });
+    await userRef.child("coins").transaction(v => (v||0) + coinsAmount);
+    document.getElementById("buyCoinsModal").classList.remove("open");
+    SFX.win();
+    alert(`✅ Куплено ${coinsAmount.toLocaleString("ru")} монет!`);
+  } catch (e) {
+    alert("Ошибка: " + e.message);
+  }
+}
+
+/* ============================================================
+   БОНУС 1450 в час
+============================================================ */
+function updateBonusBox() {
+  const box = document.getElementById("bonusBox");
+  const btn = document.getElementById("claimBonusBtn");
+  if (!myUid) { box.style.display = "none"; return; }
+
+  const now = Date.now();
+  const last = myProfile.lastBonus || 0;
+  const elapsed = now - last;
+  const eligible = (myProfile.coins || 0) < BONUS_THRESHOLD;
+
+  if (!eligible) { box.style.display = "none"; return; }
+
+  if (elapsed >= HOUR) {
+    box.style.display = "flex";
+    btn.disabled = false;
+    btn.textContent = `Забрать ${BONUS_COINS}🪙`;
+  } else {
+    const left = HOUR - elapsed;
+    const m = Math.floor(left / 60000);
+    const s = Math.floor((left % 60000) / 1000);
+    box.style.display = "flex";
+    btn.disabled = true;
+    btn.textContent = `⏳ ${m}:${String(s).padStart(2,"0")}`;
+  }
+}
+
+document.getElementById("claimBonusBtn").onclick = async () => {
+  if (!myUid) return;
+  if ((myProfile.coins || 0) >= BONUS_THRESHOLD) return;
+  if (Date.now() - (myProfile.lastBonus || 0) < HOUR) return;
+  const userRef = firebase.database().ref("users/" + myUid);
+  await userRef.child("coins").transaction(v => (v||0) + BONUS_COINS);
+  await userRef.child("lastBonus").set(Date.now());
+  SFX.win();
+};
+setInterval(updateBonusBox, 1000);
 
 /* ============================================================
    НИЧЬЯ
@@ -535,7 +894,7 @@ const declineDrawBtn = document.getElementById("declineDraw");
 let pendingDrawOffer = null;
 
 function updateDrawButtons() {
-  drawBtn.textContent = "🤝 Предложить ничью";
+  drawBtn.textContent = "🤝 Ничья";
   drawBtn.disabled = false;
   drawBtn.style.opacity = "1";
   if (gameOver) {
@@ -549,7 +908,7 @@ function updateDrawButtons() {
   declineDrawBtn.style.display = "none";
   if (!pendingDrawOffer) return;
   if (pendingDrawOffer === myColor) {
-    drawBtn.textContent = "⏳ Ожидание ответа...";
+    drawBtn.textContent = "⏳ Ждём...";
     drawBtn.disabled = true;
     drawBtn.style.opacity = "0.6";
   } else {
@@ -559,22 +918,19 @@ function updateDrawButtons() {
   }
 }
 drawBtn.onclick = async () => {
-  if (gameOver || !gameRef || pendingDrawOffer) return;
-  await gameRef.update({ drawOffer: myColor });
-  msgEl.textContent = "🤝 Предложение ничьей отправлено.";
+  if (gameOver || !lobbyRef || pendingDrawOffer) return;
+  await lobbyRef.update({ drawOffer: myColor });
 };
 acceptDrawBtn.onclick = async () => {
-  if (gameOver || !gameRef) return;
+  if (gameOver || !lobbyRef) return;
   if (!pendingDrawOffer || pendingDrawOffer === myColor) return;
-  await gameRef.update({ gameOver: true, result: "draw" });
-  await gameRef.child("drawOffer").remove();
-  msgEl.textContent = "🤝 Ничья по договорённости.";
+  await lobbyRef.update({ gameOver: true, result: "draw", status: "finished" });
+  await lobbyRef.child("drawOffer").remove();
 };
 declineDrawBtn.onclick = async () => {
-  if (!gameRef) return;
+  if (!lobbyRef) return;
   if (!pendingDrawOffer || pendingDrawOffer === myColor) return;
-  await gameRef.child("drawOffer").remove();
-  msgEl.textContent = "❌ Ничья отклонена.";
+  await lobbyRef.child("drawOffer").remove();
 };
 
 /* ============================================================
@@ -585,40 +941,46 @@ const gameScreen = document.getElementById("gameScreen");
 function showMenu() { menuScreen.classList.remove("hidden"); gameScreen.style.display = "none"; }
 function showGame() { menuScreen.classList.add("hidden"); gameScreen.style.display = "block"; }
 
-document.getElementById("btnPlay").onclick = () => { showGame(); };
-document.getElementById("btnCreate").onclick   = () => { alert("➕ Создать лобби — скоро"); };
-document.getElementById("btnLobbies").onclick  = () => { alert("🔍 Открытые лобби — скоро"); };
-document.getElementById("btnShop").onclick     = () => { alert("🛒 Магазин — скоро"); };
-document.getElementById("btnSettings").onclick = () => { alert("⚙️ Настройки — скоро"); };
-
 /* ============================================================
-   ПРИМЕНЕНИЕ С СЕРВЕРА
+   ТАЙМЕР
 ============================================================ */
-function applyServerState(data) {
-  const fbBoard = data.board || {};
-  B = Array.from({length:8}, (_, r) =>
-    Array.from({length:8}, (_, c) => {
-      const v = fbBoard[r]?.[c];
-      return v === undefined || v === null ? null : v;
-    })
-  );
-  current  = data.current || "white";
-  gameOver = data.gameOver === true;
-  lastResult = data.result || null;
-  pendingDrawOffer = data.drawOffer || null;
-  if (data.whiteTime !== undefined) time.white = Number(data.whiteTime) || 0;
-  if (data.blackTime !== undefined) time.black = Number(data.blackTime) || 0;
-  if (gameOver) showRestart(); else hideRestart();
+function paintTimers() {
+  const fmt = s => "0:" + String(Math.max(0, s)).padStart(2,"0");
+  const t1 = document.getElementById("t1");
+  const t2 = document.getElementById("t2");
+  t1.textContent = fmt(time.white);
+  t2.textContent = fmt(time.black);
+  t1.classList.toggle("low", time.white <= 5 && current === "white" && !gameOver);
+  t2.classList.toggle("low", time.black <= 5 && current === "black" && !gameOver);
+}
+function resetMoveTimer() {
+  time.white = MOVE_TIME;
+  time.black = MOVE_TIME;
   paintTimers();
 }
-function paintTimers() {
-  const fmt = s => String(Math.floor(s/60)).padStart(2,"0") + ":" + String(s%60).padStart(2,"0");
-  document.getElementById("t1").textContent = fmt(Math.max(0, time.white));
-  document.getElementById("t2").textContent = fmt(Math.max(0, time.black));
-}
+
+let lastTickSecond = Math.floor(Date.now() / 1000);
+setInterval(() => {
+  if (gameOver || !onlineReady || !lobbyRef) return;
+  const nowSec = Math.floor(Date.now() / 1000);
+  if (nowSec === lastTickSecond) return;
+  lastTickSecond = nowSec;
+  time[current] = Math.max(0, time[current] - 1);
+  paintTimers();
+  if (time[current] <= 0) {
+    const winner = current === "white" ? "black" : "white";
+    gameOver = true;
+    lastResult = winner;
+    turnEl.textContent = winner === "white" ? "⏱️ Победили белые" : "⏱️ Победили чёрные";
+    msgEl.textContent = "Время на ход вышло.";
+    SFX.lose();
+    showRestart();
+    lobbyRef.update({ board: B, current, gameOver: true, result: winner, status: "finished" });
+  }
+}, 1000);
 
 /* ============================================================
-   FIREBASE
+   FIREBASE INIT
 ============================================================ */
 const firebaseConfig = {
   apiKey: "AIzaSyA8USWXMVE4EEOUGWcMeu_RHButvCZRewQ",
@@ -632,212 +994,426 @@ const firebaseConfig = {
 
 window.addEventListener("load", () => {
   firebase.initializeApp(firebaseConfig);
-  firebase.auth().signInAnonymously()
-    .then(async result => {
-      const uid = result.user.uid;
-      myUid = uid;
+  firebase.auth().signInAnonymously().then(async result => {
+    myUid = result.user.uid;
 
-      // профиль
-      const userRef = firebase.database().ref("users/" + uid);
-      const userSnap = await userRef.once("value");
-      const userData = userSnap.val();
-      if (userData) {
-        myProfile = {
-          name: userData.name || "",
-          wins: Number(userData.wins) || 0,
-          losses: Number(userData.losses) || 0,
-          draws: Number(userData.draws) || 0
-        };
-      } else {
-        await userRef.set({ name: "", wins: 0, losses: 0, draws: 0 });
-      }
-      if (!myProfile.name) {
-        const entered = prompt("Как вас зовут? (ник для игры)", "Игрок");
-        myProfile.name = (entered || "Игрок").trim().slice(0, 20) || "Игрок";
-        await userRef.update({ name: myProfile.name });
-      }
+    // загрузка профиля
+    const userRef = firebase.database().ref("users/" + myUid);
+    const snap = await userRef.once("value");
+    const d = snap.val();
+    if (d) {
+      myProfile = {
+        name: d.name || "",
+        wins: Number(d.wins) || 0,
+        losses: Number(d.losses) || 0,
+        draws: Number(d.draws) || 0,
+        coins: Number(d.coins) || 0,
+        gems: Number(d.gems) || 0,
+        lastBonus: Number(d.lastBonus) || 0
+      };
+    } else {
+      await userRef.set({
+        name: "", wins: 0, losses: 0, draws: 0,
+        coins: START_COINS, gems: START_GEMS, lastBonus: 0
+      });
+      myProfile.coins = START_COINS;
+      myProfile.gems = START_GEMS;
+    }
+    if (!myProfile.name) {
+      const entered = prompt("Как вас зовут?", "Игрок");
+      myProfile.name = (entered || "Игрок").trim().slice(0, 20) || "Игрок";
+      await userRef.update({ name: myProfile.name });
+    }
+    updateProfileUI();
+
+    userRef.on("value", snap => {
+      const x = snap.val(); if (!x) return;
+      myProfile = {
+        name: x.name || "",
+        wins: Number(x.wins) || 0,
+        losses: Number(x.losses) || 0,
+        draws: Number(x.draws) || 0,
+        coins: Number(x.coins) || 0,
+        gems: Number(x.gems) || 0,
+        lastBonus: Number(x.lastBonus) || 0
+      };
       updateProfileUI();
-      saveNameBtn.onclick = async () => {
-        const newName = nameInput.value.trim().slice(0, 20);
-        if (!newName) { alert("Введите имя"); return; }
-        myProfile.name = newName;
-        await userRef.update({ name: newName });
-        updateProfileUI();
-        msgEl.textContent = "✅ Имя сохранено";
-      };
-      userRef.on("value", snap => {
-        const d = snap.val(); if (!d) return;
-        myProfile = {
-          name: d.name || "",
-          wins: Number(d.wins) || 0,
-          losses: Number(d.losses) || 0,
-          draws: Number(d.draws) || 0
-        };
-        updateProfileUI();
-      });
-
-      gameRef = firebase.database().ref("games/checkers");
-      const playersRef = gameRef.child("players");
-
-      await playersRef.transaction(function(players){
-        players = players || {};
-        if (players.white === uid || players.black === uid) return players;
-        if (!players.white) { players.white = uid; return players; }
-        if (!players.black) { players.black = uid; return players; }
-        return;
-      });
-      const players = (await playersRef.once("value")).val() || {};
-      let mySlot = null;
-      if (players.white === uid) mySlot = "white";
-      else if (players.black === uid) mySlot = "black";
-      else { alert("❌ Игра уже заполнена двумя игроками."); return; }
-
-      const preSnap = await gameRef.once("value");
-      const preData = preSnap.val() || {};
-      let colorMap = preData.colorMap;
-      if (!colorMap || !colorMap[players.white] || !colorMap[players.black]) {
-        const firstIsWhite = Math.random() < 0.5;
-        colorMap = {
-          [players.white]: firstIsWhite ? "white" : "black",
-          [players.black]: firstIsWhite ? "black" : "white"
-        };
-        await gameRef.update({ colorMap });
-      }
-      myColor = colorMap[uid];
-
-      const gameSnap = await gameRef.once("value");
-      if (!gameSnap.exists() || !gameSnap.val()?.board) {
-        await gameRef.update({
-          board: makeFreshBoard(),
-          current: "white",
-          gameOver: false,
-          whiteTime: 900,
-          blackTime: 900,
-          players: players,
-          colorMap: colorMap
-        });
-      } else {
-        applyServerState(gameSnap.val());
-      }
-      onlineReady = true;
-      if (!gameOver) {
-        turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2";
-        msgEl.textContent = myColor === current ? "Ваш ход. Выберите свою шашку." : "⏳ Ход соперника.";
-      }
-      render();
-
-      gameRef.on("value", snapshot => {
-        const data = snapshot.val();
-        if (!data?.board) return;
-        if (data.colorMap && data.colorMap[myUid] && data.colorMap[myUid] !== myColor) myColor = data.colorMap[myUid];
-        applyServerState(data);
-        updateDrawButtons();
-        if (gameOver) {
-          showRestart();
-          if (lastResult === "draw") { turnEl.textContent = "🤝 Ничья"; msgEl.textContent = "Партия завершена ничьей."; recordGameResult("draw"); }
-          else if (lastResult === "white") { turnEl.textContent = "🏆 Победили белые"; msgEl.textContent = "Игра завершена."; }
-          else if (lastResult === "black") { turnEl.textContent = "🏆 Победили чёрные"; msgEl.textContent = "Игра завершена."; }
-          else { turnEl.textContent = "🏁 Игра окончена."; msgEl.textContent = "Игра завершена."; }
-          render(); return;
-        }
-        turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2";
-        msgEl.textContent = myColor === current ? "Ваш ход. Выберите свою шашку." : "⏳ Ход соперника.";
-        render();
-      });
-
-      window.onSelect = function(r,c) {
-        if (!onlineReady) return;
-        if (myColor !== current) { msgEl.textContent = "⏳ Сейчас ход соперника."; return; }
-        const p = B[r]?.[c]; if (!p) return;
-        if (p.color !== myColor) { msgEl.textContent = "Это шашки соперника."; return; }
-        localSelect(r, c);
-      };
-      window.onMove = function(r,c) {
-        if (!onlineReady || gameOver) return;
-        if (myColor !== current) { msgEl.textContent = "⏳ Сейчас ход соперника."; return; }
-        localMove(r, c);
-        gameRef.update({ board: B, current, gameOver, whiteTime: time.white, blackTime: time.black });
-      };
-
-      restartBtn.onclick = async () => {
-        if (!onlineReady) { msgEl.textContent = "Игра ещё подключается."; return; }
-        if (!gameOver) { msgEl.textContent = "Сначала заверши игру."; return; }
-        try {
-          const snap = await gameRef.once("value");
-          const data = snap.val();
-          if (!data?.players?.white || !data?.players?.black) { msgEl.textContent = "Не найдены оба игрока."; return; }
-          const firstIsWhite = Math.random() < 0.5;
-          const newColorMap = {
-            [data.players.white]: firstIsWhite ? "white" : "black",
-            [data.players.black]: firstIsWhite ? "black" : "white"
-          };
-          await gameRef.update({
-            board: makeFreshBoard(),
-            current: "white",
-            gameOver: false,
-            whiteTime: 900,
-            blackTime: 900,
-            colorMap: newColorMap,
-            result: null
-          });
-          await gameRef.child("drawOffer").remove();
-          statsRecorded = false;
-          lastResult = null;
-          pendingDrawOffer = null;
-          updateDrawButtons();
-          msgEl.textContent = "Новая партия началась.";
-        } catch (err) { msgEl.textContent = "Ошибка: " + err.message; }
-      };
-    })
-    .catch(error => {
-      alert("❌ Firebase ошибка:\n" + (error.code || "Неизвестная ошибка") + "\n" + (error.message || ""));
     });
+
+    document.getElementById("saveNameBtn").onclick = async () => {
+      const newName = nameInput.value.trim().slice(0, 20);
+      if (!newName) { alert("Введите имя"); return; }
+      await userRef.update({ name: newName });
+      alert("✅ Имя сохранено");
+    };
+
+    onlineReady = true;
+    render();
+    showMenu();
+  }).catch(err => {
+    alert("Firebase: " + (err.code || "") + "\n" + (err.message || ""));
+  });
 });
 
 /* ============================================================
-   НИЧЬЯ — старая кнопка (обработчик ниже)
+   ЛОББИ
+============================================================ */
+function generateLobbyId() {
+  return "l" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+}
+
+async function createLobby(bet) {
+  if ((myProfile.coins || 0) < bet) {
+    alert("Недостаточно монет для этой ставки");
+    return;
+  }
+
+  const lobbyId = generateLobbyId();
+  const lobbyRefNew = firebase.database().ref("lobbies/" + lobbyId);
+
+  // списываем ставку
+  const userRef = firebase.database().ref("users/" + myUid);
+  let success = false;
+  await userRef.child("coins").transaction(v => {
+    if ((v||0) < bet) return;
+    success = true;
+    return (v||0) - bet;
+  });
+  if (!success) { alert("Недостаточно монет"); return; }
+
+  await lobbyRefNew.set({
+    bet,
+    status: "waiting",
+    createdAt: Date.now(),
+    creator: { uid: myUid, name: myProfile.name },
+    board: makeFreshBoard(),
+    current: "white",
+    gameOver: false,
+    whiteTime: MOVE_TIME,
+    blackTime: MOVE_TIME,
+    players: {
+      white: myUid,
+      whiteName: myProfile.name
+    }
+  });
+
+  enterLobby(lobbyId, "white");
+}
+
+async function joinLobby(lobbyId) {
+  const lob = firebase.database().ref("lobbies/" + lobbyId);
+  const snap = await lob.once("value");
+  const data = snap.val();
+  if (!data) { alert("Лобби не найдено"); return; }
+  if (data.status !== "waiting") { alert("Лобби уже занято"); return; }
+  if (data.players.white === myUid) {
+    enterLobby(lobbyId, "white");
+    return;
+  }
+  if ((myProfile.coins || 0) < data.bet) { alert("Недостаточно монет"); return; }
+
+  // списываем ставку
+  const userRef = firebase.database().ref("users/" + myUid);
+  let success = false;
+  await userRef.child("coins").transaction(v => {
+    if ((v||0) < data.bet) return;
+    success = true;
+    return (v||0) - data.bet;
+  });
+  if (!success) { alert("Недостаточно монет"); return; }
+
+  await lob.update({
+    "players/black": myUid,
+    "players/blackName": myProfile.name,
+    status: "playing"
+  });
+  enterLobby(lobbyId, "black");
+}
+
+function enterLobby(lobbyId, color) {
+  currentLobbyId = lobbyId;
+  myColor = color;
+  lobbyRef = firebase.database().ref("lobbies/" + lobbyId);
+
+  document.getElementById("p1name").textContent = "Игрок 1";
+  document.getElementById("p2name").textContent = "Игрок 2";
+
+  showGame();
+  msgEl.textContent = "Ожидание...";
+
+  lobbyRef.on("value", snap => {
+    const d = snap.val();
+    if (!d) return;
+    lobbyData = d;
+
+    // имена
+    if (d.players) {
+      document.getElementById("p1name").textContent = d.players.whiteName || "Игрок 1";
+      document.getElementById("p2name").textContent = d.players.blackName || "Игрок 2";
+    }
+
+    // доска
+    const fbBoard = d.board || {};
+    B = Array.from({length:8}, (_, r) =>
+      Array.from({length:8}, (_, c) => {
+        const v = fbBoard[r]?.[c];
+        return v === undefined || v === null ? null : v;
+      })
+    );
+
+    current = d.current || "white";
+    gameOver = d.gameOver === true;
+    lastResult = d.result || null;
+    pendingDrawOffer = d.drawOffer || null;
+    if (d.whiteTime !== undefined) time.white = Number(d.whiteTime) || MOVE_TIME;
+    if (d.blackTime !== undefined) time.black = Number(d.blackTime) || MOVE_TIME;
+
+    // если мы стали white а не black — обновимся
+    if (d.players) {
+      if (d.players.white === myUid) myColor = "white";
+      else if (d.players.black === myUid) myColor = "black";
+    }
+
+    paintTimers();
+    updateDrawButtons();
+
+    if (d.status === "waiting") {
+      msgEl.textContent = "Ожидание второго игрока...";
+      render();
+      return;
+    }
+
+    if (d.status === "playing" && !gameOver) {
+      turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2";
+      msgEl.textContent = myColor === current ? "Ваш ход" : "⏳ Ход соперника";
+      render();
+      return;
+    }
+
+    if (gameOver) {
+      showRestart();
+      if (lastResult === "draw") {
+        turnEl.textContent = "🤝 Ничья";
+        msgEl.textContent = "Ничья. Ставки возвращены.";
+        payWinner("draw");
+      } else if (lastResult) {
+        const winnerName = lastResult === "white" ? (d.players?.whiteName || "Белые") : (d.players?.blackName || "Чёрные");
+        turnEl.textContent = `🏆 Победа: ${winnerName}`;
+        msgEl.textContent = "Игра завершена";
+        payWinner(lastResult);
+      }
+      render();
+    }
+  });
+
+  restartBtn.onclick = async () => {
+    if (!lobbyRef) return;
+    await lobbyRef.update({
+      board: makeFreshBoard(),
+      current: "white",
+      gameOver: false,
+      whiteTime: MOVE_TIME,
+      blackTime: MOVE_TIME,
+      result: null,
+      status: "playing"
+    });
+    await lobbyRef.child("drawOffer").remove();
+    resetMoveTimer();
+  };
+}
+
+/* ============================================================
+   ВЫПЛАТА ПОБЕДИТЕЛЮ
+============================================================ */
+let payoutDone = false;
+async function payWinner(result) {
+  if (payoutDone) return;
+  if (!lobbyData || !lobbyRef) return;
+  if (lobbyRef.payout) return;
+
+  // проверяем в БД, что выплата ещё не сделана
+  const snap = await lobbyRef.child("payoutDone").once("value");
+  if (snap.val() === true) return;
+
+  payoutDone = true;
+  await lobbyRef.child("payoutDone").set(true);
+
+  const bet = lobbyData.bet || 0;
+  const pot = bet * 2;
+  const winAmount = Math.floor(pot * 0.98);
+  const uidWhite = lobbyData.players?.white;
+  const uidBlack = lobbyData.players?.black;
+
+  if (result === "draw") {
+    // вернуть обоим
+    if (uidWhite) await firebase.database().ref(`users/${uidWhite}/coins`).transaction(v => (v||0) + bet);
+    if (uidBlack) await firebase.database().ref(`users/${uidBlack}/coins`).transaction(v => (v||0) + bet);
+  } else {
+    const winnerUid = result === "white" ? uidWhite : uidBlack;
+    const loserUid = result === "white" ? uidBlack : uidWhite;
+    if (winnerUid) {
+      await firebase.database().ref(`users/${winnerUid}/coins`).transaction(v => (v||0) + winAmount);
+    }
+    if (winnerUid) {
+      await firebase.database().ref(`users/${winnerUid}/wins`).transaction(v => (v||0) + 1);
+      await firebase.database().ref(`users/${winnerUid}/gems`).transaction(v => (v||0) + 1);
+    }
+    if (loserUid) {
+      await firebase.database().ref(`users/${loserUid}/losses`).transaction(v => (v||0) + 1);
+    }
+  }
+}
+
+/* ============================================================
+   КНОПКА СДАТЬСЯ
 ============================================================ */
 document.getElementById("resign").onclick = () => {
-  if (gameOver) return;
+  if (gameOver || !myColor || !lobbyRef) return;
   SFX.lose();
+  const winner = myColor === "white" ? "black" : "white";
+  const loser = myColor;
   gameOver = true;
-  turnEl.textContent = current === "white" ? "🏳️ Белые сдались" : "🏳️ Чёрные сдались";
-  msgEl.textContent = "Игра окончена.";
-  const winner = current === "white" ? "black" : "white";
-  recordGameResult(winner);
+  lastResult = winner;
+  turnEl.textContent = loser === "white" ? "🏳️ Белые сдались" : "🏳️ Чёрные сдались";
+  msgEl.textContent = "Игра окончена";
   showRestart();
-  if (gameRef) gameRef.update({ board: B, current, gameOver: true, whiteTime: time.white, blackTime: time.black });
+  lobbyRef.update({
+    board: B, current, gameOver: true, result: winner, status: "finished"
+  });
 };
 
 /* ============================================================
-   ТАЙМЕР
+   ПОДБОР ИГРЫ (кнопка Быстрая игра)
 ============================================================ */
-let lastTickSecond = Math.floor(Date.now() / 1000);
-setInterval(() => {
-  if (gameOver || !onlineReady || myColor !== current) return;
-  const nowSec = Math.floor(Date.now() / 1000);
-  if (nowSec === lastTickSecond) return;
-  lastTickSecond = nowSec;
-  time[current] = Math.max(0, time[current] - 1);
-  paintTimers();
-  if (gameRef) gameRef.update({ whiteTime: time.white, blackTime: time.black });
-  if (time[current] <= 0) {
-    gameOver = true;
-    turnEl.textContent = current === "white" ? "⏱️ Победили чёрные" : "⏱️ Победили белые";
-    msgEl.textContent = "Время вышло.";
-    SFX.lose();
-    const winner = current === "white" ? "black" : "white";
-    recordGameResult(winner);
-    showRestart();
-    if (gameRef) gameRef.update({ board: B, current, gameOver: true, whiteTime: time.white, blackTime: time.black });
+document.getElementById("btnPlay").onclick = async () => {
+  if (!onlineReady) { alert("Подключение..."); return; }
+  if (!myProfile.name) { alert("Сначала задайте имя"); return; }
+
+  searching = true;
+  document.getElementById("searchOverlay").classList.add("open");
+  document.getElementById("searchStatus").textContent = "Ищем подходящее лобби...";
+
+  // слушаем lobbies где waiting и bet <= мой баланс
+  const lobbiesRef = firebase.database().ref("lobbies");
+  searchListener = lobbiesRef.on("value", async snap => {
+    if (!searching) return;
+    const all = snap.val() || {};
+    let found = null;
+    for (const [id, lob] of Object.entries(all)) {
+      if (lob.status !== "waiting") continue;
+      if (lob.players?.white === myUid) continue;
+      if (lob.bet > (myProfile.coins || 0)) continue;
+      found = { id, ...lob };
+      break;
+    }
+    if (found) {
+      searching = false;
+      lobbiesRef.off("value", searchListener);
+      searchListener = null;
+      document.getElementById("searchOverlay").classList.remove("open");
+      await joinLobby(found.id);
+    }
+  });
+};
+
+document.getElementById("cancelSearchBtn").onclick = () => {
+  searching = false;
+  if (searchListener) {
+    firebase.database().ref("lobbies").off("value", searchListener);
+    searchListener = null;
   }
-}, 1000);
+  document.getElementById("searchOverlay").classList.remove("open");
+};
+
+/* ============================================================
+   СПИСОК ЛОББИ
+============================================================ */
+document.getElementById("btnLobbies").onclick = () => {
+  const list = document.getElementById("lobbyList");
+  list.innerHTML = "<div style='text-align:center;color:#888;padding:10px'>Загрузка...</div>";
+  document.getElementById("lobbiesModal").classList.add("open");
+
+  firebase.database().ref("lobbies").once("value").then(snap => {
+    const all = snap.val() || {};
+    const arr = Object.entries(all)
+      .filter(([_, l]) => l.status === "waiting")
+      .map(([id, l]) => ({ id, ...l }));
+
+    if (arr.length === 0) {
+      list.innerHTML = "<div style='text-align:center;color:#888;padding:20px'>Нет открытых лобби</div>";
+      return;
+    }
+
+    list.innerHTML = "";
+    arr.sort((a, b) => a.bet - b.bet);
+    arr.forEach(lob => {
+      const row = document.createElement("div");
+      row.className = "lobby-row";
+      const canJoin = (myProfile.coins || 0) >= lob.bet;
+      row.innerHTML = `
+        <div>
+          <div class="bet">🪙 ${lob.bet.toLocaleString("ru")}</div>
+          <div style="color:#888;font-size:11px">${lob.players?.whiteName || "?"}</div>
+        </div>
+        <button ${canJoin ? "" : "disabled"}>${canJoin ? "Войти" : "Мало монет"}</button>
+      `;
+      row.querySelector("button").onclick = () => {
+        document.getElementById("lobbiesModal").classList.remove("open");
+        joinLobby(lob.id);
+      };
+      list.appendChild(row);
+    });
+  });
+};
+
+/* ============================================================
+   СОЗДАНИЕ ЛОББИ
+============================================================ */
+document.getElementById("btnCreate").onclick = () => {
+  const grid = document.getElementById("betGrid");
+  grid.innerHTML = "";
+  BET_AMOUNTS.forEach(bet => {
+    const btn = document.createElement("button");
+    btn.className = "bet-btn";
+    btn.textContent = `🪙 ${bet.toLocaleString("ru")}`;
+    btn.disabled = (myProfile.coins || 0) < bet;
+    btn.onclick = async () => {
+      document.getElementById("createModal").classList.remove("open");
+      await createLobby(bet);
+    };
+    grid.appendChild(btn);
+  });
+  document.getElementById("createModal").classList.add("open");
+};
+
+/* ============================================================
+   КНОПКА НАЗАД
+============================================================ */
+document.getElementById("backBtn").onclick = () => {
+  if (!gameOver) {
+    if (!confirm("Выйти в меню? Партия останется в лобби.")) return;
+  }
+  if (lobbyRef) lobbyRef.off();
+  currentLobbyId = null;
+  lobbyRef = null;
+  lobbyData = null;
+  gameOver = false;
+  payoutDone = false;
+  myColor = null;
+  showMenu();
+};
+
+/* ============================================================
+   МАГАЗИН / НАСТРОЙКИ (заглушки)
+============================================================ */
+document.getElementById("btnShop").onclick = () => document.getElementById("shopModal").classList.add("open");
+document.getElementById("btnSettings").onclick = () => document.getElementById("settingsModal").classList.add("open");
 
 /* ============================================================
    СТАРТ
 ============================================================ */
+resetMoveTimer();
 render();
-paintTimers();
 showMenu();
 
 document.addEventListener("pointerdown", function unlock() {
