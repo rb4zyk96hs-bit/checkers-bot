@@ -194,9 +194,11 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
     <button id="closeProfileBtn" class="close-btn">Закрыть</button>
   </div>
 </div>
-  <div class="buttons">
+<div class="buttons">
     <button id="draw" class="draw">🤝 Предложить ничью</button>
     <button id="resign" class="resign">🏳️ Сдаться</button>
+    <button id="acceptDraw" class="draw" style="display:none">✅ Принять ничью</button>
+    <button id="declineDraw" class="resign" style="display:none">❌ Отклонить</button>
     <button id="restart" class="restart" style="display:none">🔄 Новая игра</button>
   </div>
 </div>
@@ -365,6 +367,7 @@ let B = Array.from({length:8}, () => Array(8).fill(null));
 let current   = "white";
 let selected  = null;
 let gameOver  = false;
+let lastResult = null;
 
 let time = { white: 900, black: 900 };
 
@@ -632,6 +635,7 @@ else SFX.move();
 
   turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2";
   msgEl.textContent  = current === "white" ? "Ход белых." : "Ход чёрных.";
+  updateDrawButtons();
   render();
 }
 
@@ -840,14 +844,31 @@ if (data.colorMap && data.colorMap[uid] && data.colorMap[uid] !== myColor) {
 }
 
 applyServerState(data);
-
+ 
+      // обновляем состояние предложения ничьей
+pendingDrawOffer = data.drawOffer || null;
+updateDrawButtons();
         if (gameOver) {
-          showRestart();
-          turnEl.textContent = "🏁 Игра окончена.";
-          msgEl.textContent  = "Игра завершена.";
-          render();
-          return;
-        }
+  showRestart();
+  if (lastResult === "draw") {
+    turnEl.textContent = "🤝 Ничья";
+    msgEl.textContent  = "Партия завершена ничьей по договорённости.";
+    SFX.win(); // или отдельный звук ничьей, если хочешь
+    recordGameResult("draw");
+  } else if (lastResult === "white") {
+    turnEl.textContent = "🏆 Победили белые";
+    msgEl.textContent  = "Игра завершена.";
+  } else if (lastResult === "black") {
+    turnEl.textContent = "🏆 Победили чёрные";
+    msgEl.textContent  = "Игра завершена.";
+  } else {
+    turnEl.textContent = "🏁 Игра окончена.";
+    msgEl.textContent  = "Игра завершена.";
+  }
+  updateDrawButtons();
+  render();
+  return;
+}
 
         turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2";
         msgEl.textContent  = myColor === current
@@ -918,14 +939,20 @@ const newColorMap = {
 };
 
 await gameRef.update({
-  board: makeFreshBoard(),
-  current: "white",
-  gameOver: false,
-  whiteTime: 900,
-  blackTime: 900,
-  colorMap: newColorMap
-});
-          statsRecorded = false;
+      board: makeFreshBoard(),
+      current: "white",
+      gameOver: false,
+      whiteTime: 900,
+      blackTime: 900,
+      colorMap: newColorMap,
+      drawOffer: null,      
+      result: null          
+    });
+
+    statsRecorded = false;
+    lastResult = null;       
+    pendingDrawOffer = null; 
+    updateDrawButtons();     
 
           
           msgEl.textContent = "Новая партия началась.";
@@ -955,13 +982,14 @@ function applyServerState(data) {
 
   current  = data.current || "white";
   gameOver = data.gameOver === true;
+  lastResult = data.result || null;          // ← НОВОЕ
+  pendingDrawOffer = data.drawOffer || null; // ← НОВОЕ
 
   if (data.whiteTime !== undefined) time.white = Number(data.whiteTime) || 0;
   if (data.blackTime !== undefined) time.black = Number(data.blackTime) || 0;
 
   if (gameOver) showRestart(); else hideRestart();
 
-  // обновляем таймеры в шапке
   paintTimers();
 }
 
@@ -972,13 +1000,82 @@ function paintTimers() {
 }
 
 /* ============================================================
-   КНОПКИ НИЧЬЯ / СДАЧА
+   НИЧЬЯ
 ============================================================ */
 
-document.getElementById("draw").onclick = () => {
-  if (!gameOver) msgEl.textContent = "🤝 Предложение ничьей отправлено.";
+const drawBtn       = document.getElementById("draw");
+const acceptDrawBtn = document.getElementById("acceptDraw");
+const declineDrawBtn = document.getElementById("declineDraw");
+
+let pendingDrawOffer = null; // "white" | "black" | null — кто предложил
+
+function updateDrawButtons() {
+  if (gameOver) {
+    drawBtn.style.display = "none";
+    acceptDrawBtn.style.display = "none";
+    declineDrawBtn.style.display = "none";
+    return;
+  }
+
+  drawBtn.style.display = "block";
+  acceptDrawBtn.style.display = "none";
+  declineDrawBtn.style.display = "none";
+
+  if (!pendingDrawOffer) return;
+
+  if (pendingDrawOffer === myColor) {
+    // я предложил — можно отменить
+    drawBtn.textContent = "⏳ Ожидание ответа...";
+    drawBtn.disabled = true;
+    drawBtn.style.opacity = "0.6";
+  } else {
+    // соперник предложил — показать принять/отклонить
+    drawBtn.style.display = "none";
+    acceptDrawBtn.style.display = "block";
+    declineDrawBtn.style.display = "block";
+  }
+}
+
+drawBtn.onclick = async () => {
+  if (gameOver || !gameRef) return;
+  if (pendingDrawOffer) return;
+
+  try {
+    await gameRef.update({ drawOffer: myColor });
+    msgEl.textContent = "🤝 Предложение ничьей отправлено.";
+  } catch (e) {
+    msgEl.textContent = "Ошибка: " + e.message;
+  }
 };
 
+acceptDrawBtn.onclick = async () => {
+  if (gameOver || !gameRef) return;
+  if (!pendingDrawOffer || pendingDrawOffer === myColor) return;
+
+  try {
+    await gameRef.update({
+      gameOver: true,
+      result: "draw",
+      drawOffer: null
+    });
+    // локально тоже сразу отметим — но придёт и через подписку
+    msgEl.textContent = "🤝 Ничья по договорённости.";
+  } catch (e) {
+    msgEl.textContent = "Ошибка: " + e.message;
+  }
+};
+
+declineDrawBtn.onclick = async () => {
+  if (!gameRef) return;
+  if (!pendingDrawOffer || pendingDrawOffer === myColor) return;
+
+  try {
+    await gameRef.update({ drawOffer: null });
+    msgEl.textContent = "❌ Ничья отклонена.";
+  } catch (e) {
+    msgEl.textContent = "Ошибка: " + e.message;
+  }
+};
 document.getElementById("resign").onclick = () => {
   if (gameOver) return;SFX.lose();
   gameOver = true;
