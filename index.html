@@ -80,20 +80,34 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 .msg{text-align:center;background:#171a1d;border-radius:9px;padding:8px;margin-top:8px;color:#ccc;font-size:13px}
 .profile-btn{width:100%;margin-top:8px;background:#3a3a5c;border-radius:10px;padding:10px;color:white;font-weight:bold;font-size:14px;border:0;cursor:pointer}
 
-.modal-overlay{
-  display:none;position:fixed;inset:0;background:#000a;z-index:1000;
-  align-items:center;justify-content:center;padding:20px;
+/* ============ ПРОФИЛЬ ============ */
+.profile-btn{
+  width:100%;margin-top:8px;background:#3a3a5c;border-radius:10px;
+  padding:10px;color:white;font-weight:bold;font-size:14px;border:0;cursor:pointer;
 }
-.modal-overlay.open{display:flex}
 
-.modal{
+.profile-modal{
+  position:fixed;inset:0;background:#000a;z-index:1000;
+  align-items:center;justify-content:center;padding:20px;
+  display:none;
+}
+.profile-modal.open{display:flex}
+
+.profile-content{
   background:#1c1f22;border:1px solid #34383c;border-radius:15px;
   padding:20px;max-width:360px;width:100%;color:white;
+  position:relative;
 }
-.modal h2{margin:0 0 15px;text-align:center;font-size:18px}
+.profile-content h2{margin:0 0 15px;text-align:center;font-size:18px}
+
+.profile-close{
+  position:absolute;top:10px;right:10px;
+  background:#ad2922;border:0;border-radius:50%;
+  width:28px;height:28px;font-size:14px;cursor:pointer;
+  color:white;padding:0;
+}
 
 .profile-row{display:flex;gap:6px;margin-bottom:15px}
-.profile-row label{display:none}
 .profile-row input{
   flex:1;background:#101315;border:1px solid #34383c;border-radius:8px;
   padding:9px;color:white;font-size:14px;
@@ -113,14 +127,9 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 
 .stat-percent{
   text-align:center;background:#101315;border:1px solid #34383c;
-  border-radius:10px;padding:10px;margin-bottom:12px;font-size:14px;
+  border-radius:10px;padding:10px;font-size:14px;
 }
 .stat-percent b{color:#9fbd55}
-
-.close-btn{
-  width:100%;background:#ad2922;border:0;border-radius:10px;
-  padding:11px;color:white;font-weight:bold;font-size:14px;cursor:pointer;
-}
 .buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;font-size:14px;cursor:pointer}
 .draw{background:#28751d}
@@ -148,7 +157,7 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 </div>
 
 <!-- МОДАЛКА ПРОФИЛЯ -->
-<div id="profileModal" class="profile-modal" style="display:none">
+<div id="profileModal" class="profile-modal">
   <div class="profile-content">
     <button id="closeProfileBtn" class="profile-close">✖</button>
     <h2>👤 Профиль</h2>
