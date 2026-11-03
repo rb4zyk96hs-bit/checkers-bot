@@ -138,7 +138,7 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
     </div>
   </div>
 
-<div class="menu-buttons">
+  <div class="menu-buttons">
     <button class="menu-btn play"     id="btnPlay">🎮 Быстрая игра</button>
     <button class="menu-btn create"   id="btnCreate">➕ Создать лобби</button>
     <button class="menu-btn lobbies"  id="btnLobbies">🔍 Открытые лобби</button>
@@ -146,20 +146,30 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
     <button class="menu-btn settings" id="btnSettings">⚙️ Настройки</button>
   </div>
 </div>
- <div id="profileModal" class="profile-modal" style="display:none">
-  <div class="profile-content">
-    <button id="closeProfileBtn">✖</button>
-    <h2>👤 Профиль</h2>
-    <input id="nameInput" placeholder="Введите имя">
-    <button id="saveNameBtn">Сохранить</button>
 
-    <p>Игр: <span id="statGames">0</span></p>
-    <p>Побед: <span id="statWins">0</span></p>
-    <p>Поражений: <span id="statLosses">0</span></p>
-    <p>Ничьих: <span id="statDraws">0</span></p>
-    <p>Процент побед: <span id="statPercent">0%</span></p>
+<!-- МОДАЛКА ПРОФИЛЯ -->
+<div id="profileModal" class="profile-modal" style="display:none">
+  <div class="profile-content">
+    <button id="closeProfileBtn" class="profile-close">✖</button>
+    <h2>👤 Профиль</h2>
+
+    <div class="profile-row">
+      <input id="nameInput" type="text" maxlength="20" placeholder="Введите имя">
+      <button id="saveNameBtn">Сохранить</button>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><span id="statGames">0</span><small>Партий</small></div>
+      <div class="stat"><span id="statWins">0</span><small>Побед</small></div>
+      <div class="stat"><span id="statLosses">0</span><small>Поражений</small></div>
+      <div class="stat"><span id="statDraws">0</span><small>Ничьих</small></div>
+    </div>
+
+    <div class="stat-percent">Процент побед: <b id="statPercent">0%</b></div>
   </div>
 </div>
+
+<!-- ЭКРАН ИГРЫ -->
 <div id="gameScreen" class="game-screen" style="display:none">
   <div class="game">
     <div class="players">
