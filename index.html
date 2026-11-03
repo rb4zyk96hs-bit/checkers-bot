@@ -246,10 +246,6 @@ document.getElementById("btnLobbies").onclick  = () => { alert("🔍 Откры�
 document.getElementById("btnShop").onclick     = () => { alert("🛒 Магазин — скоро"); };
 document.getElementById("btnSettings").onclick = () => { alert("⚙️ Настройки — скоро"); };
 
-// клик по профилю — открываем существующую модалку профиля
-document.querySelector(".menu-profile").onclick = () => {
-  profileModal.classList.add("open");
-};
 /* ============================================================
    ПРОФИЛЬ
 ============================================================ */
@@ -263,6 +259,11 @@ const closeProfileBtn = document.getElementById("closeProfileBtn");
 const saveNameBtn   = document.getElementById("saveNameBtn");
 const nameInput     = document.getElementById("nameInput");
 
+ document.querySelector(".menu-profile").onclick = () => {
+  updateProfileUI();
+  profileModal.classList.add("open");
+};
+ 
 function updateProfileUI() {
   document.getElementById("statGames").textContent  = myProfile.wins + myProfile.losses + myProfile.draws;
   document.getElementById("statWins").textContent   = myProfile.wins;
