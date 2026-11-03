@@ -147,61 +147,40 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
   </div>
 </div>
 <div id="gameScreen" class="game-screen" style="display:none">
-<div class="game">
-  <div class="players">
-    <div class="p"><span class="dot white"></span>Игрок 1</div>
-    <span id="t1" class="timer">15:00</span>
-    <div class="p"><span id="t2" class="timer">15:00</span><span class="dot black"></span>Игрок 2</div>
-  </div>
-
-  <div id="turn" class="turn">⚪ Ход игрока 1</div>
-
-  <div class="frame">
-    <div class="nums">
-      <span>8</span><span>7</span><span>6</span><span>5</span>
-      <span>4</span><span>3</span><span>2</span><span>1</span>
-    </div>
-    <div id="board" class="board"></div>
-  </div>
-
-  <div class="letters">
-    <span></span><span>A</span><span>B</span><span>C</span>
-    <span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
-  </div>
-
-  <div id="msg" class="msg">Выберите белую шашку.</div>
-<button id="profileBtn" class="profile-btn">👤 Профиль</button>
-<body>
-  <div id="profileModal" class="modal-overlay">
-  <div class="modal">
-    <h2>👤 Профиль</h2>
-
-    <div class="profile-row">
-      <label>Ваше имя:</label>
-      <input id="nameInput" type="text" maxlength="20" placeholder="Игрок">
-      <button id="saveNameBtn">Сохранить</button>
+  <div class="game">
+    <div class="players">
+      <div class="p"><span class="dot white"></span>Игрок 1</div>
+      <span id="t1" class="timer">15:00</span>
+      <div class="p"><span id="t2" class="timer">15:00</span><span class="dot black"></span>Игрок 2</div>
     </div>
 
-    <div class="stats">
-      <div class="stat"><span id="statGames">0</span><small>Партий</small></div>
-      <div class="stat"><span id="statWins">0</span><small>Побед</small></div>
-      <div class="stat"><span id="statLosses">0</span><small>Поражений</small></div>
-      <div class="stat"><span id="statDraws">0</span><small>Ничьих</small></div>
+    <div id="turn" class="turn">⚪ Ход игрока 1</div>
+
+    <div class="frame">
+      <div class="nums">
+        <span>8</span><span>7</span><span>6</span><span>5</span>
+        <span>4</span><span>3</span><span>2</span><span>1</span>
+      </div>
+      <div id="board" class="board"></div>
     </div>
 
-    <div class="stat-percent">Процент побед: <b id="statPercent">0%</b></div>
+    <div class="letters">
+      <span></span><span>A</span><span>B</span><span>C</span>
+      <span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
+    </div>
 
-    <button id="closeProfileBtn" class="close-btn">Закрыть</button>
+    <div id="msg" class="msg">Выберите белую шашку.</div>
+
+    <button id="profileBtn" class="profile-btn">👤 Профиль</button>
+
+    <div class="buttons">
+      <button id="draw" class="draw">🤝 Предложить ничью</button>
+      <button id="resign" class="resign">🏳️ Сдаться</button>
+      <button id="acceptDraw" class="draw" style="display:none">✅ Принять ничью</button>
+      <button id="declineDraw" class="resign" style="display:none">❌ Отклонить</button>
+      <button id="restart" class="restart" style="display:none">🔄 Новая игра</button>
+    </div>
   </div>
-</div>
-<div class="buttons">
-    <button id="draw" class="draw">🤝 Предложить ничью</button>
-    <button id="resign" class="resign">🏳️ Сдаться</button>
-    <button id="acceptDraw" class="draw" style="display:none">✅ Принять ничью</button>
-    <button id="declineDraw" class="resign" style="display:none">❌ Отклонить</button>
-    <button id="restart" class="restart" style="display:none">🔄 Новая игра</button>
-  </div>
-</div>
 </div>
 
 <!-- Firebase -->
