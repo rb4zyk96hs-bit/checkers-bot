@@ -259,14 +259,11 @@ const closeProfileBtn = document.getElementById("closeProfileBtn");
 const saveNameBtn   = document.getElementById("saveNameBtn");
 const nameInput     = document.getElementById("nameInput");
 const menuProfileBtn = document.querySelector(".menu-profile");
-if (menuProfileBtn) {
-  menuProfileBtn.onclick = () => {
-    updateProfileUI();
-    profileModal.classList.add("open");
-  };
-} else {
-  console.warn("menu-profile не найден в DOM");
-}
+ 
+document.querySelector(".menu-profile").onclick = () => {
+  updateProfileUI();
+  profileModal.classList.add("open");
+};
  
 function updateProfileUI() {
   document.getElementById("statGames").textContent  = myProfile.wins + myProfile.losses + myProfile.draws;
