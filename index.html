@@ -71,7 +71,6 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 .menu-btn.shop{background:linear-gradient(135deg,#8a6b2a,#b8903a)}
 .menu-btn.settings{background:linear-gradient(135deg,#444,#666)}
 
-/* ============ БОНУС ============ */
 .bonus-box{
   background:#1c2a1c;border:1px solid #39743d;border-radius:12px;
   padding:10px 14px;margin:0 auto 10px;max-width:360px;width:100%;
@@ -94,14 +93,14 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 }
 .back-btn:hover{background:#4a4f55}
 
-.players{display:flex;justify-content:space-between;align-items:center;background:#171a1d;border:1px solid #34383c;border-radius:13px;padding:10px;font-weight:bold}
+.players{display:flex;justify-content:space-between;align-items:center;background:#171a1d;border:1px solid #34383c;border-radius:13px;padding:10px;font-weight:bold;gap:6px}
 .p{display:flex;align-items:center;gap:7px;flex:1;min-width:0}
-.p .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.p .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
 .p.right{justify-content:flex-end}
-.dot{width:25px;height:25px;border-radius:50%;border:2px solid #555;flex-shrink:0}
+.dot{width:22px;height:22px;border-radius:50%;border:2px solid #555;flex-shrink:0}
 .white{background:#eee}
 .black{background:#181818}
-.timer{font-variant-numeric:tabular-nums;flex-shrink:0;padding:0 8px}
+.timer{font-variant-numeric:tabular-nums;flex-shrink:0;font-size:13px;min-width:38px;text-align:center}
 .timer.low{color:#ff5252;animation:pulse 1s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
 .turn{text-align:center;background:#18301b;border:1px solid #39743d;border-radius:20px;padding:8px;margin:8px 0;font-weight:bold}
@@ -120,13 +119,11 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 .letters{display:grid;grid-template-columns:24px repeat(8,1fr);text-align:center;color:#e5c487;font-weight:bold;font-size:13px;margin-top:3px}
 .msg{text-align:center;background:#171a1d;border-radius:9px;padding:8px;margin-top:8px;color:#ccc;font-size:13px}
 
-/* ============ КНОПКИ ============ */
 .buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;font-size:14px;cursor:pointer}
 .draw{background:#28751d}
 .resign{background:#ad2922}
 .restart{background:#2a4f8a;grid-column:1/-1}
-.profile-btn{width:100%;margin-top:8px;background:#3a3a5c;border-radius:10px;padding:10px;color:white;font-weight:bold;font-size:14px;border:0;cursor:pointer}
 
 /* ============ МОДАЛКИ ============ */
 .modal{
@@ -173,7 +170,6 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 .wallet-item span{display:block;font-size:18px;font-weight:bold;color:#f1d16b}
 .wallet-item small{display:block;font-size:10px;color:#888;margin-top:2px}
 
-/* ============ МАГАЗИН / ПОКУПКА ============ */
 .shop-item{
   background:#101315;border:1px solid #34383c;border-radius:10px;
   padding:12px;margin-bottom:8px;
@@ -189,7 +185,6 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 }
 .shop-item button:disabled{opacity:.5;cursor:not-allowed;background:#555}
 
-/* ============ ЛОББИ ============ */
 .lobby-list{max-height:60vh;overflow-y:auto}
 .lobby-row{
   background:#101315;border:1px solid #34383c;border-radius:10px;
@@ -212,7 +207,6 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 .bet-btn:hover{border-color:#f1d16b}
 .bet-btn:disabled{opacity:.4;cursor:not-allowed;color:#666;border-color:#34383c}
 
-/* ============ ПОИСК ============ */
 .search-overlay{
   position:fixed;inset:0;background:#000d;z-index:2000;
   display:none;flex-direction:column;align-items:center;justify-content:center;
@@ -230,7 +224,6 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
   padding:12px 24px;color:white;font-weight:bold;font-size:14px;cursor:pointer;
 }
 
-/* ============ DRAG ============ */
 .drag-ghost{
   position:fixed;width:40px;height:40px;
   margin-left:-20px;margin-top:-20px;
@@ -279,7 +272,7 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 <!-- ============ МОДАЛКА ПРОФИЛЯ ============ -->
 <div id="profileModal" class="modal">
   <div class="modal-content">
-    <button id="closeProfileBtn" class="modal-close">✖</button>
+    <button class="modal-close" data-close="profileModal">✖</button>
     <h2>👤 Профиль</h2>
     <div class="profile-row">
       <input id="nameInput" type="text" maxlength="20" placeholder="Введите имя">
@@ -304,7 +297,7 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
   <div class="modal-content">
     <button class="modal-close" data-close="buyGemsModal">✖</button>
     <h2>💎 Купить гемы</h2>
-    <p style="text-align:center;font-size:12px;color:#888;margin:0 0 12px">Покупка через Telegram Stars (в разработке)</p>
+    <p style="text-align:center;font-size:12px;color:#888;margin:0 0 12px">Покупка через Telegram Stars (скоро)</p>
     <div id="gemsShopList"></div>
   </div>
 </div>
@@ -328,7 +321,7 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
   </div>
 </div>
 
-<!-- ============ МОДАЛКА СОЗДАНИЯ ЛОББИ ============ -->
+<!-- ============ МОДАЛКА СОЗДАНИЯ ============ -->
 <div id="createModal" class="modal">
   <div class="modal-content">
     <button class="modal-close" data-close="createModal">✖</button>
@@ -338,7 +331,6 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
   </div>
 </div>
 
-<!-- ============ МОДАЛКА МАГАЗИНА ============ -->
 <div id="shopModal" class="modal">
   <div class="modal-content">
     <button class="modal-close" data-close="shopModal">✖</button>
@@ -347,7 +339,6 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
   </div>
 </div>
 
-<!-- ============ МОДАЛКА НАСТРОЕК ============ -->
 <div id="settingsModal" class="modal">
   <div class="modal-content">
     <button class="modal-close" data-close="settingsModal">✖</button>
@@ -371,10 +362,10 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
       <button id="backBtn" class="back-btn">← Назад</button>
     </div>
     <div class="players">
-      <div class="p"><span class="dot white"></span><span class="name" id="p1name">Игрок 1</span></div>
+      <div class="p"><span class="dot white" id="dot1"></span><span class="name" id="p1name">Игрок 1</span></div>
       <span id="t1" class="timer">0:20</span>
-      <div class="p right"><span class="name" id="p2name">Игрок 2</span><span class="dot black"></span></div>
-      <span id="t2" class="timer" style="display:none">0:20</span>
+      <span id="t2" class="timer">0:20</span>
+      <div class="p right"><span class="name" id="p2name">Игрок 2</span><span class="dot black" id="dot2"></span></div>
     </div>
     <div id="turn" class="turn">⚪ Ход игрока 1</div>
     <div class="frame">
@@ -434,7 +425,7 @@ const COIN_PACKS = [
 const BET_AMOUNTS = [100, 250, 500, 1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000];
 
 /* ============================================================
-   ГЛОБАЛЬНОЕ СОСТОЯНИЕ
+   СОСТОЯНИЕ
 ============================================================ */
 const boardEl = document.getElementById("board");
 const turnEl = document.getElementById("turn");
@@ -450,11 +441,14 @@ let time = { white: MOVE_TIME, black: MOVE_TIME };
 
 let myColor = null;
 let onlineReady = false;
+let myUid = null;
+let myProfile = { name: "", wins: 0, losses: 0, draws: 0, coins: 0, gems: 0, lastBonus: 0 };
+
 let currentLobbyId = null;
 let lobbyRef = null;
 let lobbyData = null;
-let myUid = null;
-let myProfile = { name: "", wins: 0, losses: 0, draws: 0, coins: 0, gems: 0, lastBonus: 0 };
+let lobbyUnsubscribe = null;
+let payoutDone = false;
 
 let searching = false;
 let searchListener = null;
@@ -476,9 +470,6 @@ B = makeFreshBoard();
 
 const inside = (r, c) => r >= 0 && r < 8 && c >= 0 && c < 8;
 
-/* ============================================================
-   ВЗЯТИЯ / ХОДЫ
-============================================================ */
 function capturesKing(r, c) {
   const p = B[r]?.[c]; const out = [];
   if (!p) return out;
@@ -570,9 +561,6 @@ function render() {
   }
 }
 
-/* ============================================================
-   КЛИК + DRAG
-============================================================ */
 let dragging = null;
 let dragStarted = false;
 
@@ -645,9 +633,6 @@ function onCellClick(r, c) {
   if (selected) onMove(r, c);
 }
 
-/* ============================================================
-   ВЫБОР / ХОД
-============================================================ */
 function localSelect(r, c) {
   const p = B[r]?.[c]; if (!p) return;
   if (p.color !== current) { msgEl.textContent = "Это шашки соперника."; return; }
@@ -704,9 +689,6 @@ function localMove(r, c) {
   render();
 }
 
-/* ============================================================
-   КНОПКИ
-============================================================ */
 function showRestart() { restartBtn.style.display = "block"; }
 function hideRestart() { restartBtn.style.display = "none"; }
 
@@ -782,7 +764,7 @@ document.querySelector(".menu-profile").onclick = () => {
 };
 
 /* ============================================================
-   МАГАЗИН ГЕМОВ (заглушка)
+   МАГАЗИН
 ============================================================ */
 document.getElementById("buyGemsBtn").onclick = () => {
   const list = document.getElementById("gemsShopList");
@@ -802,9 +784,6 @@ document.getElementById("buyGemsBtn").onclick = () => {
   document.getElementById("buyGemsModal").classList.add("open");
 };
 
-/* ============================================================
-   МАГАЗИН МОНЕТ (реально)
-============================================================ */
 document.getElementById("buyCoinsBtn").onclick = () => {
   const list = document.getElementById("coinsShopList");
   list.innerHTML = "";
@@ -832,10 +811,13 @@ async function buyCoins(gemsCost, coinsAmount) {
   if (!myUid) return;
   const userRef = firebase.database().ref("users/" + myUid);
   try {
+    let success = false;
     await userRef.child("gems").transaction(v => {
-      if ((v||0) < gemsCost) return; // aborted
+      if ((v||0) < gemsCost) return;
+      success = true;
       return (v||0) - gemsCost;
     });
+    if (!success) { alert("Ошибка"); return; }
     await userRef.child("coins").transaction(v => (v||0) + coinsAmount);
     document.getElementById("buyCoinsModal").classList.remove("open");
     SFX.win();
@@ -846,20 +828,17 @@ async function buyCoins(gemsCost, coinsAmount) {
 }
 
 /* ============================================================
-   БОНУС 1450 в час
+   БОНУС
 ============================================================ */
 function updateBonusBox() {
   const box = document.getElementById("bonusBox");
   const btn = document.getElementById("claimBonusBtn");
   if (!myUid) { box.style.display = "none"; return; }
-
   const now = Date.now();
   const last = myProfile.lastBonus || 0;
   const elapsed = now - last;
   const eligible = (myProfile.coins || 0) < BONUS_THRESHOLD;
-
   if (!eligible) { box.style.display = "none"; return; }
-
   if (elapsed >= HOUR) {
     box.style.display = "flex";
     btn.disabled = false;
@@ -873,7 +852,6 @@ function updateBonusBox() {
     btn.textContent = `⏳ ${m}:${String(s).padStart(2,"0")}`;
   }
 }
-
 document.getElementById("claimBonusBtn").onclick = async () => {
   if (!myUid) return;
   if ((myProfile.coins || 0) >= BONUS_THRESHOLD) return;
@@ -897,7 +875,7 @@ function updateDrawButtons() {
   drawBtn.textContent = "🤝 Ничья";
   drawBtn.disabled = false;
   drawBtn.style.opacity = "1";
-  if (gameOver) {
+  if (gameOver || !lobbyData || lobbyData.status === "waiting") {
     drawBtn.style.display = "none";
     acceptDrawBtn.style.display = "none";
     declineDrawBtn.style.display = "none";
@@ -958,10 +936,9 @@ function resetMoveTimer() {
   time.black = MOVE_TIME;
   paintTimers();
 }
-
 let lastTickSecond = Math.floor(Date.now() / 1000);
 setInterval(() => {
-  if (gameOver || !onlineReady || !lobbyRef) return;
+  if (gameOver || !onlineReady || !lobbyRef || !lobbyData || lobbyData.status !== "playing") return;
   const nowSec = Math.floor(Date.now() / 1000);
   if (nowSec === lastTickSecond) return;
   lastTickSecond = nowSec;
@@ -980,7 +957,7 @@ setInterval(() => {
 }, 1000);
 
 /* ============================================================
-   FIREBASE INIT
+   FIREBASE
 ============================================================ */
 const firebaseConfig = {
   apiKey: "AIzaSyA8USWXMVE4EEOUGWcMeu_RHButvCZRewQ",
@@ -997,7 +974,6 @@ window.addEventListener("load", () => {
   firebase.auth().signInAnonymously().then(async result => {
     myUid = result.user.uid;
 
-    // загрузка профиля
     const userRef = firebase.database().ref("users/" + myUid);
     const snap = await userRef.once("value");
     const d = snap.val();
@@ -1069,10 +1045,9 @@ async function createLobby(bet) {
   }
 
   const lobbyId = generateLobbyId();
-  const lobbyRefNew = firebase.database().ref("lobbies/" + lobbyId);
-
-  // списываем ставку
+  const newLobbyRef = firebase.database().ref("lobbies/" + lobbyId);
   const userRef = firebase.database().ref("users/" + myUid);
+
   let success = false;
   await userRef.child("coins").transaction(v => {
     if ((v||0) < bet) return;
@@ -1081,11 +1056,11 @@ async function createLobby(bet) {
   });
   if (!success) { alert("Недостаточно монет"); return; }
 
-  await lobbyRefNew.set({
+  await newLobbyRef.set({
     bet,
     status: "waiting",
     createdAt: Date.now(),
-    creator: { uid: myUid, name: myProfile.name },
+    creator: myUid,
     board: makeFreshBoard(),
     current: "white",
     gameOver: false,
@@ -1093,7 +1068,7 @@ async function createLobby(bet) {
     blackTime: MOVE_TIME,
     players: {
       white: myUid,
-      whiteName: myProfile.name
+      whiteName: myProfile.name || "Игрок 1"
     }
   });
 
@@ -1106,13 +1081,17 @@ async function joinLobby(lobbyId) {
   const data = snap.val();
   if (!data) { alert("Лобби не найдено"); return; }
   if (data.status !== "waiting") { alert("Лобби уже занято"); return; }
-  if (data.players.white === myUid) {
+
+  if (data.players?.white === myUid) {
     enterLobby(lobbyId, "white");
     return;
   }
-  if ((myProfile.coins || 0) < data.bet) { alert("Недостаточно монет"); return; }
 
-  // списываем ставку
+  if ((myProfile.coins || 0) < data.bet) {
+    alert("Недостаточно монет");
+    return;
+  }
+
   const userRef = firebase.database().ref("users/" + myUid);
   let success = false;
   await userRef.child("coins").transaction(v => {
@@ -1124,9 +1103,10 @@ async function joinLobby(lobbyId) {
 
   await lob.update({
     "players/black": myUid,
-    "players/blackName": myProfile.name,
+    "players/blackName": myProfile.name || "Игрок 2",
     status: "playing"
   });
+
   enterLobby(lobbyId, "black");
 }
 
@@ -1134,25 +1114,41 @@ function enterLobby(lobbyId, color) {
   currentLobbyId = lobbyId;
   myColor = color;
   lobbyRef = firebase.database().ref("lobbies/" + lobbyId);
+  payoutDone = false;
+
+  if (lobbyUnsubscribe) {
+    lobbyUnsubscribe();
+    lobbyUnsubscribe = null;
+  }
 
   document.getElementById("p1name").textContent = "Игрок 1";
   document.getElementById("p2name").textContent = "Игрок 2";
+  document.getElementById("msg").textContent = "Ожидание соперника...";
+  document.getElementById("turn").textContent = "⏳ Ожидание...";
 
   showGame();
-  msgEl.textContent = "Ожидание...";
+  resetMoveTimer();
+  B = makeFreshBoard();
+  render();
 
-  lobbyRef.on("value", snap => {
+  const handler = lobbyRef.on("value", snap => {
     const d = snap.val();
-    if (!d) return;
+    if (!d) {
+      msgEl.textContent = "Лобби закрыто";
+      return;
+    }
     lobbyData = d;
 
-    // имена
     if (d.players) {
       document.getElementById("p1name").textContent = d.players.whiteName || "Игрок 1";
       document.getElementById("p2name").textContent = d.players.blackName || "Игрок 2";
     }
 
-    // доска
+    if (d.players) {
+      if (d.players.white === myUid) myColor = "white";
+      else if (d.players.black === myUid) myColor = "black";
+    }
+
     const fbBoard = d.board || {};
     B = Array.from({length:8}, (_, r) =>
       Array.from({length:8}, (_, c) => {
@@ -1168,17 +1164,13 @@ function enterLobby(lobbyId, color) {
     if (d.whiteTime !== undefined) time.white = Number(d.whiteTime) || MOVE_TIME;
     if (d.blackTime !== undefined) time.black = Number(d.blackTime) || MOVE_TIME;
 
-    // если мы стали white а не black — обновимся
-    if (d.players) {
-      if (d.players.white === myUid) myColor = "white";
-      else if (d.players.black === myUid) myColor = "black";
-    }
-
     paintTimers();
     updateDrawButtons();
 
     if (d.status === "waiting") {
-      msgEl.textContent = "Ожидание второго игрока...";
+      turnEl.textContent = "⏳ Ожидание соперника...";
+      msgEl.textContent = "Ставка: 🪙 " + d.bet.toLocaleString("ru") + ". Ждём игрока.";
+      hideRestart();
       render();
       return;
     }
@@ -1186,6 +1178,7 @@ function enterLobby(lobbyId, color) {
     if (d.status === "playing" && !gameOver) {
       turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2";
       msgEl.textContent = myColor === current ? "Ваш ход" : "⏳ Ход соперника";
+      hideRestart();
       render();
       return;
     }
@@ -1195,16 +1188,17 @@ function enterLobby(lobbyId, color) {
       if (lastResult === "draw") {
         turnEl.textContent = "🤝 Ничья";
         msgEl.textContent = "Ничья. Ставки возвращены.";
-        payWinner("draw");
       } else if (lastResult) {
         const winnerName = lastResult === "white" ? (d.players?.whiteName || "Белые") : (d.players?.blackName || "Чёрные");
         turnEl.textContent = `🏆 Победа: ${winnerName}`;
         msgEl.textContent = "Игра завершена";
-        payWinner(lastResult);
       }
       render();
+      payWinner(lastResult);
     }
   });
+
+  lobbyUnsubscribe = () => lobbyRef.off("value", handler);
 
   restartBtn.onclick = async () => {
     if (!lobbyRef) return;
@@ -1218,20 +1212,19 @@ function enterLobby(lobbyId, color) {
       status: "playing"
     });
     await lobbyRef.child("drawOffer").remove();
+    await lobbyRef.child("payoutDone").remove();
+    payoutDone = false;
     resetMoveTimer();
   };
 }
 
 /* ============================================================
-   ВЫПЛАТА ПОБЕДИТЕЛЮ
+   ВЫПЛАТА
 ============================================================ */
-let payoutDone = false;
 async function payWinner(result) {
   if (payoutDone) return;
   if (!lobbyData || !lobbyRef) return;
-  if (lobbyRef.payout) return;
 
-  // проверяем в БД, что выплата ещё не сделана
   const snap = await lobbyRef.child("payoutDone").once("value");
   if (snap.val() === true) return;
 
@@ -1245,7 +1238,6 @@ async function payWinner(result) {
   const uidBlack = lobbyData.players?.black;
 
   if (result === "draw") {
-    // вернуть обоим
     if (uidWhite) await firebase.database().ref(`users/${uidWhite}/coins`).transaction(v => (v||0) + bet);
     if (uidBlack) await firebase.database().ref(`users/${uidBlack}/coins`).transaction(v => (v||0) + bet);
   } else {
@@ -1253,8 +1245,6 @@ async function payWinner(result) {
     const loserUid = result === "white" ? uidBlack : uidWhite;
     if (winnerUid) {
       await firebase.database().ref(`users/${winnerUid}/coins`).transaction(v => (v||0) + winAmount);
-    }
-    if (winnerUid) {
       await firebase.database().ref(`users/${winnerUid}/wins`).transaction(v => (v||0) + 1);
       await firebase.database().ref(`users/${winnerUid}/gems`).transaction(v => (v||0) + 1);
     }
@@ -1265,7 +1255,7 @@ async function payWinner(result) {
 }
 
 /* ============================================================
-   КНОПКА СДАТЬСЯ
+   СДАТЬСЯ
 ============================================================ */
 document.getElementById("resign").onclick = () => {
   if (gameOver || !myColor || !lobbyRef) return;
@@ -1283,7 +1273,30 @@ document.getElementById("resign").onclick = () => {
 };
 
 /* ============================================================
-   ПОДБОР ИГРЫ (кнопка Быстрая игра)
+   ХОД (публикация в БД)
+============================================================ */
+function onMove(r, c) {
+  if (!onlineReady || gameOver) return;
+  if (myColor !== current) { msgEl.textContent = "⏳ Сейчас ход соперника."; return; }
+  localMove(r, c);
+  if (lobbyRef) {
+    const updateData = {
+      board: B,
+      current,
+      gameOver,
+      whiteTime: time.white,
+      blackTime: time.black
+    };
+    if (gameOver && lastResult) {
+      updateData.result = lastResult;
+      updateData.status = "finished";
+    }
+    lobbyRef.update(updateData);
+  }
+}
+
+/* ============================================================
+   БЫСТРАЯ ИГРА
 ============================================================ */
 document.getElementById("btnPlay").onclick = async () => {
   if (!onlineReady) { alert("Подключение..."); return; }
@@ -1293,9 +1306,9 @@ document.getElementById("btnPlay").onclick = async () => {
   document.getElementById("searchOverlay").classList.add("open");
   document.getElementById("searchStatus").textContent = "Ищем подходящее лобби...";
 
-  // слушаем lobbies где waiting и bet <= мой баланс
   const lobbiesRef = firebase.database().ref("lobbies");
-  searchListener = lobbiesRef.on("value", async snap => {
+
+  const tryFind = async (snap) => {
     if (!searching) return;
     const all = snap.val() || {};
     let found = null;
@@ -1308,12 +1321,21 @@ document.getElementById("btnPlay").onclick = async () => {
     }
     if (found) {
       searching = false;
-      lobbiesRef.off("value", searchListener);
-      searchListener = null;
+      if (searchListener) { lobbiesRef.off("value", searchListener); searchListener = null; }
       document.getElementById("searchOverlay").classList.remove("open");
       await joinLobby(found.id);
+      return;
     }
-  });
+    if (searching) {
+      setTimeout(() => {
+        if (searching) lobbiesRef.once("value").then(tryFind);
+      }, 2000);
+    }
+  };
+
+  searchListener = (snap) => tryFind(snap);
+  lobbiesRef.on("value", searchListener);
+  lobbiesRef.once("value").then(tryFind);
 };
 
 document.getElementById("cancelSearchBtn").onclick = () => {
@@ -1350,16 +1372,18 @@ document.getElementById("btnLobbies").onclick = () => {
       const row = document.createElement("div");
       row.className = "lobby-row";
       const canJoin = (myProfile.coins || 0) >= lob.bet;
+      const isMine = lob.players?.white === myUid;
       row.innerHTML = `
         <div>
           <div class="bet">🪙 ${lob.bet.toLocaleString("ru")}</div>
-          <div style="color:#888;font-size:11px">${lob.players?.whiteName || "?"}</div>
+          <div style="color:#888;font-size:11px">${lob.players?.whiteName || "?"}${isMine ? " (ваше)" : ""}</div>
         </div>
-        <button ${canJoin ? "" : "disabled"}>${canJoin ? "Войти" : "Мало монет"}</button>
+        <button ${(canJoin || isMine) ? "" : "disabled"}>${isMine ? "Вернуться" : (canJoin ? "Войти" : "Мало монет")}</button>
       `;
       row.querySelector("button").onclick = () => {
         document.getElementById("lobbiesModal").classList.remove("open");
-        joinLobby(lob.id);
+        if (isMine) enterLobby(lob.id, "white");
+        else joinLobby(lob.id);
       };
       list.appendChild(row);
     });
@@ -1387,13 +1411,19 @@ document.getElementById("btnCreate").onclick = () => {
 };
 
 /* ============================================================
-   КНОПКА НАЗАД
+   НАЗАД
 ============================================================ */
-document.getElementById("backBtn").onclick = () => {
-  if (!gameOver) {
+document.getElementById("backBtn").onclick = async () => {
+  if (lobbyData && lobbyData.status === "waiting" && lobbyData.players?.white === myUid) {
+    if (!confirm("Выйти из лобби? Ставка вернётся.")) return;
+    const userRef = firebase.database().ref("users/" + myUid);
+    await userRef.child("coins").transaction(v => (v||0) + (lobbyData.bet || 0));
+    if (lobbyRef) await lobbyRef.remove();
+  } else if (!gameOver) {
     if (!confirm("Выйти в меню? Партия останется в лобби.")) return;
   }
-  if (lobbyRef) lobbyRef.off();
+
+  if (lobbyUnsubscribe) { lobbyUnsubscribe(); lobbyUnsubscribe = null; }
   currentLobbyId = null;
   lobbyRef = null;
   lobbyData = null;
@@ -1404,7 +1434,7 @@ document.getElementById("backBtn").onclick = () => {
 };
 
 /* ============================================================
-   МАГАЗИН / НАСТРОЙКИ (заглушки)
+   МАГАЗИН / НАСТРОЙКИ
 ============================================================ */
 document.getElementById("btnShop").onclick = () => document.getElementById("shopModal").classList.add("open");
 document.getElementById("btnSettings").onclick = () => document.getElementById("settingsModal").classList.add("open");
