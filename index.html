@@ -120,54 +120,23 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 .confirm-box .confirm-buttons button{padding:14px;font-size:15px}
 .accept-game{background:#28751d}
 .decline-game{background:#ad2922}
-
-/* ============ МАГАЗИН СКИНОВ ============ */
 .skin-item{background:#101315;border:1px solid #34383c;border-radius:10px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .skin-item .skin-info{flex:1}
 .skin-item .skin-name{font-weight:bold;font-size:15px;margin-bottom:4px}
 .skin-item .skin-price{font-size:12px;color:#f1d16b}
 .skin-item .skin-preview{width:40px;height:40px;border-radius:50%;margin-right:10px;flex-shrink:0;border:2px solid #555}
-.skin-preview.ice{
-  background-image:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill='none' stroke='rgba(200,235,255,0.6)' stroke-width='1.5' stroke-linecap='round'><path d='M10 8 L18 20 L14 30 L22 42'/><path d='M18 20 L28 16 L36 24'/><path d='M28 16 L34 8'/><path d='M36 24 L46 30 L42 42 L50 50'/><path d='M14 30 L6 36 L10 46'/><path d='M22 42 L30 50'/><path d='M42 42 L38 52'/></g></svg>"),
-    radial-gradient(circle at 35% 28%, #d8eefb, #6a8fa8 70%);
-  background-size: cover, 100% 100%;
-  border: 2px solid #8fb8d4;
-}
+.skin-preview.ice{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill='none' stroke='rgba(200,235,255,0.6)' stroke-width='1.5' stroke-linecap='round'><path d='M10 8 L18 20 L14 30 L22 42'/><path d='M18 20 L28 16 L36 24'/><path d='M28 16 L34 8'/><path d='M36 24 L46 30 L42 42 L50 50'/><path d='M14 30 L6 36 L10 46'/><path d='M22 42 L30 50'/><path d='M42 42 L38 52'/></g></svg>"),radial-gradient(circle at 35% 28%, #d8eefb, #6a8fa8 70%);background-size:cover, 100% 100%;border:2px solid #8fb8d4}
 .skin-item button{background:#28751d;border:0;border-radius:8px;padding:8px 14px;color:white;font-weight:bold;font-size:13px;cursor:pointer;white-space:nowrap}
 .skin-item button.owned{background:#b8903a}
 .skin-item button.equipped{background:#ad2922}
 .skin-item button:disabled{opacity:.5;cursor:not-allowed;background:#555}
-
-/* ============ ЛЕДЯНОЙ СКИН ШАШЕК ============ */
-.piece.skin-ice{
-  background-image:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill='none' stroke='rgba(200,235,255,0.55)' stroke-width='1.2' stroke-linecap='round'><path d='M10 8 L18 20 L14 30 L22 42'/><path d='M18 20 L28 16 L36 24'/><path d='M28 16 L34 8'/><path d='M36 24 L46 30 L42 42 L50 50'/><path d='M14 30 L6 36 L10 46'/><path d='M22 42 L30 50'/><path d='M42 42 L38 52'/></g></svg>"),
-    radial-gradient(circle at 35% 28%, #d8eefb, #6a8fa8 70%);
-  background-size: cover, 100% 100%;
-  border: 2px solid #8fb8d4 !important;
-  box-shadow: inset 0 3px 4px #ffffff99, inset 0 -2px 4px #00000055, 0 3px 8px #6a8fa8aa !important;
-}
-.piece.skin-ice.king{
-  border: 3px solid #4a7a9c !important;
-  box-shadow: inset 0 3px 4px #ffffff99, inset 0 -2px 4px #00000055, 0 0 12px #8fb8d4 !important;
-}
-.piece.skin-ice.white{
-  background-image:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill='none' stroke='rgba(140,180,220,0.55)' stroke-width='1.2' stroke-linecap='round'><path d='M10 8 L18 20 L14 30 L22 42'/><path d='M18 20 L28 16 L36 24'/><path d='M28 16 L34 8'/><path d='M36 24 L46 30 L42 42 L50 50'/><path d='M14 30 L6 36 L10 46'/><path d='M22 42 L30 50'/><path d='M42 42 L38 52'/></g></svg>"),
-    radial-gradient(circle at 35% 28%, #ffffff, #d0e4f0 70%);
-  background-size: cover, 100% 100%;
-  border: 2px solid #a8cde0 !important;
-  box-shadow: inset 0 3px 4px #ffffffcc, inset 0 -2px 3px #a8cde055, 0 3px 8px #a8cde0aa !important;
-}
-.piece.skin-ice.white.king{
-  border: 3px solid #7aa8c4 !important;
-  box-shadow: inset 0 3px 4px #ffffffcc, inset 0 -2px 3px #a8cde055, 0 0 12px #a8cde0 !important;
-}
+.piece.skin-ice{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill='none' stroke='rgba(200,235,255,0.55)' stroke-width='1.2' stroke-linecap='round'><path d='M10 8 L18 20 L14 30 L22 42'/><path d='M18 20 L28 16 L36 24'/><path d='M28 16 L34 8'/><path d='M36 24 L46 30 L42 42 L50 50'/><path d='M14 30 L6 36 L10 46'/><path d='M22 42 L30 50'/><path d='M42 42 L38 52'/></g></svg>"),radial-gradient(circle at 35% 28%, #d8eefb, #6a8fa8 70%);background-size:cover, 100% 100%;border:2px solid #8fb8d4!important;box-shadow:inset 0 3px 4px #ffffff99, inset 0 -2px 4px #00000055, 0 3px 8px #6a8fa8aa!important}
+.piece.skin-ice.king{border:3px solid #4a7a9c!important;box-shadow:inset 0 3px 4px #ffffff99, inset 0 -2px 4px #00000055, 0 0 12px #8fb8d4!important}
+.piece.skin-ice.white{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill='none' stroke='rgba(140,180,220,0.55)' stroke-width='1.2' stroke-linecap='round'><path d='M10 8 L18 20 L14 30 L22 42'/><path d='M18 20 L28 16 L36 24'/><path d='M28 16 L34 8'/><path d='M36 24 L46 30 L42 42 L50 50'/><path d='M14 30 L6 36 L10 46'/><path d='M22 42 L30 50'/><path d='M42 42 L38 52'/></g></svg>"),radial-gradient(circle at 35% 28%, #ffffff, #d0e4f0 70%);background-size:cover, 100% 100%;border:2px solid #a8cde0!important;box-shadow:inset 0 3px 4px #ffffffcc, inset 0 -2px 3px #a8cde055, 0 3px 8px #a8cde0aa!important}
+.piece.skin-ice.white.king{border:3px solid #7aa8c4!important;box-shadow:inset 0 3px 4px #ffffffcc, inset 0 -2px 3px #a8cde055, 0 0 12px #a8cde0!important}
 </style>
 </head>
 <body>
-
 <div id="menuScreen" class="menu-screen">
   <div class="menu-top">
     <div class="wallet-top">
@@ -185,1143 +154,190 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
     <button class="menu-btn settings" id="btnSettings">⚙️ Настройки</button>
   </div>
 </div>
-
-<div id="profileModal" class="modal">
-  <div class="modal-content">
-    <button class="modal-close" data-close="profileModal">✖</button>
-    <h2>👤 Профиль</h2>
-    <div class="profile-row"><input id="nameInput" type="text" maxlength="20" placeholder="Введите имя"><button id="saveNameBtn">Сохранить</button></div>
-    <div class="stats">
-      <div class="stat"><span id="statGames">0</span><small>Партий</small></div>
-      <div class="stat"><span id="statWins">0</span><small>Побед</small></div>
-      <div class="stat"><span id="statLosses">0</span><small>Поражений</small></div>
-      <div class="stat"><span id="statDraws">0</span><small>Ничьих</small></div>
-    </div>
-    <div class="stat-percent">Процент побед: <b id="statPercent">0%</b></div>
-    <div class="wallet-row">
-      <div class="wallet-item"><span class="w-icon">🪙</span><span id="statCoins">0</span><small>Монеты</small></div>
-      <div class="wallet-item"><span class="w-icon">💎</span><span id="statGems">0</span><small>Гемы</small></div>
-    </div>
-  </div>
-</div>
-
-<div id="buyGemsModal" class="modal">
-  <div class="modal-content">
-    <button class="modal-close" data-close="buyGemsModal">✖</button>
-    <h2>💎 Купить гемы</h2>
-    <p style="text-align:center;font-size:12px;color:#888;margin:0 0 12px">Покупка через Telegram Stars (скоро)</p>
-    <div id="gemsShopList"></div>
-  </div>
-</div>
-
-<div id="buyCoinsModal" class="modal">
-  <div class="modal-content">
-    <button class="modal-close" data-close="buyCoinsModal">✖</button>
-    <h2>🪙 Купить монеты</h2>
-    <p style="text-align:center;font-size:12px;color:#888;margin:0 0 12px">Обмен гемов на монеты</p>
-    <div id="coinsShopList"></div>
-  </div>
-</div>
-
-<div id="lobbiesModal" class="modal">
-  <div class="modal-content">
-    <button class="modal-close" data-close="lobbiesModal">✖</button>
-    <h2>🔍 Открытые лобби</h2>
-    <div id="lobbyList" class="lobby-list"></div>
-  </div>
-</div>
-
-<div id="createModal" class="modal">
-  <div class="modal-content">
-    <button class="modal-close" data-close="createModal">✖</button>
-    <h2>➕ Создать лобби</h2>
-    <p style="text-align:center;font-size:12px;color:#888;margin:0 0 12px">Выберите ставку</p>
-    <div id="betGrid" class="bet-grid"></div>
-  </div>
-</div>
-
-<div id="shopModal" class="modal">
-  <div class="modal-content">
-    <button class="modal-close" data-close="shopModal">✖</button>
-    <h2>🛒 Магазин</h2>
-    <div id="shopList" style="margin-top:10px"></div>
-  </div>
-</div>
-
-<div id="settingsModal" class="modal">
-  <div class="modal-content">
-    <button class="modal-close" data-close="settingsModal">✖</button>
-    <h2>⚙️ Настройки</h2>
-    <p style="text-align:center;color:#888;padding:20px">Скоро...</p>
-  </div>
-</div>
-
-<div id="searchOverlay" class="search-overlay">
-  <div class="spinner"></div>
-  <div style="font-size:18px;font-weight:bold">Поиск соперника...</div>
-  <div id="searchStatus" style="color:#888;font-size:13px;margin-top:8px">Ищем подходящее лобби</div>
-  <button class="cancel" id="cancelSearchBtn">Отменить</button>
-</div>
-
-<div id="confirmOverlay" class="confirm-overlay">
-  <div class="confirm-box">
-    <h2>🎮 Принять игру?</h2>
-    <div class="bet-amount" id="confirmBetAmount">100 🪙</div>
-    <div class="timer-big" id="confirmTimer">15</div>
-    <div style="color:#888;font-size:12px">Если не нажмёте «Принять», вы выйдете из лобби</div>
-    <div class="confirm-buttons">
-      <button class="accept-game" id="acceptGameBtn">✅ Принять</button>
-      <button class="decline-game" id="declineGameBtn">❌ Отклонить</button>
-    </div>
-  </div>
-</div>
-
-<div id="gameScreen" class="game-screen" style="display:none">
-  <div class="game">
-    <div class="game-header">
-      <button id="backBtn" class="back-btn">← Назад</button>
-      <div class="pot-display" id="potDisplay">💰 <span id="potAmount">0</span> 🪙<small>общий банк</small></div>
-    </div>
-    <div class="players">
-      <div class="p"><span class="dot white" id="dot1"></span><span class="name" id="p1name">Игрок 1</span></div>
-      <span id="t1" class="timer">0:20</span>
-      <span id="t2" class="timer">0:20</span>
-      <div class="p right"><span class="name" id="p2name">Игрок 2</span><span class="dot black" id="dot2"></span></div>
-    </div>
-    <div id="turn" class="turn">⚪ Ход игрока 1</div>
-    <div class="frame">
-      <div class="nums"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div>
-      <div id="board" class="board"></div>
-    </div>
-    <div class="letters"><span></span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div>
-    <div id="msg" class="msg">Ожидание...</div>
-    <div class="buttons" id="gameButtons">
-      <button id="draw" class="draw">🤝 Ничья</button>
-      <button id="resign" class="resign">🏳️ Сдаться</button>
-      <button id="acceptDraw" class="draw" style="display:none">✅ Принять</button>
-      <button id="declineDraw" class="resign" style="display:none">❌ Отклонить</button>
-      <button id="restart" class="restart" style="display:none">🔄 Новая игра</button>
-    </div>
-  </div>
-</div>
+<div id="profileModal" class="modal"><div class="modal-content"><button class="modal-close" data-close="profileModal">✖</button><h2>👤 Профиль</h2><div class="profile-row"><input id="nameInput" type="text" maxlength="20" placeholder="Введите имя"><button id="saveNameBtn">Сохранить</button></div><div class="stats"><div class="stat"><span id="statGames">0</span><small>Партий</small></div><div class="stat"><span id="statWins">0</span><small>Побед</small></div><div class="stat"><span id="statLosses">0</span><small>Поражений</small></div><div class="stat"><span id="statDraws">0</span><small>Ничьих</small></div></div><div class="stat-percent">Процент побед: <b id="statPercent">0%</b></div><div class="wallet-row"><div class="wallet-item"><span class="w-icon">🪙</span><span id="statCoins">0</span><small>Монеты</small></div><div class="wallet-item"><span class="w-icon">💎</span><span id="statGems">0</span><small>Гемы</small></div></div></div></div>
+<div id="buyGemsModal" class="modal"><div class="modal-content"><button class="modal-close" data-close="buyGemsModal">✖</button><h2>💎 Купить гемы</h2><p style="text-align:center;font-size:12px;color:#888;margin:0 0 12px">Покупка через Telegram Stars (скоро)</p><div id="gemsShopList"></div></div></div>
+<div id="buyCoinsModal" class="modal"><div class="modal-content"><button class="modal-close" data-close="buyCoinsModal">✖</button><h2>🪙 Купить монеты</h2><p style="text-align:center;font-size:12px;color:#888;margin:0 0 12px">Обмен гемов на монеты</p><div id="coinsShopList"></div></div></div>
+<div id="lobbiesModal" class="modal"><div class="modal-content"><button class="modal-close" data-close="lobbiesModal">✖</button><h2>🔍 Открытые лобби</h2><div id="lobbyList" class="lobby-list"></div></div></div>
+<div id="createModal" class="modal"><div class="modal-content"><button class="modal-close" data-close="createModal">✖</button><h2>➕ Создать лобби</h2><p style="text-align:center;font-size:12px;color:#888;margin:0 0 12px">Выберите ставку</p><div id="betGrid" class="bet-grid"></div></div></div>
+<div id="shopModal" class="modal"><div class="modal-content"><button class="modal-close" data-close="shopModal">✖</button><h2>🛒 Магазин</h2><div id="shopList" style="margin-top:10px"></div></div></div>
+<div id="settingsModal" class="modal"><div class="modal-content"><button class="modal-close" data-close="settingsModal">✖</button><h2>⚙️ Настройки</h2><p style="text-align:center;color:#888;padding:20px">Скоро...</p></div></div>
+<div id="searchOverlay" class="search-overlay"><div class="spinner"></div><div style="font-size:18px;font-weight:bold">Поиск соперника...</div><div id="searchStatus" style="color:#888;font-size:13px;margin-top:8px">Ищем подходящее лобби</div><button class="cancel" id="cancelSearchBtn">Отменить</button></div>
+<div id="confirmOverlay" class="confirm-overlay"><div class="confirm-box"><h2>🎮 Принять игру?</h2><div class="bet-amount" id="confirmBetAmount">100 🪙</div><div class="timer-big" id="confirmTimer">15</div><div style="color:#888;font-size:12px">Если не нажмёте «Принять», вы выйдете из лобби</div><div class="confirm-buttons"><button class="accept-game" id="acceptGameBtn">✅ Принять</button><button class="decline-game" id="declineGameBtn">❌ Отклонить</button></div></div></div>
+<div id="gameScreen" class="game-screen" style="display:none"><div class="game"><div class="game-header"><button id="backBtn" class="back-btn">← Назад</button><div class="pot-display" id="potDisplay">💰 <span id="potAmount">0</span> 🪙<small>общий банк</small></div></div><div class="players"><div class="p"><span class="dot white" id="dot1"></span><span class="name" id="p1name">Игрок 1</span></div><span id="t1" class="timer">0:20</span><span id="t2" class="timer">0:20</span><div class="p right"><span class="name" id="p2name">Игрок 2</span><span class="dot black" id="dot2"></span></div></div><div id="turn" class="turn">⚪ Ход игрока 1</div><div class="frame"><div class="nums"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div id="board" class="board"></div></div><div class="letters"><span></span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div><div id="msg" class="msg">Ожидание...</div><div class="buttons" id="gameButtons"><button id="draw" class="draw">🤝 Ничья</button><button id="resign" class="resign">🏳️ Сдаться</button><button id="acceptDraw" class="draw" style="display:none">✅ Принять</button><button id="declineDraw" class="resign" style="display:none">❌ Отклонить</button><button id="restart" class="restart" style="display:none">🔄 Новая игра</button></div></div></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <script>
-const MOVE_TIME = 20;
-const START_COINS = 4500;
-const START_GEMS = 25;
-const HOUR = 3600 * 1000;
-const BONUS_COINS = 1450;
-const BONUS_THRESHOLD = 250;
-const CONFIRM_TIME = 15;
-
+const MOVE_TIME = 20; const START_COINS = 4500; const START_GEMS = 25; const HOUR = 3600 * 1000; const BONUS_COINS = 1450; const BONUS_THRESHOLD = 250; const CONFIRM_TIME = 15;
 const GEM_PACKS = [{gems:55,stars:42},{gems:165,stars:120},{gems:560,stars:385},{gems:1900,stars:1238},{gems:6800,stars:4067}];
 const COIN_PACKS = [{coins:30000,gems:30},{coins:100000,gems:100},{coins:300000,gems:300},{coins:1100000,gems:1000},{coins:3000000,gems:3000}];
 const BET_AMOUNTS = [100,250,500,1000,2500,5000,10000,25000,50000,100000,250000,500000,1000000];
+const SKINS = [{ id: "ice", name: "🧊 Ледяные шашки", price: 100000 }];
+const boardEl = document.getElementById("board"); const turnEl = document.getElementById("turn"); const msgEl = document.getElementById("msg"); const restartBtn = document.getElementById("restart");
+let B = Array.from({length:8}, () => Array(8).fill(null)); let current = "white"; let selected = null; let gameOver = false; let lastResult = null; let time = { white: MOVE_TIME, black: MOVE_TIME };
+let myColor = null; let onlineReady = false; let myUid = null; let myProfile = { name: "", wins: 0, losses: 0, draws: 0, coins: 0, gems: 0, lastBonus: 0 }; let mySkins = []; let equippedSkin = null;
+let currentLobbyId = null; let lobbyRef = null; let lobbyData = null; let lobbyUnsubscribe = null; let payoutDone = false; let confirmTimerId = null; let searching = false; let searchListener = null;
 
-const SKINS = [
-  { id: "ice", name: "🧊 Ледяные шашки", price: 100000 }
-];
-
-const boardEl = document.getElementById("board");
-const turnEl = document.getElementById("turn");
-const msgEl = document.getElementById("msg");
-const restartBtn = document.getElementById("restart");
-
-let B = Array.from({length:8}, () => Array(8).fill(null));
-let current = "white";
-let selected = null;
-let gameOver = false;
-let lastResult = null;
-let time = { white: MOVE_TIME, black: MOVE_TIME };
-
-let myColor = null;
-let onlineReady = false;
-let myUid = null;
-let myProfile = { name: "", wins: 0, losses: 0, draws: 0, coins: 0, gems: 0, lastBonus: 0 };
-let mySkins = [];
-let equippedSkin = null;
-
-let currentLobbyId = null;
-let lobbyRef = null;
-let lobbyData = null;
-let lobbyUnsubscribe = null;
-let payoutDone = false;
-let confirmTimerId = null;
-
-let searching = false;
-let searchListener = null;
-
-function makeFreshBoard() {
-  const b = Array.from({length:8}, () => Array(8).fill(null));
-  for (let r = 0; r < 3; r++) for (let c = 0; c < 8; c++) if ((r + c) % 2 === 1) b[r][c] = { color: "black", king: false };
-  for (let r = 5; r < 8; r++) for (let c = 0; c < 8; c++) if ((r + c) % 2 === 1) b[r][c] = { color: "white", king: false };
-  return b;
-}
-B = makeFreshBoard();
-const inside = (r, c) => r >= 0 && r < 8 && c >= 0 && c < 8;
-
-function capturesKing(r, c) {
-  const p = B[r]?.[c]; const out = [];
-  if (!p) return out;
-  for (const dr of [-1,1]) for (const dc of [-1,1]) {
-    let nr = r + dr, nc = c + dc; let enemy = null;
-    while (inside(nr, nc)) {
-      const q = B[nr][nc];
-      if (!q) { if (enemy) out.push({r:nr,c:nc,cr:enemy.r,cc:enemy.c}); nr += dr; nc += dc; continue; }
-      if (!enemy) { if (q.color === p.color) break; enemy = {r:nr,c:nc}; nr += dr; nc += dc; continue; }
-      break;
-    }
-  }
-  return out;
-}
-function capturesMan(r, c) {
-  const p = B[r]?.[c]; const out = [];
-  if (!p) return out;
-  for (const dr of [-1,1]) for (const dc of [-1,1]) {
-    const er = r+dr, ec = c+dc, lr = r+2*dr, lc = c+2*dc;
-    if (inside(er,ec) && inside(lr,lc) && B[er][ec] && B[er][ec].color !== p.color && !B[lr][lc]) out.push({r:lr,c:lc,cr:er,cc:ec});
-  }
-  return out;
-}
+function makeFreshBoard() { const b = Array.from({length:8}, () => Array(8).fill(null)); for (let r = 0; r < 3; r++) for (let c = 0; c < 8; c++) if ((r + c) % 2 === 1) b[r][c] = { color: "black", king: false }; for (let r = 5; r < 8; r++) for (let c = 0; c < 8; c++) if ((r + c) % 2 === 1) b[r][c] = { color: "white", king: false }; return b; }
+B = makeFreshBoard(); const inside = (r, c) => r >= 0 && r < 8 && c >= 0 && c < 8;
+function capturesKing(r, c) { const p = B[r]?.[c]; const out = []; if (!p) return out; for (const dr of [-1,1]) for (const dc of [-1,1]) { let nr = r + dr, nc = c + dc; let enemy = null; while (inside(nr, nc)) { const q = B[nr][nc]; if (!q) { if (enemy) out.push({r:nr,c:nc,cr:enemy.r,cc:enemy.c}); nr += dr; nc += dc; continue; } if (!enemy) { if (q.color === p.color) break; enemy = {r:nr,c:nc}; nr += dr; nc += dc; continue; } break; } } return out; }
+function capturesMan(r, c) { const p = B[r]?.[c]; const out = []; if (!p) return out; for (const dr of [-1,1]) for (const dc of [-1,1]) { const er = r+dr, ec = c+dc, lr = r+2*dr, lc = c+2*dc; if (inside(er,ec) && inside(lr,lc) && B[er][ec] && B[er][ec].color !== p.color && !B[lr][lc]) out.push({r:lr,c:lc,cr:er,cc:ec}); } return out; }
 function getCaptures(r, c) { const p = B[r]?.[c]; if (!p) return []; return p.king ? capturesKing(r, c) : capturesMan(r, c); }
-function quiet(r, c) {
-  const p = B[r]?.[c]; const out = [];
-  if (!p) return out;
-  if (p.king) {
-    for (const dr of [-1,1]) for (const dc of [-1,1]) {
-      let nr = r+dr, nc = c+dc;
-      while (inside(nr,nc) && !B[nr][nc]) { out.push({r:nr,c:nc}); nr += dr; nc += dc; }
-    }
-  } else {
-    const dr = p.color === "white" ? -1 : 1;
-    for (const dc of [-1,1]) { const nr = r+dr, nc = c+dc; if (inside(nr,nc) && !B[nr][nc]) out.push({r:nr,c:nc}); }
-  }
-  return out;
-}
-function anyCapture(color) {
-  for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) if (B[r][c]?.color === color && getCaptures(r, c).length) return true;
-  return false;
-}
+function quiet(r, c) { const p = B[r]?.[c]; const out = []; if (!p) return out; if (p.king) { for (const dr of [-1,1]) for (const dc of [-1,1]) { let nr = r+dr, nc = c+dc; while (inside(nr,nc) && !B[nr][nc]) { out.push({r:nr,c:nc}); nr += dr; nc += dc; } } } else { const dr = p.color === "white" ? -1 : 1; for (const dc of [-1,1]) { const nr = r+dr, nc = c+dc; if (inside(nr,nc) && !B[nr][nc]) out.push({r:nr,c:nc}); } } return out; }
+function anyCapture(color) { for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) if (B[r][c]?.color === color && getCaptures(r, c).length) return true; return false; }
 function legal(r, c) { const p = B[r]?.[c]; if (!p || p.color !== current) return []; return anyCapture(current) ? getCaptures(r, c) : quiet(r, c); }
-function hasPieces(color) {
-  for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) if (B[r][c]?.color === color) return true;
-  return false;
-}
-function hasMove(color) {
-  if (anyCapture(color)) return true;
-  for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) if (B[r][c]?.color === color && quiet(r, c).length) return true;
-  return false;
-}
+function hasPieces(color) { for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) if (B[r][c]?.color === color) return true; return false; }
+function hasMove(color) { if (anyCapture(color)) return true; for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) if (B[r][c]?.color === color && quiet(r, c).length) return true; return false; }
+function applySkinToPieces() { document.querySelectorAll(".piece").forEach(el => { el.classList.remove("skin-ice"); if (equippedSkin === "ice") el.classList.add("skin-ice"); }); }
+function render() { boardEl.innerHTML = ""; for (let i = 0; i < 8; i++) for (let j = 0; j < 8; j++) { const r = myColor === "black" ? 7 - i : i; const c = myColor === "black" ? 7 - j : j; const cell = document.createElement("div"); cell.className = "cell " + ((r + c) % 2 ? "dark" : "light"); if (selected && selected.r === r && selected.c === c) cell.classList.add("sel"); if (selected && legal(selected.r, selected.c).some(m => m.r === r && m.c === c)) cell.classList.add("possible"); const p = B[r]?.[c]; if (p) { const piece = document.createElement("div"); piece.className = "piece " + p.color + (p.king ? " king" : ""); piece.onclick = e => { e.stopPropagation(); onCellClick(r, c); }; piece.onpointerdown = e => { onPointerDownPiece(r, c, e); }; cell.appendChild(piece); } cell.onclick = () => onCellClick(r, c); boardEl.appendChild(cell); } applySkinToPieces(); }
 
-function applySkinToPieces() {
-  document.querySelectorAll(".piece").forEach(el => {
-    el.classList.remove("skin-ice");
-    if (equippedSkin === "ice") el.classList.add("skin-ice");
-  });
-}
+let dragging = null; let dragStarted = false;
+function onPointerDownPiece(r, c, e) { if (!onlineReady || gameOver) return; if (myColor !== current) return; if (B[r]?.[c]?.color !== myColor) return; dragStarted = false; dragging = { r, c, startX: e.clientX, startY: e.clientY }; document.addEventListener("pointermove", onPointerMove); document.addEventListener("pointerup", onPointerUpGlobal, { once: true }); }
+function onPointerMove(e) { if (!dragging) return; const dx = Math.abs(e.clientX - dragging.startX); const dy = Math.abs(e.clientY - dragging.startY); if (!dragStarted && (dx > 8 || dy > 8)) { dragStarted = true; const p = B[dragging.r][dragging.c]; if (p) { const ghost = document.createElement("div"); ghost.className = "piece " + p.color + (p.king ? " king" : "") + (equippedSkin === "ice" ? " skin-ice" : "") + " drag-ghost"; ghost.style.left = e.clientX + "px"; ghost.style.top = e.clientY + "px"; document.body.appendChild(ghost); dragging.ghost = ghost; localSelect(dragging.r, dragging.c); const i = myColor === "black" ? 7 - dragging.r : dragging.r; const j = myColor === "black" ? 7 - dragging.c : dragging.c; const cellEl = boardEl.children[i * 8 + j]; const pieceEl = cellEl?.querySelector(".piece"); if (pieceEl) pieceEl.classList.add("drag-origin"); } } if (dragging.ghost) { dragging.ghost.style.left = e.clientX + "px"; dragging.ghost.style.top = e.clientY + "px"; } }
+function onPointerUpGlobal(e) { document.removeEventListener("pointermove", onPointerMove); if (!dragging) return; if (dragStarted) { const target = document.elementFromPoint(e.clientX, e.clientY); const cellEl = target?.closest(".cell"); let dropR = null, dropC = null; if (cellEl) { const idx = Array.from(boardEl.children).indexOf(cellEl); if (idx >= 0) { const i = Math.floor(idx / 8), j = idx % 8; dropR = myColor === "black" ? 7 - i : i; dropC = myColor === "black" ? 7 - j : j; } } if (dragging.ghost) dragging.ghost.remove(); const origin = boardEl.querySelector(".drag-origin"); if (origin) origin.classList.remove("drag-origin"); dragging = null; dragStarted = false; if (dropR !== null) onMove(dropR, dropC); } else { dragging = null; } }
+function onCellClick(r, c) { if (!onlineReady || gameOver) return; if (myColor !== current) { msgEl.textContent = "⏳ Сейчас ход соперника."; return; } const p = B[r]?.[c]; if (p && p.color === myColor) { localSelect(r, c); return; } if (selected) onMove(r, c); }
+function localSelect(r, c) { const p = B[r]?.[c]; if (!p) return; if (p.color !== current) { msgEl.textContent = "Это шашки соперника."; return; } const moves = legal(r, c); if (!moves.length) { msgEl.textContent = "Эта шашка сейчас не может ходить."; SFX.error(); return; } selected = { r, c }; msgEl.textContent = "Выберите клетку для хода."; SFX.select(); render(); }
+function localMove(r, c) { if (gameOver) return; if (!selected) { if (B[r]?.[c]) localSelect(r, c); return; } const moves = legal(selected.r, selected.c); const target = moves.find(m => m.r === r && m.c === c); if (!target) { msgEl.textContent = "❌ Недопустимый ход."; SFX.error(); return; } const fromR = selected.r, fromC = selected.c; const p = B[fromR][fromC]; if (!p) return; B[r][c] = p; B[fromR][fromC] = null; if (target.cr !== undefined) B[target.cr][target.cc] = null; if (target.cr !== undefined) SFX.capture(); else SFX.move(); if (!B[r][c].king && ((B[r][c].color === "white" && r === 0) || (B[r][c].color === "black" && r === 7))) { B[r][c].king = true; SFX.king(); } if (target.cr !== undefined && getCaptures(r, c).length) { selected = { r, c }; msgEl.textContent = "🔄 Продолжите взятие."; render(); return; } selected = null; current = current === "white" ? "black" : "white"; if (!hasPieces(current)) { gameOver = true; const winner = current === "white" ? "black" : "white"; lastResult = winner; turnEl.textContent = winner === "white" ? "🏆 Победили белые" : "🏆 Победили чёрные"; msgEl.textContent = "У соперника не осталось шашек."; if (myColor === winner) SFX.win(); else SFX.lose(); showRestart(); render(); return; } if (!hasMove(current)) { gameOver = true; const winner = current === "white" ? "black" : "white"; lastResult = winner; turnEl.textContent = winner === "white" ? "🏆 Победили белые" : "🏆 Победили чёрные"; msgEl.textContent = "У соперника нет возможных ходов."; if (myColor === winner) SFX.win(); else SFX.lose(); showRestart(); render(); return; } resetMoveTimer(); turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2"; msgEl.textContent = current === "white" ? "Ход белых." : "Ход чёрных."; updateDrawButtons(); render(); }
+function showRestart() { restartBtn.style.display = "block"; } function hideRestart() { restartBtn.style.display = "none"; }
 
-function render() {
-  boardEl.innerHTML = "";
-  for (let i = 0; i < 8; i++) for (let j = 0; j < 8; j++) {
-    const r = myColor === "black" ? 7 - i : i;
-    const c = myColor === "black" ? 7 - j : j;
-    const cell = document.createElement("div");
-    cell.className = "cell " + ((r + c) % 2 ? "dark" : "light");
-    if (selected && selected.r === r && selected.c === c) cell.classList.add("sel");
-    if (selected && legal(selected.r, selected.c).some(m => m.r === r && m.c === c)) cell.classList.add("possible");
-    const p = B[r]?.[c];
-    if (p) {
-      const piece = document.createElement("div");
-      piece.className = "piece " + p.color + (p.king ? " king" : "");
-      piece.onclick = e => { e.stopPropagation(); onCellClick(r, c); };
-      piece.onpointerdown = e => { onPointerDownPiece(r, c, e); };
-      cell.appendChild(piece);
-    }
-    cell.onclick = () => onCellClick(r, c);
-    boardEl.appendChild(cell);
-  }
-  applySkinToPieces();
-}
+let audioCtx = null; function getAudio() { if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)(); if (audioCtx.state === "suspended") audioCtx.resume(); return audioCtx; }
+function playTone(freq, duration, type = "sine", volume = 0.15) { try { const ctx = getAudio(); const osc = ctx.createOscillator(); const gain = ctx.createGain(); osc.type = type; osc.frequency.value = freq; gain.gain.setValueAtTime(volume, ctx.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration); osc.connect(gain); gain.connect(ctx.destination); osc.start(); osc.stop(ctx.currentTime + duration); } catch (e) {} }
+const SFX = { select() { playTone(600, 0.06, "sine", 0.08); }, move() { playTone(380, 0.08, "triangle", 0.12); }, capture() { playTone(500,0.06,"square",0.12); setTimeout(()=>playTone(300,0.1,"square",0.12),50); }, king() { playTone(660,0.08,"sine",0.12); setTimeout(()=>playTone(880,0.1,"sine",0.12),70); setTimeout(()=>playTone(1100,0.12,"sine",0.12),150); }, win() { playTone(523,0.12,"sine",0.15); setTimeout(()=>playTone(659,0.12,"sine",0.15),120); setTimeout(()=>playTone(784,0.2,"sine",0.15),240); }, lose() { playTone(400,0.15,"sine",0.15); setTimeout(()=>playTone(300,0.2,"sine",0.15),150); }, error() { playTone(180,0.12,"sawtooth",0.1); } };
 
-let dragging = null;
-let dragStarted = false;
-function onPointerDownPiece(r, c, e) {
-  if (!onlineReady || gameOver) return;
-  if (myColor !== current) return;
-  if (B[r]?.[c]?.color !== myColor) return;
-  dragStarted = false;
-  dragging = { r, c, startX: e.clientX, startY: e.clientY };
-  document.addEventListener("pointermove", onPointerMove);
-  document.addEventListener("pointerup", onPointerUpGlobal, { once: true });
-}
-function onPointerMove(e) {
-  if (!dragging) return;
-  const dx = Math.abs(e.clientX - dragging.startX);
-  const dy = Math.abs(e.clientY - dragging.startY);
-  if (!dragStarted && (dx > 8 || dy > 8)) {
-    dragStarted = true;
-    const p = B[dragging.r][dragging.c];
-    if (p) {
-      const ghost = document.createElement("div");
-      ghost.className = "piece " + p.color + (p.king ? " king" : "") + (equippedSkin === "ice" ? " skin-ice" : "") + " drag-ghost";
-      ghost.style.left = e.clientX + "px"; ghost.style.top = e.clientY + "px";
-      document.body.appendChild(ghost);
-      dragging.ghost = ghost;
-      localSelect(dragging.r, dragging.c);
-      const i = myColor === "black" ? 7 - dragging.r : dragging.r;
-      const j = myColor === "black" ? 7 - dragging.c : dragging.c;
-      const cellEl = boardEl.children[i * 8 + j];
-      const pieceEl = cellEl?.querySelector(".piece");
-      if (pieceEl) pieceEl.classList.add("drag-origin");
-    }
-  }
-  if (dragging.ghost) { dragging.ghost.style.left = e.clientX + "px"; dragging.ghost.style.top = e.clientY + "px"; }
-}
-function onPointerUpGlobal(e) {
-  document.removeEventListener("pointermove", onPointerMove);
-  if (!dragging) return;
-  if (dragStarted) {
-    const target = document.elementFromPoint(e.clientX, e.clientY);
-    const cellEl = target?.closest(".cell");
-    let dropR = null, dropC = null;
-    if (cellEl) {
-      const idx = Array.from(boardEl.children).indexOf(cellEl);
-      if (idx >= 0) { const i = Math.floor(idx / 8), j = idx % 8; dropR = myColor === "black" ? 7 - i : i; dropC = myColor === "black" ? 7 - j : j; }
-    }
-    if (dragging.ghost) dragging.ghost.remove();
-    const origin = boardEl.querySelector(".drag-origin");
-    if (origin) origin.classList.remove("drag-origin");
-    dragging = null; dragStarted = false;
-    if (dropR !== null) onMove(dropR, dropC);
-  } else { dragging = null; }
-}
-function onCellClick(r, c) {
-  if (!onlineReady || gameOver) return;
-  if (myColor !== current) { msgEl.textContent = "⏳ Сейчас ход соперника."; return; }
-  const p = B[r]?.[c];
-  if (p && p.color === myColor) { localSelect(r, c); return; }
-  if (selected) onMove(r, c);
-}
-function localSelect(r, c) {
-  const p = B[r]?.[c]; if (!p) return;
-  if (p.color !== current) { msgEl.textContent = "Это шашки соперника."; return; }
-  const moves = legal(r, c);
-  if (!moves.length) { msgEl.textContent = "Эта шашка сейчас не может ходить."; SFX.error(); return; }
-  selected = { r, c };
-  msgEl.textContent = "Выберите клетку для хода.";
-  SFX.select(); render();
-}
-function localMove(r, c) {
-  if (gameOver) return;
-  if (!selected) { if (B[r]?.[c]) localSelect(r, c); return; }
-  const moves = legal(selected.r, selected.c);
-  const target = moves.find(m => m.r === r && m.c === c);
-  if (!target) { msgEl.textContent = "❌ Недопустимый ход."; SFX.error(); return; }
-  const fromR = selected.r, fromC = selected.c;
-  const p = B[fromR][fromC]; if (!p) return;
-  B[r][c] = p; B[fromR][fromC] = null;
-  if (target.cr !== undefined) B[target.cr][target.cc] = null;
-  if (target.cr !== undefined) SFX.capture(); else SFX.move();
-  if (!B[r][c].king && ((B[r][c].color === "white" && r === 0) || (B[r][c].color === "black" && r === 7))) { B[r][c].king = true; SFX.king(); }
-  if (target.cr !== undefined && getCaptures(r, c).length) { selected = { r, c }; msgEl.textContent = "🔄 Продолжите взятие."; render(); return; }
-  selected = null;
-  current = current === "white" ? "black" : "white";
-  if (!hasPieces(current)) {
-    gameOver = true;
-    const winner = current === "white" ? "black" : "white";
-    lastResult = winner;
-    turnEl.textContent = winner === "white" ? "🏆 Победили белые" : "🏆 Победили чёрные";
-    msgEl.textContent = "У соперника не осталось шашек.";
-    if (myColor === winner) SFX.win(); else SFX.lose();
-    showRestart(); render(); return;
-  }
-  if (!hasMove(current)) {
-    gameOver = true;
-    const winner = current === "white" ? "black" : "white";
-    lastResult = winner;
-    turnEl.textContent = winner === "white" ? "🏆 Победили белые" : "🏆 Победили чёрные";
-    msgEl.textContent = "У соперника нет возможных ходов.";
-    if (myColor === winner) SFX.win(); else SFX.lose();
-    showRestart(); render(); return;
-  }
-  resetMoveTimer();
-  turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2";
-  msgEl.textContent = current === "white" ? "Ход белых." : "Ход чёрных.";
-  updateDrawButtons(); render();
-}
-function showRestart() { restartBtn.style.display = "block"; }
-function hideRestart() { restartBtn.style.display = "none"; }
-
-let audioCtx = null;
-function getAudio() {
-  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  if (audioCtx.state === "suspended") audioCtx.resume();
-  return audioCtx;
-}
-function playTone(freq, duration, type = "sine", volume = 0.15) {
-  try {
-    const ctx = getAudio();
-    const osc = ctx.createOscillator(); const gain = ctx.createGain();
-    osc.type = type; osc.frequency.value = freq;
-    gain.gain.setValueAtTime(volume, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.start(); osc.stop(ctx.currentTime + duration);
-  } catch (e) {}
-}
-const SFX = {
-  select() { playTone(600, 0.06, "sine", 0.08); },
-  move() { playTone(380, 0.08, "triangle", 0.12); },
-  capture() { playTone(500,0.06,"square",0.12); setTimeout(()=>playTone(300,0.1,"square",0.12),50); },
-  king() { playTone(660,0.08,"sine",0.12); setTimeout(()=>playTone(880,0.1,"sine",0.12),70); setTimeout(()=>playTone(1100,0.12,"sine",0.12),150); },
-  win() { playTone(523,0.12,"sine",0.15); setTimeout(()=>playTone(659,0.12,"sine",0.15),120); setTimeout(()=>playTone(784,0.2,"sine",0.15),240); },
-  lose() { playTone(400,0.15,"sine",0.15); setTimeout(()=>playTone(300,0.2,"sine",0.15),150); },
-  error() { playTone(180,0.12,"sawtooth",0.1); }
-};
-
-document.querySelectorAll(".modal-close").forEach(btn => { btn.onclick = () => { const id = btn.dataset.close; if (id) document.getElementById(id).classList.remove("open"); }; });
-document.querySelectorAll(".modal").forEach(m => { m.onclick = (e) => { if (e.target === m) m.classList.remove("open"); }; });
-
-const profileModal = document.getElementById("profileModal");
-const nameInput = document.getElementById("nameInput");
-
-function updateProfileUI() {
-  document.getElementById("statGames").textContent = (myProfile.wins||0) + (myProfile.losses||0) + (myProfile.draws||0);
-  document.getElementById("statWins").textContent = myProfile.wins || 0;
-  document.getElementById("statLosses").textContent = myProfile.losses || 0;
-  document.getElementById("statDraws").textContent = myProfile.draws || 0;
-  const total = (myProfile.wins||0) + (myProfile.losses||0) + (myProfile.draws||0);
-  const pct = total ? Math.round(((myProfile.wins||0) / total) * 100) : 0;
-  document.getElementById("statPercent").textContent = pct + "%";
-  nameInput.value = myProfile.name || "";
-  document.getElementById("menuNick").textContent = myProfile.name || "Гость";
-  document.getElementById("menuCoins").textContent = (myProfile.coins||0).toLocaleString("ru");
-  document.getElementById("menuGems").textContent = (myProfile.gems||0).toLocaleString("ru");
-  document.getElementById("statCoins").textContent = (myProfile.coins||0).toLocaleString("ru");
-  document.getElementById("statGems").textContent = (myProfile.gems||0).toLocaleString("ru");
-  updateBonusBox();
-}
+document.querySelectorAll(".modal-close").forEach(btn => { btn.onclick = () => { const id = btn.dataset.close; if (id) document.getElementById(id).classList.remove("open"); }; }); document.querySelectorAll(".modal").forEach(m => { m.onclick = (e) => { if (e.target === m) m.classList.remove("open"); }; });
+const profileModal = document.getElementById("profileModal"); const nameInput = document.getElementById("nameInput");
+function updateProfileUI() { document.getElementById("statGames").textContent = (myProfile.wins||0) + (myProfile.losses||0) + (myProfile.draws||0); document.getElementById("statWins").textContent = myProfile.wins || 0; document.getElementById("statLosses").textContent = myProfile.losses || 0; document.getElementById("statDraws").textContent = myProfile.draws || 0; const total = (myProfile.wins||0) + (myProfile.losses||0) + (myProfile.draws||0); const pct = total ? Math.round(((myProfile.wins||0) / total) * 100) : 0; document.getElementById("statPercent").textContent = pct + "%"; nameInput.value = myProfile.name || ""; document.getElementById("menuNick").textContent = myProfile.name || "Гость"; document.getElementById("menuCoins").textContent = (myProfile.coins||0).toLocaleString("ru"); document.getElementById("menuGems").textContent = (myProfile.gems||0).toLocaleString("ru"); document.getElementById("statCoins").textContent = (myProfile.coins||0).toLocaleString("ru"); document.getElementById("statGems").textContent = (myProfile.gems||0).toLocaleString("ru"); updateBonusBox(); }
 document.querySelector(".menu-profile").onclick = () => { updateProfileUI(); profileModal.classList.add("open"); };
-
-document.getElementById("buyGemsBtn").onclick = () => {
-  const list = document.getElementById("gemsShopList"); list.innerHTML = "";
-  GEM_PACKS.forEach(pack => {
-    const el = document.createElement("div"); el.className = "shop-item";
-    el.innerHTML = `<div class="info"><div class="title">💎 ${pack.gems.toLocaleString("ru")} гемов</div><div class="price">${pack.stars.toLocaleString("ru")} ⭐</div></div><button disabled>Скоро</button>`;
-    list.appendChild(el);
-  });
-  document.getElementById("buyGemsModal").classList.add("open");
-};
-document.getElementById("buyCoinsBtn").onclick = () => {
-  const list = document.getElementById("coinsShopList"); list.innerHTML = "";
-  COIN_PACKS.forEach(pack => {
-    const el = document.createElement("div"); el.className = "shop-item";
-    const canBuy = (myProfile.gems||0) >= pack.gems;
-    el.innerHTML = `<div class="info"><div class="title">🪙 ${pack.coins.toLocaleString("ru")} монет</div><div class="price">${pack.gems.toLocaleString("ru")} 💎</div></div><button ${canBuy ? "" : "disabled"}>Купить</button>`;
-    el.querySelector("button").onclick = async () => { await buyCoins(pack.gems, pack.coins); };
-    list.appendChild(el);
-  });
-  document.getElementById("buyCoinsModal").classList.add("open");
-};
-async function buyCoins(gemsCost, coinsAmount) {
-  if ((myProfile.gems||0) < gemsCost) { alert("Недостаточно гемов"); return; }
-  if (!myUid) return;
-  const userRef = firebase.database().ref("users/" + myUid);
-  try {
-    let success = false;
-    await userRef.child("gems").transaction(v => { if ((v||0) < gemsCost) return; success = true; return (v||0) - gemsCost; });
-    if (!success) { alert("Ошибка"); return; }
-    await userRef.child("coins").transaction(v => (v||0) + coinsAmount);
-    document.getElementById("buyCoinsModal").classList.remove("open");
-    SFX.win();
-    alert(`✅ Куплено ${coinsAmount.toLocaleString("ru")} монет!`);
-  } catch (e) { alert("Ошибка: " + e.message); }
-}
-
-function updateBonusBox() {
-  const box = document.getElementById("bonusBox");
-  const btn = document.getElementById("claimBonusBtn");
-  if (!myUid) { box.style.display = "none"; return; }
-  const now = Date.now(); const last = myProfile.lastBonus || 0; const elapsed = now - last;
-  const eligible = (myProfile.coins || 0) < BONUS_THRESHOLD;
-  if (!eligible) { box.style.display = "none"; return; }
-  if (elapsed >= HOUR) { box.style.display = "flex"; btn.disabled = false; btn.textContent = `Забрать ${BONUS_COINS}🪙`; }
-  else {
-    const left = HOUR - elapsed; const m = Math.floor(left / 60000); const s = Math.floor((left % 60000) / 1000);
-    box.style.display = "flex"; btn.disabled = true; btn.textContent = `⏳ ${m}:${String(s).padStart(2,"0")}`;
-  }
-}
-document.getElementById("claimBonusBtn").onclick = async () => {
-  if (!myUid) return;
-  if ((myProfile.coins || 0) >= BONUS_THRESHOLD) return;
-  if (Date.now() - (myProfile.lastBonus || 0) < HOUR) return;
-  const userRef = firebase.database().ref("users/" + myUid);
-  await userRef.child("coins").transaction(v => (v||0) + BONUS_COINS);
-  await userRef.child("lastBonus").set(Date.now());
-  SFX.win();
-};
+document.getElementById("buyGemsBtn").onclick = () => { const list = document.getElementById("gemsShopList"); list.innerHTML = ""; GEM_PACKS.forEach(pack => { const el = document.createElement("div"); el.className = "shop-item"; el.innerHTML = `<div class="info"><div class="title">💎 ${pack.gems.toLocaleString("ru")} гемов</div><div class="price">${pack.stars.toLocaleString("ru")} ⭐</div></div><button disabled>Скоро</button>`; list.appendChild(el); }); document.getElementById("buyGemsModal").classList.add("open"); };
+document.getElementById("buyCoinsBtn").onclick = () => { const list = document.getElementById("coinsShopList"); list.innerHTML = ""; COIN_PACKS.forEach(pack => { const el = document.createElement("div"); el.className = "shop-item"; const canBuy = (myProfile.gems||0) >= pack.gems; el.innerHTML = `<div class="info"><div class="title">🪙 ${pack.coins.toLocaleString("ru")} монет</div><div class="price">${pack.gems.toLocaleString("ru")} 💎</div></div><button ${canBuy ? "" : "disabled"}>Купить</button>`; el.querySelector("button").onclick = async () => { await buyCoins(pack.gems, pack.coins); }; list.appendChild(el); }); document.getElementById("buyCoinsModal").classList.add("open"); };
+async function buyCoins(gemsCost, coinsAmount) { if ((myProfile.gems||0) < gemsCost) { alert("Недостаточно гемов"); return; } if (!myUid) return; const userRef = firebase.database().ref("users/" + myUid); try { let success = false; await userRef.child("gems").transaction(v => { if ((v||0) < gemsCost) return; success = true; return (v||0) - gemsCost; }); if (!success) { alert("Ошибка"); return; } await userRef.child("coins").transaction(v => (v||0) + coinsAmount); document.getElementById("buyCoinsModal").classList.remove("open"); SFX.win(); alert(`✅ Куплено ${coinsAmount.toLocaleString("ru")} монет!`); } catch (e) { alert("Ошибка: " + e.message); } }
+function updateBonusBox() { const box = document.getElementById("bonusBox"); const btn = document.getElementById("claimBonusBtn"); if (!myUid) { box.style.display = "none"; return; } const now = Date.now(); const last = myProfile.lastBonus || 0; const elapsed = now - last; const eligible = (myProfile.coins || 0) < BONUS_THRESHOLD; if (!eligible) { box.style.display = "none"; return; } if (elapsed >= HOUR) { box.style.display = "flex"; btn.disabled = false; btn.textContent = `Забрать ${BONUS_COINS}🪙`; } else { const left = HOUR - elapsed; const m = Math.floor(left / 60000); const s = Math.floor((left % 60000) / 1000); box.style.display = "flex"; btn.disabled = true; btn.textContent = `⏳ ${m}:${String(s).padStart(2,"0")}`; } }
+document.getElementById("claimBonusBtn").onclick = async () => { if (!myUid) return; if ((myProfile.coins || 0) >= BONUS_THRESHOLD) return; if (Date.now() - (myProfile.lastBonus || 0) < HOUR) return; const userRef = firebase.database().ref("users/" + myUid); await userRef.child("coins").transaction(v => (v||0) + BONUS_COINS); await userRef.child("lastBonus").set(Date.now()); SFX.win(); };
 setInterval(updateBonusBox, 1000);
-
-// ============ НИЧЬЯ ============
-const drawBtn = document.getElementById("draw");
-const acceptDrawBtn = document.getElementById("acceptDraw");
-const declineDrawBtn = document.getElementById("declineDraw");
-const resignBtn = document.getElementById("resign");
-let pendingDrawOffer = null;
-
-function updateDrawButtons() {
-  drawBtn.textContent = "🤝 Ничья"; drawBtn.disabled = false; drawBtn.style.opacity = "1";
-  drawBtn.style.display = "none"; acceptDrawBtn.style.display = "none"; declineDrawBtn.style.display = "none"; resignBtn.style.display = "none";
-  if (gameOver) return;
-  if (!lobbyData || lobbyData.status !== "playing") return;
-  if (pendingDrawOffer) {
-    if (pendingDrawOffer === myColor) {
-      drawBtn.style.display = "block"; drawBtn.textContent = "⏳ Ждём..."; drawBtn.disabled = true; drawBtn.style.opacity = "0.6";
-      resignBtn.style.display = "block";
-    } else {
-      acceptDrawBtn.style.display = "block"; declineDrawBtn.style.display = "block";
-    }
-    return;
-  }
-  drawBtn.style.display = "block"; resignBtn.style.display = "block";
-}
+const drawBtn = document.getElementById("draw"); const acceptDrawBtn = document.getElementById("acceptDraw"); const declineDrawBtn = document.getElementById("declineDraw"); const resignBtn = document.getElementById("resign"); let pendingDrawOffer = null;
+function updateDrawButtons() { drawBtn.textContent = "🤝 Ничья"; drawBtn.disabled = false; drawBtn.style.opacity = "1"; drawBtn.style.display = "none"; acceptDrawBtn.style.display = "none"; declineDrawBtn.style.display = "none"; resignBtn.style.display = "none"; if (gameOver) return; if (!lobbyData || lobbyData.status !== "playing") return; if (pendingDrawOffer) { if (pendingDrawOffer === myColor) { drawBtn.style.display = "block"; drawBtn.textContent = "⏳ Ждём..."; drawBtn.disabled = true; drawBtn.style.opacity = "0.6"; resignBtn.style.display = "block"; } else { acceptDrawBtn.style.display = "block"; declineDrawBtn.style.display = "block"; } return; } drawBtn.style.display = "block"; resignBtn.style.display = "block"; }
 drawBtn.onclick = async () => { if (gameOver || !lobbyRef || pendingDrawOffer) return; await lobbyRef.update({ drawOffer: myColor }); };
-acceptDrawBtn.onclick = async () => {
-  if (gameOver || !lobbyRef) return;
-  if (!pendingDrawOffer || pendingDrawOffer === myColor) return;
-  await lobbyRef.update({ gameOver: true, result: "draw", status: "finished" });
-  await lobbyRef.child("drawOffer").remove();
-};
-declineDrawBtn.onclick = async () => {
-  if (!lobbyRef) return;
-  if (!pendingDrawOffer || pendingDrawOffer === myColor) return;
-  await lobbyRef.child("drawOffer").remove();
-};
-
-// ============ ЭКРАНЫ ============
-const menuScreen = document.getElementById("menuScreen");
-const gameScreen = document.getElementById("gameScreen");
-function showMenu() { menuScreen.classList.remove("hidden"); gameScreen.style.display = "none"; }
-function showGame() { menuScreen.classList.add("hidden"); gameScreen.style.display = "block"; }
-
-function paintTimers() {
-  const fmt = s => "0:" + String(Math.max(0, s)).padStart(2,"0");
-  const t1 = document.getElementById("t1"); const t2 = document.getElementById("t2");
-  t1.textContent = fmt(time.white); t2.textContent = fmt(time.black);
-  t1.classList.toggle("low", time.white <= 5 && current === "white" && !gameOver);
-  t2.classList.toggle("low", time.black <= 5 && current === "black" && !gameOver);
-}
+acceptDrawBtn.onclick = async () => { if (gameOver || !lobbyRef) return; if (!pendingDrawOffer || pendingDrawOffer === myColor) return; await lobbyRef.update({ gameOver: true, result: "draw", status: "finished" }); await lobbyRef.child("drawOffer").remove(); };
+declineDrawBtn.onclick = async () => { if (!lobbyRef) return; if (!pendingDrawOffer || pendingDrawOffer === myColor) return; await lobbyRef.child("drawOffer").remove(); };
+const menuScreen = document.getElementById("menuScreen"); const gameScreen = document.getElementById("gameScreen");
+function showMenu() { menuScreen.classList.remove("hidden"); gameScreen.style.display = "none"; } function showGame() { menuScreen.classList.add("hidden"); gameScreen.style.display = "block"; }
+function paintTimers() { const fmt = s => "0:" + String(Math.max(0, s)).padStart(2,"0"); const t1 = document.getElementById("t1"); const t2 = document.getElementById("t2"); t1.textContent = fmt(time.white); t2.textContent = fmt(time.black); t1.classList.toggle("low", time.white <= 5 && current === "white" && !gameOver); t2.classList.toggle("low", time.black <= 5 && current === "black" && !gameOver); }
 function resetMoveTimer() { time.white = MOVE_TIME; time.black = MOVE_TIME; paintTimers(); }
-
 let lastTickSecond = Math.floor(Date.now() / 1000);
-setInterval(() => {
-  if (gameOver || !onlineReady || !lobbyRef || !lobbyData || lobbyData.status !== "playing") return;
-  const nowSec = Math.floor(Date.now() / 1000);
-  if (nowSec === lastTickSecond) return;
-  lastTickSecond = nowSec;
-  time[current] = Math.max(0, time[current] - 1);
-  paintTimers();
-  if (time[current] <= 0) {
-    const winner = current === "white" ? "black" : "white";
-    gameOver = true; lastResult = winner;
-    turnEl.textContent = winner === "white" ? "⏱️ Победили белые" : "⏱️ Победили чёрные";
-    msgEl.textContent = "Время на ход вышло.";
-    SFX.lose(); showRestart();
-    lobbyRef.update({ board: B, current, gameOver: true, result: winner, status: "finished" });
-  }
-}, 1000);
-
-// ============ МАГАЗИН СКИНОВ ============
-function renderShop() {
-  const list = document.getElementById("shopList");
-  list.innerHTML = "";
-  SKINS.forEach(skin => {
-    const owned = mySkins.includes(skin.id);
-    const equipped = equippedSkin === skin.id;
-    const row = document.createElement("div");
-    row.className = "skin-item";
-    row.innerHTML = `
-      <div class="skin-preview ice"></div>
-      <div class="skin-info">
-        <div class="skin-name">${skin.name}</div>
-        <div class="skin-price">🪙 ${skin.price.toLocaleString("ru")}</div>
-      </div>
-      <button></button>
-    `;
-    const btn = row.querySelector("button");
-    if (equipped) {
-      btn.textContent = "✅ Надето";
-      btn.className = "equipped";
-      btn.onclick = async () => { await unequipSkin(); };
-    } else if (owned) {
-      btn.textContent = "Надеть";
-      btn.className = "owned";
-      btn.onclick = async () => { await equipSkin(skin.id); };
-    } else {
-      btn.textContent = "Купить";
-      const canBuy = (myProfile.coins || 0) >= skin.price;
-      btn.disabled = !canBuy;
-      btn.onclick = async () => { await buySkin(skin); };
-    }
-    list.appendChild(row);
-  });
-}
-
-async function buySkin(skin) {
-  if ((myProfile.coins || 0) < skin.price) { alert("Недостаточно монет"); return; }
-  const userRef = firebase.database().ref("users/" + myUid);
-  let success = false;
-  await userRef.child("coins").transaction(v => {
-    if ((v||0) < skin.price) return;
-    success = true;
-    return (v||0) - skin.price;
-  });
-  if (!success) { alert("Недостаточно монет"); return; }
-  const snap = await userRef.child("skins").once("value");
-  const currentSkins = snap.val() || [];
-  if (!currentSkins.includes(skin.id)) {
-    currentSkins.push(skin.id);
-    await userRef.child("skins").set(currentSkins);
-  }
-  mySkins = currentSkins;
-  SFX.win();
-  renderShop();
-  alert(`✅ Куплено: ${skin.name}`);
-}
-
-async function equipSkin(skinId) {
-  const userRef = firebase.database().ref("users/" + myUid);
-  await userRef.child("equippedSkin").set(skinId);
-  equippedSkin = skinId;
-  applySkinToPieces();
-  renderShop();
-}
-
-async function unequipSkin() {
-  const userRef = firebase.database().ref("users/" + myUid);
-  await userRef.child("equippedSkin").remove();
-  equippedSkin = null;
-  applySkinToPieces();
-  renderShop();
-}
-
-document.getElementById("btnShop").onclick = () => {
-  renderShop();
-  document.getElementById("shopModal").classList.add("open");
-};
-
-const firebaseConfig = {
-  apiKey: "AIzaSyA8USWXMVE4EEOUGWcMeu_RHButvCZRewQ",
-  authDomain: "checkersbot-c6311.firebaseapp.com",
-  databaseURL: "https://checkersbot-c6311-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "checkersbot-c6311",
-  storageBucket: "checkersbot-c6311.firebasestorage.app",
-  messagingSenderId: "677213113683",
-  appId: "1:677213113683:web:55e4158ad11dfb656de5a"
-};
-
+setInterval(() => { if (gameOver || !onlineReady || !lobbyRef || !lobbyData || lobbyData.status !== "playing") return; const nowSec = Math.floor(Date.now() / 1000); if (nowSec === lastTickSecond) return; lastTickSecond = nowSec; time[current] = Math.max(0, time[current] - 1); paintTimers(); if (time[current] <= 0) { const winner = current === "white" ? "black" : "white"; gameOver = true; lastResult = winner; turnEl.textContent = winner === "white" ? "⏱️ Победили белые" : "⏱️ Победили чёрные"; msgEl.textContent = "Время на ход вышло."; SFX.lose(); showRestart(); lobbyRef.update({ board: B, current, gameOver: true, result: winner, status: "finished" }); } }, 1000);
+function renderShop() { const list = document.getElementById("shopList"); list.innerHTML = ""; SKINS.forEach(skin => { const owned = mySkins.includes(skin.id); const equipped = equippedSkin === skin.id; const row = document.createElement("div"); row.className = "skin-item"; row.innerHTML = `<div class="skin-preview ice"></div><div class="skin-info"><div class="skin-name">${skin.name}</div><div class="skin-price">🪙 ${skin.price.toLocaleString("ru")}</div></div><button></button>`; const btn = row.querySelector("button"); if (equipped) { btn.textContent = "✅ Надето"; btn.className = "equipped"; btn.onclick = async () => { await unequipSkin(); }; } else if (owned) { btn.textContent = "Надеть"; btn.className = "owned"; btn.onclick = async () => { await equipSkin(skin.id); }; } else { btn.textContent = "Купить"; const canBuy = (myProfile.coins || 0) >= skin.price; btn.disabled = !canBuy; btn.onclick = async () => { await buySkin(skin); }; } list.appendChild(row); }); }
+async function buySkin(skin) { if ((myProfile.coins || 0) < skin.price) { alert("Недостаточно монет"); return; } const userRef = firebase.database().ref("users/" + myUid); let success = false; await userRef.child("coins").transaction(v => { if ((v||0) < skin.price) return; success = true; return (v||0) - skin.price; }); if (!success) { alert("Недостаточно монет"); return; } const snap = await userRef.child("skins").once("value"); const currentSkins = snap.val() || []; if (!currentSkins.includes(skin.id)) { currentSkins.push(skin.id); await userRef.child("skins").set(currentSkins); } mySkins = currentSkins; SFX.win(); renderShop(); alert(`✅ Куплено: ${skin.name}`); }
+async function equipSkin(skinId) { const userRef = firebase.database().ref("users/" + myUid); await userRef.child("equippedSkin").set(skinId); equippedSkin = skinId; applySkinToPieces(); renderShop(); }
+async function unequipSkin() { const userRef = firebase.database().ref("users/" + myUid); await userRef.child("equippedSkin").remove(); equippedSkin = null; applySkinToPieces(); renderShop(); }
+document.getElementById("btnShop").onclick = () => { renderShop(); document.getElementById("shopModal").classList.add("open"); };
+const firebaseConfig = { apiKey: "AIzaSyA8USWXMVE4EEOUGWcMeu_RHButvCZRewQ", authDomain: "checkersbot-c6311.firebaseapp.com", databaseURL: "https://checkersbot-c6311-default-rtdb.europe-west1.firebasedatabase.app", projectId: "checkersbot-c6311", storageBucket: "checkersbot-c6311.firebasestorage.app", messagingSenderId: "677213113683", appId: "1:677213113683:web:55e4158ad11dfb656de5a" };
 window.addEventListener("load", () => {
   firebase.initializeApp(firebaseConfig);
   firebase.auth().signInAnonymously().then(async result => {
-    myUid = result.user.uid;
-    const userRef = firebase.database().ref("users/" + myUid);
-    const snap = await userRef.once("value");
-    const d = snap.val();
-    if (d) {
-      myProfile = {
-        name: d.name || "", wins: Number(d.wins) || 0, losses: Number(d.losses) || 0, draws: Number(d.draws) || 0,
-        coins: Number(d.coins) || 0, gems: Number(d.gems) || 0, lastBonus: Number(d.lastBonus) || 0
-      };
-      mySkins = d.skins || [];
-      equippedSkin = d.equippedSkin || null;
-    } else {
-      await userRef.set({ name: "", wins: 0, losses: 0, draws: 0, coins: START_COINS, gems: START_GEMS, lastBonus: 0 });
-      myProfile.coins = START_COINS; myProfile.gems = START_GEMS;
-      mySkins = []; equippedSkin = null;
-    }
-    if (!myProfile.name) {
-      const entered = prompt("Как вас зовут?", "Игрок");
-      myProfile.name = (entered || "Игрок").trim().slice(0, 20) || "Игрок";
-      await userRef.update({ name: myProfile.name });
-    }
+    myUid = result.user.uid; const userRef = firebase.database().ref("users/" + myUid); const snap = await userRef.once("value"); const d = snap.val();
+    if (d) { myProfile = { name: d.name || "", wins: Number(d.wins) || 0, losses: Number(d.losses) || 0, draws: Number(d.draws) || 0, coins: Number(d.coins) || 0, gems: Number(d.gems) || 0, lastBonus: Number(d.lastBonus) || 0 }; mySkins = d.skins || []; equippedSkin = d.equippedSkin || null; } else { await userRef.set({ name: "", wins: 0, losses: 0, draws: 0, coins: START_COINS, gems: START_GEMS, lastBonus: 0 }); myProfile.coins = START_COINS; myProfile.gems = START_GEMS; mySkins = []; equippedSkin = null; }
+    if (!myProfile.name) { const entered = prompt("Как вас зовут?", "Игрок"); myProfile.name = (entered || "Игрок").trim().slice(0, 20) || "Игрок"; await userRef.update({ name: myProfile.name }); }
     updateProfileUI();
-    userRef.on("value", snap => {
-      const x = snap.val(); if (!x) return;
-      myProfile = {
-        name: x.name || "", wins: Number(x.wins) || 0, losses: Number(x.losses) || 0, draws: Number(x.draws) || 0,
-        coins: Number(x.coins) || 0, gems: Number(x.gems) || 0, lastBonus: Number(x.lastBonus) || 0
-      };
-      mySkins = x.skins || [];
-      equippedSkin = x.equippedSkin || null;
-      updateProfileUI();
-      applySkinToPieces();
-    });
-    document.getElementById("saveNameBtn").onclick = async () => {
-      const newName = nameInput.value.trim().slice(0, 20);
-      if (!newName) { alert("Введите имя"); return; }
-      await userRef.update({ name: newName });
-      alert("✅ Имя сохранено");
-    };
+    userRef.on("value", snap => { const x = snap.val(); if (!x) return; myProfile = { name: x.name || "", wins: Number(x.wins) || 0, losses: Number(x.losses) || 0, draws: Number(x.draws) || 0, coins: Number(x.coins) || 0, gems: Number(x.gems) || 0, lastBonus: Number(x.lastBonus) || 0 }; mySkins = x.skins || []; equippedSkin = x.equippedSkin || null; updateProfileUI(); applySkinToPieces(); });
+    document.getElementById("saveNameBtn").onclick = async () => { const newName = nameInput.value.trim().slice(0, 20); if (!newName) { alert("Введите имя"); return; } await userRef.update({ name: newName }); alert("✅ Имя сохранено"); };
     onlineReady = true; render(); showMenu();
   }).catch(err => { alert("Firebase: " + (err.code || "") + "\n" + (err.message || "")); });
 });
 
 function generateLobbyId() { return "l" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
-
-async function createLobby(bet) {
-  if ((myProfile.coins || 0) < bet) { alert("Недостаточно монет для этой ставки"); return; }
-  const lobbyId = generateLobbyId();
-  const newLobbyRef = firebase.database().ref("lobbies/" + lobbyId);
-  await newLobbyRef.set({
-    bet, status: "waiting", createdAt: Date.now(), creator: myUid,
-    board: makeFreshBoard(), current: "white", gameOver: false,
-    whiteTime: MOVE_TIME, blackTime: MOVE_TIME,
-    players: { white: myUid, whiteName: myProfile.name || "Игрок 1" }
-  });
-  enterLobby(lobbyId, "white");
-}
-
-async function joinLobby(lobbyId) {
-  const lob = firebase.database().ref("lobbies/" + lobbyId);
-  const snap = await lob.once("value");
-  const data = snap.val();
-  if (!data) { alert("Лобби не найдено"); return; }
-  if (data.status !== "waiting") { alert("Лобби уже занято"); return; }
-  if (data.players?.white === myUid) { enterLobby(lobbyId, "white"); return; }
-  if ((myProfile.coins || 0) < data.bet) { alert("Недостаточно монет"); return; }
-
-  await lob.update({
-    "players/black": myUid,
-    "players/blackName": myProfile.name || "Игрок 2",
-    status: "confirming",
-    confirmDeadline: Date.now() + CONFIRM_TIME * 1000,
-    confirmedWhite: null,
-    confirmedBlack: null,
-    starting: null
-  });
-  enterLobby(lobbyId, "black");
-}
+async function createLobby(bet) { if ((myProfile.coins || 0) < bet) { alert("Недостаточно монет для этой ставки"); return; } const lobbyId = generateLobbyId(); const newLobbyRef = firebase.database().ref("lobbies/" + lobbyId); await newLobbyRef.set({ bet, status: "waiting", createdAt: Date.now(), creator: myUid, board: makeFreshBoard(), current: "white", gameOver: false, whiteTime: MOVE_TIME, blackTime: MOVE_TIME, players: { white: myUid, whiteName: myProfile.name || "Игрок 1" } }); enterLobby(lobbyId, "white"); }
+async function joinLobby(lobbyId) { const lob = firebase.database().ref("lobbies/" + lobbyId); const snap = await lob.once("value"); const data = snap.val(); if (!data) { alert("Лобби не найдено"); return; } if (data.status !== "waiting") { alert("Лобби уже занято"); return; } if (data.players?.white === myUid) { enterLobby(lobbyId, "white"); return; } if ((myProfile.coins || 0) < Number(data.bet)) { alert("Недостаточно монет"); return; } await lob.update({ "players/black": myUid, "players/blackName": myProfile.name || "Игрок 2", status: "confirming", confirmDeadline: Date.now() + CONFIRM_TIME * 1000, confirmedWhite: null, confirmedBlack: null, starting: null }); enterLobby(lobbyId, "black"); }
 
 function enterLobby(lobbyId, color) {
-  currentLobbyId = lobbyId;
-  myColor = color;
-  lobbyRef = firebase.database().ref("lobbies/" + lobbyId);
-  payoutDone = false;
+  currentLobbyId = lobbyId; myColor = color; lobbyRef = firebase.database().ref("lobbies/" + lobbyId); payoutDone = false;
   if (lobbyUnsubscribe) { lobbyUnsubscribe(); lobbyUnsubscribe = null; }
-  document.getElementById("p1name").textContent = "Игрок 1";
-  document.getElementById("p2name").textContent = "Игрок 2";
-  document.getElementById("msg").textContent = "Ожидание соперника...";
-  document.getElementById("turn").textContent = "⏳ Ожидание...";
-  document.getElementById("potAmount").textContent = "0";
-  document.getElementById("confirmOverlay").classList.remove("open");
-  if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; }
-  showGame(); resetMoveTimer();
-  B = makeFreshBoard(); render();
-
+  document.getElementById("p1name").textContent = "Игрок 1"; document.getElementById("p2name").textContent = "Игрок 2"; document.getElementById("msg").textContent = "Ожидание соперника..."; document.getElementById("turn").textContent = "⏳ Ожидание..."; document.getElementById("potAmount").textContent = "0"; document.getElementById("confirmOverlay").classList.remove("open"); if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; }
+  showGame(); resetMoveTimer(); B = makeFreshBoard(); render();
   const handler = lobbyRef.on("value", snap => {
-    const d = snap.val();
-    if (!d) { msgEl.textContent = "Лобби закрыто"; return; }
-    lobbyData = d;
-    const pot = (d.bet || 0) * 2;
-    document.getElementById("potAmount").textContent = pot.toLocaleString("ru");
-    if (d.players) {
-      document.getElementById("p1name").textContent = d.players.whiteName || "Игрок 1";
-      document.getElementById("p2name").textContent = d.players.blackName || "Игрок 2";
-    }
-    if (d.players) {
-      if (d.players.white === myUid) myColor = "white";
-      else if (d.players.black === myUid) myColor = "black";
-    }
-    const fbBoard = d.board || {};
-    B = Array.from({length:8}, (_, r) => Array.from({length:8}, (_, c) => {
-      const v = fbBoard[r]?.[c];
-      return v === undefined || v === null ? null : v;
-    }));
-    current = d.current || "white";
-    gameOver = d.gameOver === true;
-    lastResult = d.result || null;
-    pendingDrawOffer = d.drawOffer || null;
-    if (d.whiteTime !== undefined) time.white = Number(d.whiteTime) || MOVE_TIME;
-    if (d.blackTime !== undefined) time.black = Number(d.blackTime) || MOVE_TIME;
+    const d = snap.val(); if (!d) { msgEl.textContent = "Лобби закрыто"; return; } lobbyData = d;
+    const pot = (Number(d.bet) || 0) * 2; document.getElementById("potAmount").textContent = pot.toLocaleString("ru");
+    if (d.players) { document.getElementById("p1name").textContent = d.players.whiteName || "Игрок 1"; document.getElementById("p2name").textContent = d.players.blackName || "Игрок 2"; }
+    if (d.players) { if (d.players.white === myUid) myColor = "white"; else if (d.players.black === myUid) myColor = "black"; }
+    const fbBoard = d.board || {}; B = Array.from({length:8}, (_, r) => Array.from({length:8}, (_, c) => { const v = fbBoard[r]?.[c]; return v === undefined || v === null ? null : v; }));
+    current = d.current || "white"; gameOver = d.gameOver === true; lastResult = d.result || null; pendingDrawOffer = d.drawOffer || null;
+    if (d.whiteTime !== undefined) time.white = Number(d.whiteTime) || MOVE_TIME; if (d.blackTime !== undefined) time.black = Number(d.blackTime) || MOVE_TIME;
     paintTimers();
-
-    if (d.status === "waiting") {
-      document.getElementById("confirmOverlay").classList.remove("open");
-      if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; }
-      turnEl.textContent = "⏳ Ожидание соперника...";
-      msgEl.textContent = "Ставка: 🪙 " + d.bet.toLocaleString("ru") + ". Ждём игрока.";
-      hideRestart(); updateDrawButtons(); render(); return;
-    }
-
-    if (d.status === "confirming") {
-      hideRestart(); updateDrawButtons();
-      showConfirmOverlay(d);
-      render(); return;
-    }
-
-    if (d.status === "playing" && !gameOver) {
-      document.getElementById("confirmOverlay").classList.remove("open");
-      if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; }
-      turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2";
-      msgEl.textContent = myColor === current ? "Ваш ход" : "⏳ Ход соперника";
-      hideRestart(); updateDrawButtons(); render(); return;
-    }
-
-    if (gameOver || d.status === "finished") {
-      document.getElementById("confirmOverlay").classList.remove("open");
-      if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; }
-      showRestart(); updateDrawButtons();
-      if (lastResult === "draw") {
-        turnEl.textContent = "🤝 Ничья"; msgEl.textContent = "Ничья. Ставки возвращены.";
-      } else if (lastResult) {
-        const winnerName = lastResult === "white" ? (d.players?.whiteName || "Белые") : (d.players?.blackName || "Чёрные");
-        turnEl.textContent = `🏆 Победа: ${winnerName}`; msgEl.textContent = "Игра завершена";
-      }
-      render(); payWinner(lastResult);
-    }
+    if (d.status === "waiting") { document.getElementById("confirmOverlay").classList.remove("open"); if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; } turnEl.textContent = "⏳ Ожидание соперника..."; msgEl.textContent = "Ставка: 🪙 " + d.bet.toLocaleString("ru") + ". Ждём игрока."; hideRestart(); updateDrawButtons(); render(); return; }
+    if (d.status === "confirming") { hideRestart(); updateDrawButtons(); showConfirmOverlay(d); render(); return; }
+    if (d.status === "playing" && !gameOver) { document.getElementById("confirmOverlay").classList.remove("open"); if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; } turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2"; msgEl.textContent = myColor === current ? "Ваш ход" : "⏳ Ход соперника"; hideRestart(); updateDrawButtons(); render(); return; }
+    if (gameOver || d.status === "finished") { document.getElementById("confirmOverlay").classList.remove("open"); if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; } showRestart(); updateDrawButtons(); if (lastResult === "draw") { turnEl.textContent = "🤝 Ничья"; msgEl.textContent = "Ничья. Ставки возвращены."; } else if (lastResult) { const winnerName = lastResult === "white" ? (d.players?.whiteName || "Белые") : (d.players?.blackName || "Чёрные"); turnEl.textContent = `🏆 Победа: ${winnerName}`; msgEl.textContent = "Игра завершена"; } render(); payWinner(lastResult); }
   });
   lobbyUnsubscribe = () => lobbyRef.off("value", handler);
-
-  restartBtn.onclick = async () => {
-    if (!lobbyRef) return;
-    await lobbyRef.update({
-      board: makeFreshBoard(), current: "white", gameOver: false,
-      whiteTime: MOVE_TIME, blackTime: MOVE_TIME, result: null,
-      status: "confirming",
-      confirmDeadline: Date.now() + CONFIRM_TIME * 1000,
-      confirmedWhite: null, confirmedBlack: null,
-      starting: null
-    });
-    await lobbyRef.child("drawOffer").remove();
-    await lobbyRef.child("payoutDone").remove();
-    payoutDone = false;
-    resetMoveTimer();
-  };
+  restartBtn.onclick = async () => { if (!lobbyRef) return; await lobbyRef.update({ board: makeFreshBoard(), current: "white", gameOver: false, whiteTime: MOVE_TIME, blackTime: MOVE_TIME, result: null, status: "confirming", confirmDeadline: Date.now() + CONFIRM_TIME * 1000, confirmedWhite: null, confirmedBlack: null, starting: null }); await lobbyRef.child("drawOffer").remove(); await lobbyRef.child("payoutDone").remove(); payoutDone = false; resetMoveTimer(); };
 }
 
 function showConfirmOverlay(d) {
-  const overlay = document.getElementById("confirmOverlay");
-  document.getElementById("confirmBetAmount").textContent = (d.bet||0).toLocaleString("ru") + " 🪙";
-  const whiteConfirmed = d.confirmedWhite === true;
-  const blackConfirmed = d.confirmedBlack === true;
-  const iAmWhite = d.players?.white === myUid;
-  const myConfirmed = iAmWhite ? whiteConfirmed : blackConfirmed;
-
-  const acceptBtn = document.getElementById("acceptGameBtn");
-  const declineBtn = document.getElementById("declineGameBtn");
-
-  if (myConfirmed) {
-    acceptBtn.textContent = "✅ Ожидание соперника"; acceptBtn.disabled = true;
-    declineBtn.disabled = false; declineBtn.textContent = "❌ Отменить";
-  } else {
-    acceptBtn.textContent = "✅ Принять"; acceptBtn.disabled = false;
-    declineBtn.disabled = false; declineBtn.textContent = "❌ Отклонить";
-  }
+  const overlay = document.getElementById("confirmOverlay"); document.getElementById("confirmBetAmount").textContent = (d.bet||0).toLocaleString("ru") + " 🪙";
+  const whiteConfirmed = d.confirmedWhite === true; const blackConfirmed = d.confirmedBlack === true; const iAmWhite = d.players?.white === myUid; const myConfirmed = iAmWhite ? whiteConfirmed : blackConfirmed;
+  const acceptBtn = document.getElementById("acceptGameBtn"); const declineBtn = document.getElementById("declineGameBtn");
+  if (myConfirmed) { acceptBtn.textContent = "✅ Ожидание соперника"; acceptBtn.disabled = true; declineBtn.disabled = false; declineBtn.textContent = "❌ Отменить"; } else { acceptBtn.textContent = "✅ Принять"; acceptBtn.disabled = false; declineBtn.disabled = false; declineBtn.textContent = "❌ Отклонить"; }
   overlay.classList.add("open");
-
   if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; }
-  confirmTimerId = setInterval(() => {
-    const remain = Math.max(0, Math.floor(((lobbyData?.confirmDeadline || 0) - Date.now()) / 1000));
-    document.getElementById("confirmTimer").textContent = remain;
-    if (remain <= 0) {
-      clearInterval(confirmTimerId); confirmTimerId = null;
-      handleConfirmTimeout();
-    }
-  }, 200);
+  confirmTimerId = setInterval(() => { const remain = Math.max(0, Math.floor(((lobbyData?.confirmDeadline || 0) - Date.now()) / 1000)); document.getElementById("confirmTimer").textContent = remain; if (remain <= 0) { clearInterval(confirmTimerId); confirmTimerId = null; handleConfirmTimeout(); } }, 200);
 }
 
 async function handleConfirmTimeout() {
-  if (!lobbyData || !lobbyRef) return;
-  const d = lobbyData;
-  const whiteConfirmed = d.confirmedWhite === true;
-  const blackConfirmed = d.confirmedBlack === true;
-  const iAmWhite = d.players?.white === myUid;
-  const myConfirmed = iAmWhite ? whiteConfirmed : blackConfirmed;
-
+  if (!lobbyData || !lobbyRef) return; const d = lobbyData; const whiteConfirmed = d.confirmedWhite === true; const blackConfirmed = d.confirmedBlack === true; const iAmWhite = d.players?.white === myUid; const myConfirmed = iAmWhite ? whiteConfirmed : blackConfirmed;
   if (whiteConfirmed && blackConfirmed) return;
-
   if (whiteConfirmed !== blackConfirmed) {
-    if (myConfirmed) {
-      if (iAmWhite) {
-        await lobbyRef.update({
-          status: "waiting",
-          "players/black": null, "players/blackName": null,
-          confirmDeadline: null, confirmedWhite: null, confirmedBlack: null, starting: null
-        });
-      } else {
-        await lobbyRef.update({
-          status: "waiting",
-          "players/white": myUid, "players/whiteName": myProfile.name || "Игрок",
-          "players/black": null, "players/blackName": null,
-          creator: myUid,
-          confirmDeadline: null, confirmedWhite: null, confirmedBlack: null, starting: null
-        });
-      }
-      document.getElementById("confirmOverlay").classList.remove("open");
-    } else {
-      await lobbyRef.remove().catch(()=>{});
-      exitToMenu();
-    }
-  } else {
-    await lobbyRef.remove().catch(()=>{});
-    exitToMenu();
-  }
+    if (myConfirmed) { if (iAmWhite) { await lobbyRef.update({ status: "waiting", "players/black": null, "players/blackName": null, confirmDeadline: null, confirmedWhite: null, confirmedBlack: null, starting: null }); } else { await lobbyRef.update({ status: "waiting", "players/white": myUid, "players/whiteName": myProfile.name || "Игрок", "players/black": null, "players/blackName": null, creator: myUid, confirmDeadline: null, confirmedWhite: null, confirmedBlack: null, starting: null }); } document.getElementById("confirmOverlay").classList.remove("open"); } else { await lobbyRef.remove().catch(()=>{}); exitToMenu(); }
+  } else { await lobbyRef.remove().catch(()=>{}); exitToMenu(); }
 }
 
 document.getElementById("acceptGameBtn").onclick = async () => {
-  if (!lobbyRef || !lobbyData) return;
-  const iAmWhite = lobbyData.players?.white === myUid;
-
-  if (iAmWhite) await lobbyRef.child("confirmedWhite").set(true);
-  else await lobbyRef.child("confirmedBlack").set(true);
-
-  const snap = await lobbyRef.once("value");
-  const d = snap.val();
-  if (!d?.confirmedWhite || !d?.confirmedBlack) return;
-
-  // транзакция «starting» — только ОДИН клиент запустит игру
-  const startResult = await lobbyRef.child("starting").transaction(v => {
-    if (v === true) return;
-    return true;
-  });
+  if (!lobbyRef || !lobbyData) return; const iAmWhite = lobbyData.players?.white === myUid;
+  if (iAmWhite) await lobbyRef.child("confirmedWhite").set(true); else await lobbyRef.child("confirmedBlack").set(true);
+  const snap = await lobbyRef.once("value"); const d = snap.val(); if (!d?.confirmedWhite || !d?.confirmedBlack) return;
+  const startResult = await lobbyRef.child("starting").transaction(v => { if (v === true) return; return true; });
   if (!startResult.committed) return;
-
-  // только победитель транзакции списывает
-  const bet = d.bet || 0;
-  const uidW = d.players?.white;
-  const uidB = d.players?.black;
-  let okW = true, okB = true;
-
-  if (uidW) {
-    await firebase.database().ref(`users/${uidW}/coins`).transaction(v => {
-      if ((v||0) < bet) { okW = false; return; }
-      return (v||0) - bet;
-    });
-  }
-  if (uidB) {
-    await firebase.database().ref(`users/${uidB}/coins`).transaction(v => {
-      if ((v||0) < bet) { okB = false; return; }
-      return (v||0) - bet;
-    });
-  }
-
-  if (!okW || !okB) {
-    if (okW && uidW) await firebase.database().ref(`users/${uidW}/coins`).transaction(v => (v||0) + bet);
-    if (okB && uidB) await firebase.database().ref(`users/${uidB}/coins`).transaction(v => (v||0) + bet);
-    await lobbyRef.remove().catch(()=>{});
-    exitToMenu();
-    alert("Недостаточно монет у одного из игроков");
-    return;
-  }
-
-  await lobbyRef.update({
-    status: "playing",
-    confirmDeadline: null,
-    starting: null,
-    board: makeFreshBoard(),
-    current: "white",
-    gameOver: false,
-    whiteTime: MOVE_TIME,
-    blackTime: MOVE_TIME
-  });
+  const bet = Number(d.bet) || 0; const uidW = d.players?.white; const uidB = d.players?.black; let okW = true, okB = true;
+  if (uidW) { await firebase.database().ref(`users/${uidW}/coins`).transaction(v => { if ((v||0) < bet) { okW = false; return; } return (v||0) - bet; }); }
+  if (uidB) { await firebase.database().ref(`users/${uidB}/coins`).transaction(v => { if ((v||0) < bet) { okB = false; return; } return (v||0) - bet; }); }
+  if (!okW || !okB) { if (okW && uidW) await firebase.database().ref(`users/${uidW}/coins`).transaction(v => (v||0) + bet); if (okB && uidB) await firebase.database().ref(`users/${uidB}/coins`).transaction(v => (v||0) + bet); await lobbyRef.remove().catch(()=>{}); exitToMenu(); alert("Недостаточно монет у одного из игроков"); return; }
+  await lobbyRef.update({ status: "playing", confirmDeadline: null, starting: null, board: makeFreshBoard(), current: "white", gameOver: false, whiteTime: MOVE_TIME, blackTime: MOVE_TIME });
 };
 
-document.getElementById("declineGameBtn").onclick = async () => {
-  if (!lobbyRef) return;
-  await lobbyRef.remove().catch(()=>{});
-  exitToMenu();
-};
+document.getElementById("declineGameBtn").onclick = async () => { if (!lobbyRef) return; await lobbyRef.remove().catch(()=>{}); exitToMenu(); };
 
 async function payWinner(result) {
-  if (payoutDone) return;
-  if (!lobbyData || !lobbyRef) return;
-  const snap = await lobbyRef.child("payoutDone").once("value");
-  if (snap.val() === true) return;
-  payoutDone = true;
-  await lobbyRef.child("payoutDone").set(true);
-  const bet = lobbyData.bet || 0;
-  const pot = bet * 2;
-  const winAmount = Math.floor(pot * 0.98);
-  const uidWhite = lobbyData.players?.white;
-  const uidBlack = lobbyData.players?.black;
-  const whiteName = lobbyData.players?.whiteName || "Игрок";
-  const blackName = lobbyData.players?.blackName || "Игрок";
-
+  if (payoutDone) return; if (!lobbyData || !lobbyRef) return; const snap = await lobbyRef.child("payoutDone").once("value"); if (snap.val() === true) return; payoutDone = true; await lobbyRef.child("payoutDone").set(true);
+  const bet = Number(lobbyData.bet) || 0; const pot = bet * 2; const winAmount = Math.floor(pot * 0.98); const uidWhite = lobbyData.players?.white; const uidBlack = lobbyData.players?.black; const whiteName = lobbyData.players?.whiteName || "Игрок"; const blackName = lobbyData.players?.blackName || "Игрок";
   if (result === "draw") {
-    if (uidWhite) await firebase.database().ref(`users/${uidWhite}/coins`).transaction(v => (v||0) + bet);
-    if (uidBlack) await firebase.database().ref(`users/${uidBlack}/coins`).transaction(v => (v||0) + bet);
-    await lobbyRef.update({
-      status: "waiting", result: null, gameOver: false, confirmDeadline: null,
-      "players/black": null, "players/blackName": null,
-      confirmedWhite: null, confirmedBlack: null, starting: null,
-      board: makeFreshBoard(), current: "white", whiteTime: MOVE_TIME, blackTime: MOVE_TIME
-    });
-    await lobbyRef.child("payoutDone").remove();
+    if (uidWhite) await firebase.database().ref(`users/${uidWhite}/coins`).transaction(v => (v||0) + bet); if (uidBlack) await firebase.database().ref(`users/${uidBlack}/coins`).transaction(v => (v||0) + bet);
+    await lobbyRef.update({ status: "waiting", result: null, gameOver: false, confirmDeadline: null, "players/black": null, "players/blackName": null, confirmedWhite: null, confirmedBlack: null, starting: null, board: makeFreshBoard(), current: "white", whiteTime: MOVE_TIME, blackTime: MOVE_TIME }); await lobbyRef.child("payoutDone").remove();
   } else {
-    const winnerUid = result === "white" ? uidWhite : uidBlack;
-    const loserUid = result === "white" ? uidBlack : uidWhite;
-    const winnerName = result === "white" ? whiteName : blackName;
-    if (winnerUid) {
-      await firebase.database().ref(`users/${winnerUid}/coins`).transaction(v => (v||0) + winAmount);
-      await firebase.database().ref(`users/${winnerUid}/wins`).transaction(v => (v||0) + 1);
-    }
-    if (loserUid) {
-      await firebase.database().ref(`users/${loserUid}/losses`).transaction(v => (v||0) + 1);
-    }
-    // победитель остаётся в лобби в статусе waiting
-    await lobbyRef.update({
-      status: "waiting",
-      result: null, gameOver: false, confirmDeadline: null,
-      confirmedWhite: null, confirmedBlack: null, starting: null,
-      board: makeFreshBoard(), current: "white", whiteTime: MOVE_TIME, blackTime: MOVE_TIME,
-      "players/white": winnerUid,
-      "players/whiteName": winnerName,
-      "players/black": null,
-      "players/blackName": null,
-      creator: winnerUid
-    });
-    await lobbyRef.child("payoutDone").remove();
+    const winnerUid = result === "white" ? uidWhite : uidBlack; const loserUid = result === "white" ? uidBlack : uidWhite; const winnerName = result === "white" ? whiteName : blackName;
+    if (winnerUid) { await firebase.database().ref(`users/${winnerUid}/coins`).transaction(v => (v||0) + winAmount); await firebase.database().ref(`users/${winnerUid}/wins`).transaction(v => (v||0) + 1); }
+    if (loserUid) { await firebase.database().ref(`users/${loserUid}/losses`).transaction(v => (v||0) + 1); }
+    await lobbyRef.update({ status: "waiting", result: null, gameOver: false, confirmDeadline: null, confirmedWhite: null, confirmedBlack: null, starting: null, board: makeFreshBoard(), current: "white", whiteTime: MOVE_TIME, blackTime: MOVE_TIME, "players/white": winnerUid, "players/whiteName": winnerName, "players/black": null, "players/blackName": null, creator: winnerUid }); await lobbyRef.child("payoutDone").remove();
   }
 }
 
-document.getElementById("resign").onclick = () => {
-  if (gameOver || !myColor || !lobbyRef) return;
-  SFX.lose();
-  const winner = myColor === "white" ? "black" : "white";
-  const loser = myColor;
-  gameOver = true; lastResult = winner;
-  turnEl.textContent = loser === "white" ? "🏳️ Белые сдались" : "🏳️ Чёрные сдались";
-  msgEl.textContent = "Игра окончена";
-  showRestart();
-  lobbyRef.update({ board: B, current, gameOver: true, result: winner, status: "finished" });
-};
-
-function onMove(r, c) {
-  if (!onlineReady || gameOver) return;
-  if (myColor !== current) { msgEl.textContent = "⏳ Сейчас ход соперника."; return; }
-  localMove(r, c);
-  if (lobbyRef) {
-    const updateData = { board: B, current, gameOver, whiteTime: time.white, blackTime: time.black };
-    if (gameOver && lastResult) { updateData.result = lastResult; updateData.status = "finished"; }
-    lobbyRef.update(updateData);
-  }
-}
-
-function exitToMenu() {
-  if (lobbyUnsubscribe) { lobbyUnsubscribe(); lobbyUnsubscribe = null; }
-  currentLobbyId = null; lobbyRef = null; lobbyData = null;
-  gameOver = false; payoutDone = false; myColor = null;
-  document.getElementById("confirmOverlay").classList.remove("open");
-  if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; }
-  showMenu();
-}
+document.getElementById("resign").onclick = () => { if (gameOver || !myColor || !lobbyRef) return; SFX.lose(); const winner = myColor === "white" ? "black" : "white"; const loser = myColor; gameOver = true; lastResult = winner; turnEl.textContent = loser === "white" ? "🏳️ Белые сдались" : "🏳️ Чёрные сдались"; msgEl.textContent = "Игра окончена"; showRestart(); lobbyRef.update({ board: B, current, gameOver: true, result: winner, status: "finished" }); };
+function onMove(r, c) { if (!onlineReady || gameOver) return; if (myColor !== current) { msgEl.textContent = "⏳ Сейчас ход соперника."; return; } localMove(r, c); if (lobbyRef) { const updateData = { board: B, current, gameOver, whiteTime: time.white, blackTime: time.black }; if (gameOver && lastResult) { updateData.result = lastResult; updateData.status = "finished"; } lobbyRef.update(updateData); } }
+function exitToMenu() { if (lobbyUnsubscribe) { lobbyUnsubscribe(); lobbyUnsubscribe = null; } currentLobbyId = null; lobbyRef = null; lobbyData = null; gameOver = false; payoutDone = false; myColor = null; document.getElementById("confirmOverlay").classList.remove("open"); if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; } showMenu(); }
 
 document.getElementById("btnPlay").onclick = async () => {
-  if (!onlineReady) { alert("Подключение..."); return; }
-  if (!myProfile.name) { alert("Сначала задайте имя"); return; }
-  searching = true;
-  document.getElementById("searchOverlay").classList.add("open");
-  document.getElementById("searchStatus").textContent = "Ищем подходящее лобби...";
+  if (!onlineReady) { alert("Подключение..."); return; } if (!myProfile.name) { alert("Сначала задайте имя"); return; }
+  searching = true; document.getElementById("searchOverlay").classList.add("open"); document.getElementById("searchStatus").textContent = "Ищем подходящее лобби...";
   const lobbiesRef = firebase.database().ref("lobbies");
-  const tryFind = async (snap) => {
-    if (!searching) return;
-    const all = snap.val() || {};
-    let found = null;
-    for (const [id, lob] of Object.entries(all)) {
-      if (lob.status !== "waiting") continue;
-      if (lob.players?.white === myUid) continue;
-      if (lob.bet > (myProfile.coins || 0)) continue;
-      found = { id, ...lob };
-      break;
-    }
-    if (found) {
-      searching = false;
-      if (searchListener) { lobbiesRef.off("value", searchListener); searchListener = null; }
-      document.getElementById("searchOverlay").classList.remove("open");
-      await joinLobby(found.id);
-      return;
-    }
-    if (searching) setTimeout(() => { if (searching) lobbiesRef.once("value").then(tryFind); }, 2000);
-  };
-  searchListener = (snap) => tryFind(snap);
-  lobbiesRef.on("value", searchListener);
-  lobbiesRef.once("value").then(tryFind);
+  const tryFind = async (snap) => { if (!searching) return; const all = snap.val() || {}; let found = null; for (const [id, lob] of Object.entries(all)) { if (lob.status !== "waiting") continue; if (lob.players?.white === myUid) continue; if (Number(lob.bet) > (myProfile.coins || 0)) continue; found = { id, ...lob }; break; } if (found) { searching = false; if (searchListener) { lobbiesRef.off("value", searchListener); searchListener = null; } document.getElementById("searchOverlay").classList.remove("open"); await joinLobby(found.id); return; } if (searching) setTimeout(() => { if (searching) lobbiesRef.once("value").then(tryFind); }, 2000); };
+  searchListener = (snap) => tryFind(snap); lobbiesRef.on("value", searchListener); lobbiesRef.once("value").then(tryFind);
 };
 
-document.getElementById("cancelSearchBtn").onclick = () => {
-  searching = false;
-  if (searchListener) { firebase.database().ref("lobbies").off("value", searchListener); searchListener = null; }
-  document.getElementById("searchOverlay").classList.remove("open");
-};
-
-document.getElementById("btnLobbies").onclick = () => {
-  const list = document.getElementById("lobbyList");
-  list.innerHTML = "<div style='text-align:center;color:#888;padding:10px'>Загрузка...</div>";
-  document.getElementById("lobbiesModal").classList.add("open");
-  firebase.database().ref("lobbies").once("value").then(snap => {
-    const all = snap.val() || {};
-    const arr = Object.entries(all).filter(([_, l]) => l.status === "waiting").map(([id, l]) => ({ id, ...l }));
-    if (arr.length === 0) { list.innerHTML = "<div style='text-align:center;color:#888;padding:20px'>Нет открытых лобби</div>"; return; }
-    list.innerHTML = "";
-    arr.sort((a, b) => a.bet - b.bet);
-    arr.forEach(lob => {
-      const row = document.createElement("div"); row.className = "lobby-row";
-      const canJoin = (myProfile.coins || 0) >= lob.bet;
-      const isMine = lob.players?.white === myUid;
-      row.innerHTML = `<div><div class="bet">🪙 ${lob.bet.toLocaleString("ru")}</div><div style="color:#888;font-size:11px">${lob.players?.whiteName || "?"}${isMine ? " (ваше)" : ""}</div></div><button ${(canJoin || isMine) ? "" : "disabled"}>${isMine ? "Вернуться" : (canJoin ? "Войти" : "Мало монет")}</button>`;
-      row.querySelector("button").onclick = () => {
-        document.getElementById("lobbiesModal").classList.remove("open");
-        if (isMine) enterLobby(lob.id, "white"); else joinLobby(lob.id);
-      };
-      list.appendChild(row);
-    });
-  });
-};
-
-document.getElementById("btnCreate").onclick = () => {
-  const grid = document.getElementById("betGrid"); grid.innerHTML = "";
-  BET_AMOUNTS.forEach(bet => {
-    const btn = document.createElement("button"); btn.className = "bet-btn";
-    btn.textContent = `🪙 ${bet.toLocaleString("ru")}`;
-    btn.disabled = (myProfile.coins || 0) < bet;
-    btn.onclick = async () => { document.getElementById("createModal").classList.remove("open"); await createLobby(bet); };
-    grid.appendChild(btn);
-  });
-  document.getElementById("createModal").classList.add("open");
-};
-
-document.getElementById("backBtn").onclick = async () => {
-  if (lobbyData && lobbyData.status === "waiting") {
-    if (!confirm("Выйти из лобби? Оно будет удалено.")) return;
-    if (lobbyRef) await lobbyRef.remove().catch(()=>{});
-    exitToMenu();
-    return;
-  }
-  if (lobbyData && lobbyData.status === "confirming") {
-    if (!confirm("Выйти? Игра не началась — лобби будет удалено.")) return;
-    if (lobbyRef) await lobbyRef.remove().catch(()=>{});
-    exitToMenu();
-    return;
-  }
-  if (lobbyData && lobbyData.status === "playing" && !gameOver) {
-    if (!confirm("Вы уверены? Вы проиграете игру.")) return;
-    SFX.lose();
-    const winner = myColor === "white" ? "black" : "white";
-    gameOver = true; lastResult = winner;
-    await lobbyRef.update({ board: B, current, gameOver: true, result: winner, status: "finished" });
-    return;
-  }
-  exitToMenu();
-};
-
+document.getElementById("cancelSearchBtn").onclick = () => { searching = false; if (searchListener) { firebase.database().ref("lobbies").off("value", searchListener); searchListener = null; } document.getElementById("searchOverlay").classList.remove("open"); };
+document.getElementById("btnLobbies").onclick = () => { const list = document.getElementById("lobbyList"); list.innerHTML = "<div style='text-align:center;color:#888;padding:10px'>Загрузка...</div>"; document.getElementById("lobbiesModal").classList.add("open"); firebase.database().ref("lobbies").once("value").then(snap => { const all = snap.val() || {}; const arr = Object.entries(all).filter(([_, l]) => l.status === "waiting").map(([id, l]) => ({ id, ...l })); if (arr.length === 0) { list.innerHTML = "<div style='text-align:center;color:#888;padding:20px'>Нет открытых лобби</div>"; return; } list.innerHTML = ""; arr.sort((a, b) => Number(a.bet) - Number(b.bet)); arr.forEach(lob => { const row = document.createElement("div"); row.className = "lobby-row"; const canJoin = (myProfile.coins || 0) >= Number(lob.bet); const isMine = lob.players?.white === myUid; row.innerHTML = `<div><div class="bet">🪙 ${Number(lob.bet).toLocaleString("ru")}</div><div style="color:#888;font-size:11px">${lob.players?.whiteName || "?"}${isMine ? " (ваше)" : ""}</div></div><button ${(canJoin || isMine) ? "" : "disabled"}>${isMine ? "Вернуться" : (canJoin ? "Войти" : "Мало монет")}</button>`; row.querySelector("button").onclick = () => { document.getElementById("lobbiesModal").classList.remove("open"); if (isMine) enterLobby(lob.id, "white"); else joinLobby(lob.id); }; list.appendChild(row); }); }); };
+document.getElementById("btnCreate").onclick = () => { const grid = document.getElementById("betGrid"); grid.innerHTML = ""; BET_AMOUNTS.forEach(bet => { const btn = document.createElement("button"); btn.className = "bet-btn"; btn.textContent = `🪙 ${bet.toLocaleString("ru")}`; btn.disabled = (myProfile.coins || 0) < bet; btn.onclick = async () => { document.getElementById("createModal").classList.remove("open"); await createLobby(bet); }; grid.appendChild(btn); }); document.getElementById("createModal").classList.add("open"); };
+document.getElementById("backBtn").onclick = async () => { if (lobbyData && lobbyData.status === "waiting") { if (!confirm("Выйти из лобби? Оно будет удалено.")) return; if (lobbyRef) await lobbyRef.remove().catch(()=>{}); exitToMenu(); return; } if (lobbyData && lobbyData.status === "confirming") { if (!confirm("Выйти? Игра не началась — лобби будет удалено.")) return; if (lobbyRef) await lobbyRef.remove().catch(()=>{}); exitToMenu(); return; } if (lobbyData && lobbyData.status === "playing" && !gameOver) { if (!confirm("Вы уверены? Вы проиграете игру.")) return; SFX.lose(); const winner = myColor === "white" ? "black" : "white"; gameOver = true; lastResult = winner; await lobbyRef.update({ board: B, current, gameOver: true, result: winner, status: "finished" }); return; } exitToMenu(); };
 document.getElementById("btnSettings").onclick = () => document.getElementById("settingsModal").classList.add("open");
-
 resetMoveTimer(); render(); showMenu();
-
 document.addEventListener("pointerdown", function unlock() { getAudio(); document.removeEventListener("pointerdown", unlock); }, { once: true });
 </script>
 </body>
