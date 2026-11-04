@@ -110,16 +110,6 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 .search-overlay .cancel{margin-top:20px;background:#ad2922;border:0;border-radius:10px;padding:12px 24px;color:white;font-weight:bold;font-size:14px;cursor:pointer}
 .drag-ghost{position:fixed;width:40px;height:40px;margin-left:-20px;margin-top:-20px;pointer-events:none;z-index:9999;transform:scale(1.15);box-shadow:0 8px 18px #000a}
 .drag-origin{opacity:0.25}
-.confirm-overlay{position:fixed;inset:0;background:#000d;z-index:3000;display:none;flex-direction:column;align-items:center;justify-content:center;color:white;text-align:center;padding:20px}
-.confirm-overlay.open{display:flex}
-.confirm-box{background:#1c1f22;border:2px solid #b8903a;border-radius:15px;padding:24px;max-width:400px;width:100%}
-.confirm-box h2{margin:0 0 12px;font-size:18px}
-.confirm-box .bet-amount{font-size:28px;font-weight:bold;color:#f1d16b;margin:12px 0}
-.confirm-box .timer-big{font-size:36px;font-weight:bold;color:#ff5252;margin:10px 0}
-.confirm-box .confirm-buttons{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}
-.confirm-box .confirm-buttons button{padding:14px;font-size:15px}
-.accept-game{background:#28751d}
-.decline-game{background:#ad2922}
 .skin-item{background:#101315;border:1px solid #34383c;border-radius:10px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .skin-item .skin-info{flex:1}
 .skin-item .skin-name{font-weight:bold;font-size:15px;margin-bottom:4px}
@@ -162,7 +152,6 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 <div id="shopModal" class="modal"><div class="modal-content"><button class="modal-close" data-close="shopModal">✖</button><h2>🛒 Магазин</h2><div id="shopList" style="margin-top:10px"></div></div></div>
 <div id="settingsModal" class="modal"><div class="modal-content"><button class="modal-close" data-close="settingsModal">✖</button><h2>⚙️ Настройки</h2><p style="text-align:center;color:#888;padding:20px">Скоро...</p></div></div>
 <div id="searchOverlay" class="search-overlay"><div class="spinner"></div><div style="font-size:18px;font-weight:bold">Поиск соперника...</div><div id="searchStatus" style="color:#888;font-size:13px;margin-top:8px">Ищем подходящее лобби</div><button class="cancel" id="cancelSearchBtn">Отменить</button></div>
-<div id="confirmOverlay" class="confirm-overlay"><div class="confirm-box"><h2>🎮 Принять игру?</h2><div class="bet-amount" id="confirmBetAmount">100 🪙</div><div class="timer-big" id="confirmTimer">15</div><div style="color:#888;font-size:12px">Если не нажмёте «Принять», вы выйдете из лобби</div><div class="confirm-buttons"><button class="accept-game" id="acceptGameBtn">✅ Принять</button><button class="decline-game" id="declineGameBtn">❌ Отклонить</button></div></div></div>
 <div id="gameScreen" class="game-screen" style="display:none"><div class="game"><div class="game-header"><button id="backBtn" class="back-btn">← Назад</button><div class="pot-display" id="potDisplay">💰 <span id="potAmount">0</span> 🪙<small>общий банк</small></div></div><div class="players"><div class="p"><span class="dot white" id="dot1"></span><span class="name" id="p1name">Игрок 1</span></div><span id="t1" class="timer">0:20</span><span id="t2" class="timer">0:20</span><div class="p right"><span class="name" id="p2name">Игрок 2</span><span class="dot black" id="dot2"></span></div></div><div id="turn" class="turn">⚪ Ход игрока 1</div><div class="frame"><div class="nums"><span>8</span><span>7</span><span>6</span><span>5</span><span>4</span><span>3</span><span>2</span><span>1</span></div><div id="board" class="board"></div></div><div class="letters"><span></span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div><div id="msg" class="msg">Ожидание...</div><div class="buttons" id="gameButtons"><button id="draw" class="draw">🤝 Ничья</button><button id="resign" class="resign">🏳️ Сдаться</button><button id="acceptDraw" class="draw" style="display:none">✅ Принять</button><button id="declineDraw" class="resign" style="display:none">❌ Отклонить</button><button id="restart" class="restart" style="display:none">🔄 Новая игра</button></div></div></div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
@@ -178,7 +167,7 @@ const SKINS = [{ id: "ice", name: "🧊 Ледяные шашки", price: 10000
 const boardEl = document.getElementById("board"); const turnEl = document.getElementById("turn"); const msgEl = document.getElementById("msg"); const restartBtn = document.getElementById("restart");
 let B = Array.from({length:8}, () => Array(8).fill(null)); let current = "white"; let selected = null; let gameOver = false; let lastResult = null; let time = { white: MOVE_TIME, black: MOVE_TIME };
 let myColor = null; let onlineReady = false; let myUid = null; let myProfile = { name: "", wins: 0, losses: 0, draws: 0, coins: 0, gems: 0, lastBonus: 0 }; let mySkins = []; let equippedSkin = null;
-let currentLobbyId = null; let lobbyRef = null; let lobbyData = null; let lobbyUnsubscribe = null; let payoutDone = false; let confirmTimerId = null; let searching = false; let searchListener = null;
+let currentLobbyId = null; let lobbyRef = null; let lobbyData = null; let lobbyUnsubscribe = null; let payoutDone = false; let searching = false; let searchListener = null;
 
 function makeFreshBoard() { const b = Array.from({length:8}, () => Array(8).fill(null)); for (let r = 0; r < 3; r++) for (let c = 0; c < 8; c++) if ((r + c) % 2 === 1) b[r][c] = { color: "black", king: false }; for (let r = 5; r < 8; r++) for (let c = 0; c < 8; c++) if ((r + c) % 2 === 1) b[r][c] = { color: "white", king: false }; return b; }
 B = makeFreshBoard(); const inside = (r, c) => r >= 0 && r < 8 && c >= 0 && c < 8;
@@ -269,12 +258,14 @@ async function joinLobby(lobbyId) {
   await lob.update({
     "players/black": myUid,
     "players/blackName": myProfile.name || "Игрок 2",
-    status: "confirming",
-    confirmDeadline: Date.now() + CONFIRM_TIME * 1000,
-    confirmedWhite: null,
-    confirmedBlack: null,
-    starting: null
+    status: "playing",
+    board: makeFreshBoard(),
+    current: "white",
+    gameOver: false,
+    whiteTime: MOVE_TIME,
+    blackTime: MOVE_TIME
   });
+
   enterLobby(lobbyId, "black");
 }
 
@@ -289,8 +280,6 @@ function enterLobby(lobbyId, color) {
   document.getElementById("msg").textContent = "Ожидание соперника...";
   document.getElementById("turn").textContent = "⏳ Ожидание...";
   document.getElementById("potAmount").textContent = "0";
-  document.getElementById("confirmOverlay").classList.remove("open");
-  if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; }
   showGame(); resetMoveTimer();
   B = makeFreshBoard(); render();
 
@@ -330,30 +319,18 @@ function enterLobby(lobbyId, color) {
     paintTimers();
 
     if (d.status === "waiting") {
-      document.getElementById("confirmOverlay").classList.remove("open");
-      if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; }
       turnEl.textContent = "⏳ Ожидание соперника...";
       msgEl.textContent = "Ставка: 🪙 " + d.bet.toLocaleString("ru") + ". Ждём игрока.";
       hideRestart(); updateDrawButtons(); render(); return;
     }
 
-    if (d.status === "confirming") {
-      hideRestart(); updateDrawButtons();
-      showConfirmOverlay(d);
-      render(); return;
-    }
-
     if (d.status === "playing" && !gameOver) {
-      document.getElementById("confirmOverlay").classList.remove("open");
-      if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; }
       turnEl.textContent = current === "white" ? "⚪ Ход игрока 1" : "⚫ Ход игрока 2";
       msgEl.textContent = myColor === current ? "Ваш ход" : "⏳ Ход соперника";
       hideRestart(); updateDrawButtons(); render(); return;
     }
 
     if (gameOver || d.status === "finished") {
-      document.getElementById("confirmOverlay").classList.remove("open");
-      if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; }
       showRestart(); updateDrawButtons();
       if (lastResult === "draw") {
         turnEl.textContent = "🤝 Ничья"; msgEl.textContent = "Ничья. Ставки возвращены.";
@@ -380,10 +357,8 @@ function enterLobby(lobbyId, color) {
     await lobbyRef.update({
       board: makeFreshBoard(), current: "white", gameOver: false,
       whiteTime: MOVE_TIME, blackTime: MOVE_TIME, result: null,
-      status: "confirming",
-      confirmDeadline: Date.now() + CONFIRM_TIME * 1000,
-      confirmedWhite: null, confirmedBlack: null,
-      starting: null, colorMap: newColorMap
+      status: "playing",
+      colorMap: newColorMap
     });
     await lobbyRef.child("drawOffer").remove();
     await lobbyRef.child("payoutDone").remove();
@@ -392,103 +367,29 @@ function enterLobby(lobbyId, color) {
   };
 }
 
-function showConfirmOverlay(d) {
-  const overlay = document.getElementById("confirmOverlay");
-  document.getElementById("confirmBetAmount").textContent = (d.bet||0).toLocaleString("ru") + " 🪙";
-  const whiteConfirmed = d.confirmedWhite === true;
-  const blackConfirmed = d.confirmedBlack === true;
-  const iAmWhite = d.players?.white === myUid;
-  const myConfirmed = iAmWhite ? whiteConfirmed : blackConfirmed;
+// Присоединение (списание денег)
+async function joinLobby(lobbyId) {
+  const lob = firebase.database().ref("lobbies/" + lobbyId);
+  const snap = await lob.once("value");
+  const data = snap.val();
+  if (!data) { alert("Лобби не найдено"); return; }
+  if (data.status !== "waiting") { alert("Лобби уже занято"); return; }
+  if (data.players?.white === myUid) { enterLobby(lobbyId, "white"); return; }
+  if ((myProfile.coins || 0) < Number(data.bet)) { alert("Недостаточно монет"); return; }
 
-  const acceptBtn = document.getElementById("acceptGameBtn");
-  const declineBtn = document.getElementById("declineGameBtn");
-
-  if (myConfirmed) {
-    acceptBtn.textContent = "✅ Ожидание соперника"; acceptBtn.disabled = true;
-    declineBtn.disabled = false; declineBtn.textContent = "❌ Отменить";
-  } else {
-    acceptBtn.textContent = "✅ Принять"; acceptBtn.disabled = false;
-    declineBtn.disabled = false; declineBtn.textContent = "❌ Отклонить";
-  }
-  overlay.classList.add("open");
-
-  if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; }
-  confirmTimerId = setInterval(() => {
-    const remain = Math.max(0, Math.floor(((lobbyData?.confirmDeadline || 0) - Date.now()) / 1000));
-    document.getElementById("confirmTimer").textContent = remain;
-    if (remain <= 0) {
-      clearInterval(confirmTimerId); confirmTimerId = null;
-      handleConfirmTimeout();
-    }
-  }, 200);
-}
-
-async function handleConfirmTimeout() {
-  if (!lobbyData || !lobbyRef) return;
-  const d = lobbyData;
-  const whiteConfirmed = d.confirmedWhite === true;
-  const blackConfirmed = d.confirmedBlack === true;
-  const iAmWhite = d.players?.white === myUid;
-  const myConfirmed = iAmWhite ? whiteConfirmed : blackConfirmed;
-
-  if (whiteConfirmed && blackConfirmed) return;
-
-  if (whiteConfirmed !== blackConfirmed) {
-    if (myConfirmed) {
-      if (iAmWhite) {
-        await lobbyRef.update({
-          status: "waiting",
-          "players/black": null, "players/blackName": null,
-          confirmDeadline: null, confirmedWhite: null, confirmedBlack: null, starting: null
-        });
-      } else {
-        await lobbyRef.update({
-          status: "waiting",
-          "players/white": myUid, "players/whiteName": myProfile.name || "Игрок",
-          "players/black": null, "players/blackName": null,
-          creator: myUid,
-          confirmDeadline: null, confirmedWhite: null, confirmedBlack: null, starting: null
-        });
-      }
-      document.getElementById("confirmOverlay").classList.remove("open");
-    } else {
-      await lobbyRef.remove().catch(()=>{});
-      exitToMenu();
-    }
-  } else {
-    await lobbyRef.remove().catch(()=>{});
-    exitToMenu();
-  }
-}
-
-document.getElementById("acceptGameBtn").onclick = async () => {
-  if (!lobbyRef || !lobbyData) return;
-  const iAmWhite = lobbyData.players?.white === myUid;
-
-  if (iAmWhite) await lobbyRef.child("confirmedWhite").set(true);
-  else await lobbyRef.child("confirmedBlack").set(true);
-
-  const snap = await lobbyRef.once("value");
-  const d = snap.val();
-  if (!d?.confirmedWhite || !d?.confirmedBlack) return;
-
-  const startResult = await lobbyRef.child("starting").transaction(v => {
-    if (v === true) return;
-    return true;
-  });
-  if (!startResult.committed) return;
-
-  const bet = Number(d.bet) || 0;
-  const uidW = d.players?.white;
-  const uidB = d.players?.black;
+  const bet = Number(data.bet);
+  const uidW = data.players?.white;
+  const uidB = myUid;
   let okW = true, okB = true;
 
+  // Списываем у создателя
   if (uidW) {
     await firebase.database().ref(`users/${uidW}/coins`).transaction(v => {
       if ((v||0) < bet) { okW = false; return; }
       return (v||0) - bet;
     });
   }
+  // Списываем у присоединившегося
   if (uidB) {
     await firebase.database().ref(`users/${uidB}/coins`).transaction(v => {
       if ((v||0) < bet) { okB = false; return; }
@@ -499,8 +400,7 @@ document.getElementById("acceptGameBtn").onclick = async () => {
   if (!okW || !okB) {
     if (okW && uidW) await firebase.database().ref(`users/${uidW}/coins`).transaction(v => (v||0) + bet);
     if (okB && uidB) await firebase.database().ref(`users/${uidB}/coins`).transaction(v => (v||0) + bet);
-    await lobbyRef.update({ status: "waiting", starting: null, confirmDeadline: null, "players/black": null, "players/blackName": null, confirmedWhite: null, confirmedBlack: null });
-    alert("Недостаточно монет у одного из игроков");
+    alert("У кого-то не хватило монет. Вход отменен.");
     return;
   }
 
@@ -514,10 +414,10 @@ document.getElementById("acceptGameBtn").onclick = async () => {
     [uidB]: firstIsWhite ? "black" : "white"
   };
 
-  await lobbyRef.update({
+  await lob.update({
+    "players/black": uidB,
+    "players/blackName": myProfile.name || "Игрок 2",
     status: "playing",
-    confirmDeadline: null,
-    starting: null,
     board: makeFreshBoard(),
     current: "white",
     gameOver: false,
@@ -526,13 +426,9 @@ document.getElementById("acceptGameBtn").onclick = async () => {
     colorMap: newColorMap,
     skins: skins
   });
-};
 
-document.getElementById("declineGameBtn").onclick = async () => {
-  if (!lobbyRef) return;
-  await lobbyRef.remove().catch(()=>{});
-  exitToMenu();
-};
+  enterLobby(lobbyId, "black");
+}
 
 async function payWinner(result) {
   if (payoutDone) return;
@@ -554,9 +450,8 @@ async function payWinner(result) {
     if (uidWhite) await firebase.database().ref(`users/${uidWhite}/coins`).transaction(v => (v||0) + bet);
     if (uidBlack) await firebase.database().ref(`users/${uidBlack}/coins`).transaction(v => (v||0) + bet);
     await lobbyRef.update({
-      status: "waiting", result: null, gameOver: false, confirmDeadline: null,
+      status: "waiting", result: null, gameOver: false,
       "players/black": null, "players/blackName": null,
-      confirmedWhite: null, confirmedBlack: null, starting: null,
       board: makeFreshBoard(), current: "white", whiteTime: MOVE_TIME, blackTime: MOVE_TIME
     });
     await lobbyRef.child("payoutDone").remove();
@@ -577,8 +472,7 @@ async function payWinner(result) {
     
     await lobbyRef.update({
       status: "waiting",
-      result: null, gameOver: false, confirmDeadline: null,
-      confirmedWhite: null, confirmedBlack: null, starting: null,
+      result: null, gameOver: false,
       board: makeFreshBoard(), current: "white", whiteTime: MOVE_TIME, blackTime: MOVE_TIME,
       "players/white": winnerUid,
       "players/whiteName": winnerName,
@@ -601,10 +495,10 @@ document.getElementById("resign").onclick = () => {
   SFX.lose();
   const winner = myColor === "white" ? "black" : "white";
   const loser = myColor;
-  gameOver = true; 
-  lastResult = winner;
+  gameOver = true; lastResult = winner;
   turnEl.textContent = loser === "white" ? "🏳️ Белые сдались" : "🏳️ Чёрные сдались";
   msgEl.textContent = "Игра окончена";
+  showRestart();
   lobbyRef.update({ board: B, current, gameOver: true, result: winner, status: "finished" });
 };
 
@@ -623,8 +517,6 @@ function exitToMenu() {
   if (lobbyUnsubscribe) { lobbyUnsubscribe(); lobbyUnsubscribe = null; }
   currentLobbyId = null; lobbyRef = null; lobbyData = null;
   gameOver = false; payoutDone = false; myColor = null;
-  document.getElementById("confirmOverlay").classList.remove("open");
-  if (confirmTimerId) { clearInterval(confirmTimerId); confirmTimerId = null; }
   showMenu();
 }
 
