@@ -363,7 +363,6 @@ function enterLobby(lobbyId, color) {
     const bet = Number(lobbyData?.bet) || 0;
     if ((myProfile.coins || 0) < bet) { alert("Недостаточно монет для продолжения. Возврат в меню."); exitToMenu(); return; }
     
-    // Рандомный выбор цвета для новой партии
     const firstIsWhite = Math.random() < 0.5;
     const newColorMap = {
       [lobbyData.players.white]: firstIsWhite ? "white" : "black",
@@ -465,7 +464,6 @@ document.getElementById("acceptGameBtn").onclick = async () => {
   const d = snap.val();
   if (!d?.confirmedWhite || !d?.confirmedBlack) return;
 
-  // Замок: только один клиент начнет списание
   const startResult = await lobbyRef.child("starting").transaction(v => {
     if (v === true) return;
     return true;
@@ -498,12 +496,10 @@ document.getElementById("acceptGameBtn").onclick = async () => {
     return;
   }
 
-  // Получаем скины обоих игроков, чтобы передать в лобби
   let skins = { white: null, black: null };
   if (uidW) { const s = await firebase.database().ref(`users/${uidW}/equippedSkin`).once("value"); skins.white = s.val(); }
   if (uidB) { const s = await firebase.database().ref(`users/${uidB}/equippedSkin`).once("value"); skins.black = s.val(); }
 
-  // Рандомный выбор цвета для этого матча
   const firstIsWhite = Math.random() < 0.5;
   const newColorMap = {
     [uidW]: firstIsWhite ? "white" : "black",
@@ -569,7 +565,6 @@ async function payWinner(result) {
       await firebase.database().ref(`users/${loserUid}/losses`).transaction(v => (v||0) + 1);
     }
     
-    // Победитель остается ждать, проигравший уходит
     await lobbyRef.update({
       status: "waiting",
       result: null, gameOver: false, confirmDeadline: null,
