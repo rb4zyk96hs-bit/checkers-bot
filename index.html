@@ -304,10 +304,18 @@ function enterLobby(lobbyId, color) {
       document.getElementById("p1name").textContent = d.players.whiteName || "Игрок 1";
       document.getElementById("p2name").textContent = d.players.blackName || "Игрок 2";
     }
-    if (d.players) {
-      if (d.players.white === myUid) myColor = "white";
-      else if (d.players.black === myUid) myColor = "black";
+    
+    if (d.colorMap && d.players) {
+      if (d.colorMap[d.players.white] === "white" || d.colorMap[d.players.white] === "black") {
+        myColor = d.colorMap[myUid] || color;
+      }
+    } else {
+      if (d.players) {
+        if (d.players.white === myUid) myColor = "white";
+        else if (d.players.black === myUid) myColor = "black";
+      }
     }
+
     const fbBoard = d.board || {};
     B = Array.from({length:8}, (_, r) => Array.from({length:8}, (_, c) => {
       const v = fbBoard[r]?.[c];
@@ -552,6 +560,8 @@ async function payWinner(result) {
       board: makeFreshBoard(), current: "white", whiteTime: MOVE_TIME, blackTime: MOVE_TIME
     });
     await lobbyRef.child("payoutDone").remove();
+    setTimeout(() => { if (lobbyData.status !== "playing") showMenu(); }, 1500);
+    alert("🤝 Ничья! Ставки возвращены.");
   } else {
     const winnerUid = result === "white" ? uidWhite : uidBlack;
     const loserUid = result === "white" ? uidBlack : uidWhite;
@@ -577,6 +587,12 @@ async function payWinner(result) {
       creator: winnerUid
     });
     await lobbyRef.child("payoutDone").remove();
+    
+    const isWinner = (myColor === result);
+    setTimeout(() => { 
+      if (!isWinner) showMenu(); 
+      else alert("🏆 Вы победили! Ожидаем следующего соперника.");
+    }, 1500);
   }
 }
 
@@ -585,10 +601,10 @@ document.getElementById("resign").onclick = () => {
   SFX.lose();
   const winner = myColor === "white" ? "black" : "white";
   const loser = myColor;
-  gameOver = true; lastResult = winner;
+  gameOver = true; 
+  lastResult = winner;
   turnEl.textContent = loser === "white" ? "🏳️ Белые сдались" : "🏳️ Чёрные сдались";
   msgEl.textContent = "Игра окончена";
-  showRestart();
   lobbyRef.update({ board: B, current, gameOver: true, result: winner, status: "finished" });
 };
 
