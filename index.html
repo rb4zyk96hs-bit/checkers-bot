@@ -14,29 +14,13 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 position:fixed;
 inset:0;
 background:
-repeating-linear-gradient(
-0deg,
-transparent 0px,
-rgba(30,12,3,.15) 2px,
-transparent 4px,
-rgba(255,210,150,.07) 7px
-),
-repeating-linear-gradient(
-0deg,
-#57351f 0px,
-#70472b 38px,
-#895b38 40px,
-#5b3923 43px,
-#754a2c 78px,
-#4a2c1b 81px
-);
-background-size:100% 82px;
+linear-gradient(rgba(0,0,0,.18),rgba(0,0,0,.35)),
+url("wood.jpg") center center / cover no-repeat;
 display:flex;
 flex-direction:column;
 padding:20px;
 z-index:500;
 overflow-y:auto;
-box-shadow:inset 0 0 100px rgba(0,0,0,.55);
 }
 .menu-screen.hidden{display:none}
 .menu-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:auto;gap:10px}
