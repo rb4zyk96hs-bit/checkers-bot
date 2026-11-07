@@ -10,49 +10,7 @@
 body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 
 /* ============ МЕНЮ ============ */
-.menu-screen{
-  position:fixed;
-  inset:0;
-  background-color: #3a1f0e;
-  background-image:
-    linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 3%, rgba(0,0,0,0) 97%, rgba(0,0,0,0.5) 100%),
-    linear-gradient(90deg, rgba(255,200,150,0) 0%, rgba(255,200,150,0.06) 50%, rgba(255,200,150,0) 100%),
-    repeating-linear-gradient(180deg,
-      transparent 0px,
-      transparent 3px,
-      rgba(0,0,0,0.08) 3px,
-      rgba(0,0,0,0.08) 4px,
-      transparent 4px,
-      transparent 7px,
-      rgba(255,200,150,0.04) 7px,
-      rgba(255,200,150,0.04) 8px
-    ),
-    radial-gradient(ellipse 40% 8% at 30% 20%, rgba(0,0,0,0.15), transparent 60%),
-    radial-gradient(ellipse 60% 6% at 70% 55%, rgba(0,0,0,0.12), transparent 60%),
-    radial-gradient(ellipse 50% 10% at 20% 75%, rgba(255,180,120,0.05), transparent 60%),
-    linear-gradient(180deg, #4a2814 0%, #3a1f0e 50%, #2a1508 100%);
-  background-size:
-    120px 100%,
-    120px 100%,
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    100% 100%,
-    100% 100%;
-  background-repeat:
-    repeat-x,
-    repeat-x,
-    repeat,
-    no-repeat,
-    no-repeat,
-    no-repeat,
-    no-repeat;
-  display:flex;
-  flex-direction:column;
-  padding:20px;
-  z-index:500;
-  overflow-y:auto;
-}
+.menu-screen{position:fixed;inset:0;background:linear-gradient(160deg,#101315 0%,#1a2025 100%);display:flex;flex-direction:column;padding:20px;z-index:500;overflow-y:auto}
 .menu-screen.hidden{display:none}
 .menu-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:auto;gap:10px}
 .wallet-top{display:flex;flex-direction:column;gap:6px}
@@ -107,22 +65,6 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 .piece.black{background:radial-gradient(circle at 35% 28%,#555,#101010 68%)}
 .piece.white{background:radial-gradient(circle at 35% 28%,#fff,#d0cbc0 70%)}
 .king{border:3px solid #c49b45}
-.crown{
-  position:absolute;
-  top:-18%;
-  left:50%;
-  transform:translateX(-50%);
-  font-size:58%;
-  line-height:1;
-  pointer-events:none;
-  filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 4px #ffd700);
-  z-index:10;
-  animation:crownGlow 2s ease-in-out infinite;
-}
-@keyframes crownGlow{
-  0%,100%{filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 2px #ffd700)}
-  50%{filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 6px #ffd700)}
-}
 .letters{display:grid;grid-template-columns:24px repeat(8,1fr);text-align:center;font-weight:bold;font-size:13px;margin-top:3px;transition:color .3s ease}
 .msg{text-align:center;background:#171a1d;border-radius:9px;padding:8px;margin-top:8px;color:#ccc;font-size:13px}
 .buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
@@ -217,16 +159,20 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
   border:2px solid #6ab0d6;
   box-shadow:inset 0 2px 5px rgba(255,255,255,0.5);
 }
+
 .board.skin-jade .light{background:#6bbd94!important;box-shadow:inset 0 0 8px rgba(255,255,255,0.2)}
 .board.skin-jade .dark{background:#216b48!important;box-shadow:inset 0 0 8px rgba(0,0,0,0.4)}
 .frame.frame-jade{background:#143d2a!important;border-color:#3e9b6d!important;box-shadow:0 0 15px rgba(33,107,72,0.4)}
 .nums.text-jade,.letters.text-jade{color:#8ae4b8!important;text-shadow:0 0 5px rgba(138,228,184,0.5)}
+
 .board.skin-ice-board .light{background:#cceeff!important;box-shadow:inset 0 0 8px rgba(255,255,255,0.8)}
 .board.skin-ice-board .dark{background:#3b7b9e!important;box-shadow:inset 0 0 8px rgba(0,0,0,0.3)}
 .frame.frame-ice-board{background:#1e4d66!important;border-color:#6ab0d6!important;box-shadow:0 0 15px rgba(59,123,158,0.5)}
 .nums.text-ice-board,.letters.text-ice-board{color:#aee2ff!important;text-shadow:0 0 5px rgba(174,226,255,0.7)}
 
-/* ============ ГЕРЦОГСКИЕ СКИНЫ ============ */
+/* ============ ИМПЕРАТОРСКИЕ СКИНЫ ============ */
+
+/* Превью шашек императора */
 .skin-preview.emperor{
   background:
     radial-gradient(circle at center,#888 0 10%,#282828 13% 25%,
@@ -235,12 +181,16 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
   border:2px solid #c6a66c;
   box-shadow:0 0 8px #b99b6288,inset 0 2px 4px #fff7;
 }
+
+/* Превью доски императора */
 .skin-preview.board-emperor{
   border-radius:5px;
   background:repeating-conic-gradient(#663c2b 0% 25%,#e8c9a7 0% 50%) 50% / 20px 20px;
   border:3px solid #c49a62;
   box-shadow:inset 0 0 5px #fff8,0 0 6px #0008;
 }
+
+/* Императорские чёрные шашки */
 .piece.skin-emperor{
   border:3px solid #b99b62!important;
   background:
@@ -260,6 +210,7 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
     inset 0 -4px 7px #000,
     0 3px 7px #000b!important;
 }
+
 .piece.skin-emperor::before{
   content:"";
   position:absolute;
@@ -268,6 +219,20 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
   border-radius:50%;
   box-shadow:inset 0 0 4px #d6bd88,0 0 3px #000;
 }
+
+.piece.skin-emperor::after{
+  content:"✥";
+  position:absolute;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  color:#d8c49b;
+  font-size:45%;
+  text-shadow:0 1px 3px #000;
+}
+
+/* Императорские золотые шашки */
 .piece.skin-emperor.white{
   border-color:#d7b66d!important;
   background:
@@ -287,7 +252,10 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
     inset 0 -4px 7px #0008,
     0 3px 7px #000b!important;
 }
+.piece.skin-emperor.white::after{color:#ffe3a1}
 .piece.skin-emperor.king{border-width:4px!important;box-shadow:0 0 10px #d8b66c,inset 0 2px 5px #fff8!important}
+
+/* Императорская доска */
 .board.skin-emperor-board .light{
   background:
     repeating-linear-gradient(45deg,#efd8bd 0 3px,#e7c9a9 3px 6px)!important;
@@ -458,20 +426,22 @@ const COIN_PACKS = [
   {coins:30000,gems:30},
   {coins:100000,gems:100},
   {coins:300000,gems:300},
-  {coins:1100000,gems:1000}
+  {coins:1100000,gems:1000},
+  {coins:3000000,gems:3000}
 ];
 
 const BET_AMOUNTS = [100,250,500,1000,2500,5000,10000,25000,50000,100000,250000,500000,1000000];
 
+/* ============ СПИСОК СКИНОВ ============ */
 const SKINS = [
   {id:"ice",name:"🧊 Ледяные шашки",price:100000,currency:"coins",tier:1,type:"piece"},
-  {id:"gold",name:"🏆 Золотые шашки",price:299,currency:"gems",tier:2,type:"piece"},
-  {id:"diamond",name:"💎 Бриллиантовые шашки",price:499,currency:"gems",tier:3,type:"piece"},
-  {id:"emperor",name:"👑 Шашки герцога",price:899,currency:"gems",tier:4,type:"piece"},
+  {id:"gold",name:"🏆 Золотые шашки",price:499,currency:"gems",tier:2,type:"piece"},
+  {id:"diamond",name:"💎 Бриллиантовые шашки",price:699,currency:"gems",tier:3,type:"piece"},
+  {id:"emperor",name:"👑 Шашки императора",price:899,currency:"gems",tier:4,type:"piece"},
 
-  {id:"jade",name:"🐉 Нефритовая доска",price:199,currency:"gems",tier:2,type:"board"},
+  {id:"jade",name:"🐉 Нефритовая доска",price:399,currency:"gems",tier:2,type:"board"},
   {id:"ice-board",name:"❄️ Ледяная доска",price:50000,currency:"coins",tier:1,type:"board"},
-  {id:"emperor-board",name:"👑 Доска герцога",price:799,currency:"gems",tier:3,type:"board"}
+  {id:"emperor-board",name:"👑 Доска императора",price:799,currency:"gems",tier:3,type:"board"}
 ];
 
 function getSkinTier(skinId){
@@ -528,8 +498,19 @@ let searchListener=null;
 
 function makeFreshBoard(){
   const b=Array.from({length:8},()=>Array(8).fill(null));
-  for(let r=0;r<3;r++)for(let c=0;c<8;c++)if((r+c)%2===1)b[r][c]={color:"black",king:false};
-  for(let r=5;r<8;r++)for(let c=0;c<8;c++)if((r+c)%2===1)b[r][c]={color:"white",king:false};
+
+  for(let r=0;r<3;r++){
+    for(let c=0;c<8;c++){
+      if((r+c)%2===1)b[r][c]={color:"black",king:false};
+    }
+  }
+
+  for(let r=5;r<8;r++){
+    for(let c=0;c<8;c++){
+      if((r+c)%2===1)b[r][c]={color:"white",king:false};
+    }
+  }
+
   return b;
 }
 
@@ -538,86 +519,184 @@ B=makeFreshBoard();
 const inside=(r,c)=>r>=0&&r<8&&c>=0&&c<8;
 
 function capturesKing(r,c){
-  const p=B[r]?.[c];const out=[];if(!p)return out;
-  for(const dr of [-1,1])for(const dc of [-1,1]){
-    let nr=r+dr,nc=c+dc;let enemy=null;
-    while(inside(nr,nc)){
-      const q=B[nr][nc];
-      if(!q){if(enemy)out.push({r:nr,c:nc,cr:enemy.r,cc:enemy.c});nr+=dr;nc+=dc;continue}
-      if(!enemy){if(q.color===p.color)break;enemy={r:nr,c:nc};nr+=dr;nc+=dc;continue}
-      break;
+  const p=B[r]?.[c];
+  const out=[];
+  if(!p)return out;
+
+  for(const dr of [-1,1]){
+    for(const dc of [-1,1]){
+      let nr=r+dr;
+      let nc=c+dc;
+      let enemy=null;
+
+      while(inside(nr,nc)){
+        const q=B[nr][nc];
+
+        if(!q){
+          if(enemy)out.push({r:nr,c:nc,cr:enemy.r,cc:enemy.c});
+          nr+=dr;
+          nc+=dc;
+          continue;
+        }
+
+        if(!enemy){
+          if(q.color===p.color)break;
+          enemy={r:nr,c:nc};
+          nr+=dr;
+          nc+=dc;
+          continue;
+        }
+
+        break;
+      }
     }
   }
+
   return out;
 }
 
 function capturesMan(r,c){
-  const p=B[r]?.[c];const out=[];if(!p)return out;
-  for(const dr of [-1,1])for(const dc of [-1,1]){
-    const er=r+dr,ec=c+dc,lr=r+2*dr,lc=c+2*dc;
-    if(inside(er,ec)&&inside(lr,lc)&&B[er][ec]&&B[er][ec].color!==p.color&&!B[lr][lc])out.push({r:lr,c:lc,cr:er,cc:ec});
+  const p=B[r]?.[c];
+  const out=[];
+  if(!p)return out;
+
+  for(const dr of [-1,1]){
+    for(const dc of [-1,1]){
+      const er=r+dr;
+      const ec=c+dc;
+      const lr=r+2*dr;
+      const lc=c+2*dc;
+
+      if(inside(er,ec)&&inside(lr,lc)&&B[er][ec]&&B[er][ec].color!==p.color&&!B[lr][lc]){
+        out.push({r:lr,c:lc,cr:er,cc:ec});
+      }
+    }
   }
+
   return out;
 }
 
-function getCaptures(r,c){const p=B[r]?.[c];if(!p)return[];return p.king?capturesKing(r,c):capturesMan(r,c)}
+function getCaptures(r,c){
+  const p=B[r]?.[c];
+  if(!p)return [];
+  return p.king?capturesKing(r,c):capturesMan(r,c);
+}
 
 function quiet(r,c){
-  const p=B[r]?.[c];const out=[];if(!p)return out;
+  const p=B[r]?.[c];
+  const out=[];
+  if(!p)return out;
+
   if(p.king){
-    for(const dr of [-1,1])for(const dc of [-1,1]){
-      let nr=r+dr,nc=c+dc;
-      while(inside(nr,nc)&&!B[nr][nc]){out.push({r:nr,c:nc});nr+=dr;nc+=dc}
+    for(const dr of [-1,1]){
+      for(const dc of [-1,1]){
+        let nr=r+dr;
+        let nc=c+dc;
+
+        while(inside(nr,nc)&&!B[nr][nc]){
+          out.push({r:nr,c:nc});
+          nr+=dr;
+          nc+=dc;
+        }
+      }
     }
   }else{
     const dr=p.color==="white"?-1:1;
+
     for(const dc of [-1,1]){
-      const nr=r+dr,nc=c+dc;
+      const nr=r+dr;
+      const nc=c+dc;
+
       if(inside(nr,nc)&&!B[nr][nc])out.push({r:nr,c:nc});
     }
   }
+
   return out;
 }
 
-function anyCapture(color){for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(B[r][c]?.color===color&&getCaptures(r,c).length)return true;return false}
-function legal(r,c){const p=B[r]?.[c];if(!p||p.color!==current)return[];return anyCapture(current)?getCaptures(r,c):quiet(r,c)}
-function hasPieces(color){for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(B[r][c]?.color===color)return true;return false}
-function hasMove(color){if(anyCapture(color))return true;for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(B[r][c]?.color===color&&quiet(r,c).length)return true;return false}
+function anyCapture(color){
+  for(let r=0;r<8;r++){
+    for(let c=0;c<8;c++){
+      if(B[r][c]?.color===color&&getCaptures(r,c).length)return true;
+    }
+  }
+  return false;
+}
 
+function legal(r,c){
+  const p=B[r]?.[c];
+  if(!p||p.color!==current)return [];
+  return anyCapture(current)?getCaptures(r,c):quiet(r,c);
+}
+
+function hasPieces(color){
+  for(let r=0;r<8;r++){
+    for(let c=0;c<8;c++){
+      if(B[r][c]?.color===color)return true;
+    }
+  }
+  return false;
+}
+
+function hasMove(color){
+  if(anyCapture(color))return true;
+
+  for(let r=0;r<8;r++){
+    for(let c=0;c<8;c++){
+      if(B[r][c]?.color===color&&quiet(r,c).length)return true;
+    }
+  }
+
+  return false;
+}
+
+/* ============ ОТРИСОВКА ДОСКИ ============ */
 function render(){
   boardEl.className="board"+(matchBoardSkin?" skin-"+matchBoardSkin:"");
   boardFrame.className="frame"+(matchBoardSkin?" frame-"+matchBoardSkin:"");
   boardNums.className="nums"+(matchBoardSkin?" text-"+matchBoardSkin:"");
   boardLetters.className="letters"+(matchBoardSkin?" text-"+matchBoardSkin:"");
+
   boardEl.innerHTML="";
 
   for(let i=0;i<8;i++){
     for(let j=0;j<8;j++){
       const r=myColor==="black"?7-i:i;
       const c=myColor==="black"?7-j:j;
+
       const cell=document.createElement("div");
       cell.className="cell "+((r+c)%2?"dark":"light");
-      if(selected&&selected.r===r&&selected.c===c)cell.classList.add("sel");
-      if(selected&&legal(selected.r,selected.c).some(m=>m.r===r&&m.c===c))cell.classList.add("possible");
+
+      if(selected&&selected.r===r&&selected.c===c){
+        cell.classList.add("sel");
+      }
+
+      if(selected&&legal(selected.r,selected.c).some(m=>m.r===r&&m.c===c)){
+        cell.classList.add("possible");
+      }
 
       const p=B[r]?.[c];
+
       if(p){
         const piece=document.createElement("div");
         let pieceClasses="piece "+p.color+(p.king?" king":"");
+
         if(matchPieceSkin)pieceClasses+=" skin-"+matchPieceSkin;
+
         piece.className=pieceClasses;
 
-        if(p.king){
-          const crown=document.createElement("div");
-          crown.className="crown";
-          crown.textContent="👑";
-          piece.appendChild(crown);
-        }
+        piece.onclick=e=>{
+          e.stopPropagation();
+          onCellClick(r,c);
+        };
 
-        piece.onclick=e=>{e.stopPropagation();onCellClick(r,c)};
-        piece.onpointerdown=e=>{onPointerDownPiece(r,c,e)};
+        piece.onpointerdown=e=>{
+          onPointerDownPiece(r,c,e);
+        };
+
         cell.appendChild(piece);
       }
+
       cell.onclick=()=>onCellClick(r,c);
       boardEl.appendChild(cell);
     }
@@ -631,45 +710,50 @@ function onPointerDownPiece(r,c,e){
   if(!onlineReady||gameOver)return;
   if(myColor!==current)return;
   if(B[r]?.[c]?.color!==myColor)return;
+
   dragStarted=false;
   dragging={r,c,startX:e.clientX,startY:e.clientY};
+
   document.addEventListener("pointermove",onPointerMove);
   document.addEventListener("pointerup",onPointerUpGlobal,{once:true});
 }
 
 function onPointerMove(e){
   if(!dragging)return;
+
   const dx=Math.abs(e.clientX-dragging.startX);
   const dy=Math.abs(e.clientY-dragging.startY);
 
   if(!dragStarted&&(dx>8||dy>8)){
     dragStarted=true;
+
     const p=B[dragging.r][dragging.c];
+
     if(p){
       const ghost=document.createElement("div");
       let ghostClasses="piece "+p.color+(p.king?" king":"");
+
       if(matchPieceSkin)ghostClasses+=" skin-"+matchPieceSkin;
+
       ghost.className=ghostClasses+" drag-ghost";
       ghost.style.left=e.clientX+"px";
       ghost.style.top=e.clientY+"px";
 
-      if(p.king){
-        const crown=document.createElement("div");
-        crown.className="crown";
-        crown.textContent="👑";
-        ghost.appendChild(crown);
-      }
-
       document.body.appendChild(ghost);
       dragging.ghost=ghost;
+
       localSelect(dragging.r,dragging.c);
+
       const i=myColor==="black"?7-dragging.r:dragging.r;
       const j=myColor==="black"?7-dragging.c:dragging.c;
+
       const cellEl=boardEl.children[i*8+j];
       const pieceEl=cellEl?.querySelector(".piece");
+
       if(pieceEl)pieceEl.classList.add("drag-origin");
     }
   }
+
   if(dragging.ghost){
     dragging.ghost.style.left=e.clientX+"px";
     dragging.ghost.style.top=e.clientY+"px";
@@ -679,35 +763,75 @@ function onPointerMove(e){
 function onPointerUpGlobal(e){
   document.removeEventListener("pointermove",onPointerMove);
   if(!dragging)return;
+
   if(dragStarted){
     const target=document.elementFromPoint(e.clientX,e.clientY);
     const cellEl=target?.closest(".cell");
-    let dropR=null,dropC=null;
+
+    let dropR=null;
+    let dropC=null;
+
     if(cellEl){
       const idx=Array.from(boardEl.children).indexOf(cellEl);
-      if(idx>=0){const i=Math.floor(idx/8),j=idx%8;dropR=myColor==="black"?7-i:i;dropC=myColor==="black"?7-j:j}
+
+      if(idx>=0){
+        const i=Math.floor(idx/8);
+        const j=idx%8;
+
+        dropR=myColor==="black"?7-i:i;
+        dropC=myColor==="black"?7-j:j;
+      }
     }
+
     if(dragging.ghost)dragging.ghost.remove();
+
     const origin=boardEl.querySelector(".drag-origin");
     if(origin)origin.classList.remove("drag-origin");
-    dragging=null;dragStarted=false;
+
+    dragging=null;
+    dragStarted=false;
+
     if(dropR!==null)onMove(dropR,dropC);
-  }else{dragging=null}
+  }else{
+    dragging=null;
+  }
 }
 
 function onCellClick(r,c){
   if(!onlineReady||gameOver)return;
-  if(myColor!==current){msgEl.textContent="⏳ Сейчас ход соперника.";return}
+
+  if(myColor!==current){
+    msgEl.textContent="⏳ Сейчас ход соперника.";
+    return;
+  }
+
   const p=B[r]?.[c];
-  if(p&&p.color===myColor){localSelect(r,c);return}
+
+  if(p&&p.color===myColor){
+    localSelect(r,c);
+    return;
+  }
+
   if(selected)onMove(r,c);
 }
 
 function localSelect(r,c){
-  const p=B[r]?.[c];if(!p)return;
-  if(p.color!==current){msgEl.textContent="Это шашки соперника.";return}
+  const p=B[r]?.[c];
+  if(!p)return;
+
+  if(p.color!==current){
+    msgEl.textContent="Это шашки соперника.";
+    return;
+  }
+
   const moves=legal(r,c);
-  if(!moves.length){msgEl.textContent="Эта шашка сейчас не может ходить.";SFX.error();return}
+
+  if(!moves.length){
+    msgEl.textContent="Эта шашка сейчас не может ходить.";
+    SFX.error();
+    return;
+  }
+
   selected={r,c};
   msgEl.textContent="Выберите клетку для хода.";
   SFX.select();
@@ -716,24 +840,48 @@ function localSelect(r,c){
 
 function localMove(r,c){
   if(gameOver)return;
-  if(!selected){if(B[r]?.[c])localSelect(r,c);return}
+
+  if(!selected){
+    if(B[r]?.[c])localSelect(r,c);
+    return;
+  }
+
   const moves=legal(selected.r,selected.c);
   const target=moves.find(m=>m.r===r&&m.c===c);
-  if(!target){msgEl.textContent="❌ Недопустимый ход.";SFX.error();return}
-  const fromR=selected.r,fromC=selected.c;
-  const p=B[fromR][fromC];if(!p)return;
-  B[r][c]=p;B[fromR][fromC]=null;
-  if(target.cr!==undefined)B[target.cr][target.cc]=null;
-  if(target.cr!==undefined)SFX.capture();else SFX.move();
 
-  if(!B[r][c].king&&((B[r][c].color==="white"&&r===0)||(B[r][c].color==="black"&&r===7))){
-    B[r][c].king=true;SFX.king();
+  if(!target){
+    msgEl.textContent="❌ Недопустимый ход.";
+    SFX.error();
+    return;
+  }
+
+  const fromR=selected.r;
+  const fromC=selected.c;
+  const p=B[fromR][fromC];
+
+  if(!p)return;
+
+  B[r][c]=p;
+  B[fromR][fromC]=null;
+
+  if(target.cr!==undefined)B[target.cr][target.cc]=null;
+
+  if(target.cr!==undefined)SFX.capture();
+  else SFX.move();
+
+  if(!B[r][c].king&&(
+    (B[r][c].color==="white"&&r===0)||
+    (B[r][c].color==="black"&&r===7)
+  )){
+    B[r][c].king=true;
+    SFX.king();
   }
 
   if(target.cr!==undefined&&getCaptures(r,c).length){
     selected={r,c};
     msgEl.textContent="🔄 Продолжите взятие.";
-    render();return;
+    render();
+    return;
   }
 
   selected=null;
@@ -743,261 +891,560 @@ function localMove(r,c){
     gameOver=true;
     const winner=current==="white"?"black":"white";
     lastResult=winner;
+
     turnEl.textContent=winner==="white"?"🏆 Победили белые":"🏆 Победили чёрные";
     msgEl.textContent="У соперника не осталось шашек.";
-    if(myColor===winner)SFX.win();else SFX.lose();
-    showRestart();render();return;
+
+    if(myColor===winner)SFX.win();
+    else SFX.lose();
+
+    showRestart();
+    render();
+    return;
   }
 
   if(!hasMove(current)){
     gameOver=true;
     const winner=current==="white"?"black":"white";
     lastResult=winner;
+
     turnEl.textContent=winner==="white"?"🏆 Победили белые":"🏆 Победили чёрные";
     msgEl.textContent="У соперника нет возможных ходов.";
-    if(myColor===winner)SFX.win();else SFX.lose();
-    showRestart();render();return;
+
+    if(myColor===winner)SFX.win();
+    else SFX.lose();
+
+    showRestart();
+    render();
+    return;
   }
 
   resetMoveTimer();
+
   turnEl.textContent=current==="white"?"⚪ Ход игрока 1":"⚫ Ход игрока 2";
   msgEl.textContent=current==="white"?"Ход белых.":"Ход чёрных.";
-  updateDrawButtons();render();
+
+  updateDrawButtons();
+  render();
 }
 
 function showRestart(){restartBtn.style.display="block"}
 function hideRestart(){restartBtn.style.display="none"}
 
+/* ============ ЗВУКИ ============ */
 let audioCtx=null;
-function getAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();return audioCtx}
+
+function getAudio(){
+  if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==="suspended")audioCtx.resume();
+  return audioCtx;
+}
+
 function playTone(freq,duration,type="sine",volume=0.15){
   try{
     const ctx=getAudio();
     const osc=ctx.createOscillator();
     const gain=ctx.createGain();
-    osc.type=type;osc.frequency.value=freq;
+
+    osc.type=type;
+    osc.frequency.value=freq;
+
     gain.gain.setValueAtTime(volume,ctx.currentTime);
     gain.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+duration);
-    osc.connect(gain);gain.connect(ctx.destination);
-    osc.start();osc.stop(ctx.currentTime+duration);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    osc.start();
+    osc.stop(ctx.currentTime+duration);
   }catch(e){}
 }
+
 const SFX={
   select(){playTone(600,0.06,"sine",0.08)},
   move(){playTone(380,0.08,"triangle",0.12)},
-  capture(){playTone(500,0.06,"square",0.12);setTimeout(()=>playTone(300,0.1,"square",0.12),50)},
-  king(){playTone(660,0.08,"sine",0.12);setTimeout(()=>playTone(880,0.1,"sine",0.12),70);setTimeout(()=>playTone(1100,0.12,"sine",0.12),150)},
-  win(){playTone(523,0.12,"sine",0.15);setTimeout(()=>playTone(659,0.12,"sine",0.15),120);setTimeout(()=>playTone(784,0.2,"sine",0.15),240)},
-  lose(){playTone(400,0.15,"sine",0.15);setTimeout(()=>playTone(300,0.2,"sine",0.15),150)},
+  capture(){
+    playTone(500,0.06,"square",0.12);
+    setTimeout(()=>playTone(300,0.1,"square",0.12),50);
+  },
+  king(){
+    playTone(660,0.08,"sine",0.12);
+    setTimeout(()=>playTone(880,0.1,"sine",0.12),70);
+    setTimeout(()=>playTone(1100,0.12,"sine",0.12),150);
+  },
+  win(){
+    playTone(523,0.12,"sine",0.15);
+    setTimeout(()=>playTone(659,0.12,"sine",0.15),120);
+    setTimeout(()=>playTone(784,0.2,"sine",0.15),240);
+  },
+  lose(){
+    playTone(400,0.15,"sine",0.15);
+    setTimeout(()=>playTone(300,0.2,"sine",0.15),150);
+  },
   error(){playTone(180,0.12,"sawtooth",0.1)}
 };
 
-document.querySelectorAll(".modal-close").forEach(btn=>{btn.onclick=()=>{const id=btn.dataset.close;if(id)document.getElementById(id).classList.remove("open")}});
-document.querySelectorAll(".modal").forEach(m=>{m.onclick=e=>{if(e.target===m)m.classList.remove("open")}});
+/* ============ МОДАЛЬНЫЕ ОКНА ============ */
+document.querySelectorAll(".modal-close").forEach(btn=>{
+  btn.onclick=()=>{
+    const id=btn.dataset.close;
+    if(id)document.getElementById(id).classList.remove("open");
+  };
+});
+
+document.querySelectorAll(".modal").forEach(m=>{
+  m.onclick=e=>{
+    if(e.target===m)m.classList.remove("open");
+  };
+});
 
 const profileModal=document.getElementById("profileModal");
 const nameInput=document.getElementById("nameInput");
 
 function updateProfileUI(){
-  document.getElementById("statGames").textContent=(myProfile.wins||0)+(myProfile.losses||0)+(myProfile.draws||0);
+  document.getElementById("statGames").textContent=
+    (myProfile.wins||0)+(myProfile.losses||0)+(myProfile.draws||0);
+
   document.getElementById("statWins").textContent=myProfile.wins||0;
   document.getElementById("statLosses").textContent=myProfile.losses||0;
   document.getElementById("statDraws").textContent=myProfile.draws||0;
+
   const total=(myProfile.wins||0)+(myProfile.losses||0)+(myProfile.draws||0);
   const pct=total?Math.round(((myProfile.wins||0)/total)*100):0;
+
   document.getElementById("statPercent").textContent=pct+"%";
+
   nameInput.value=myProfile.name||"";
   document.getElementById("menuNick").textContent=myProfile.name||"Гость";
+
   document.getElementById("menuCoins").textContent=(myProfile.coins||0).toLocaleString("ru");
   document.getElementById("menuGems").textContent=(myProfile.gems||0).toLocaleString("ru");
+
   document.getElementById("statCoins").textContent=(myProfile.coins||0).toLocaleString("ru");
   document.getElementById("statGems").textContent=(myProfile.gems||0).toLocaleString("ru");
+
   updateBonusBox();
 }
-document.querySelector(".menu-profile").onclick=()=>{updateProfileUI();profileModal.classList.add("open")};
 
+document.querySelector(".menu-profile").onclick=()=>{
+  updateProfileUI();
+  profileModal.classList.add("open");
+};
+
+/* ============ ПОКУПКА ГЕМОВ ============ */
 document.getElementById("buyGemsBtn").onclick=()=>{
-  const list=document.getElementById("gemsShopList");list.innerHTML="";
-  GEM_PACKS.forEach(pack=>{const el=document.createElement("div");el.className="shop-item";el.innerHTML=`<div class="info"><div class="title">💎 ${pack.gems.toLocaleString("ru")} гемов</div><div class="price">${pack.stars.toLocaleString("ru")} ⭐</div></div><button disabled>Скоро</button>`;list.appendChild(el)});
+  const list=document.getElementById("gemsShopList");
+  list.innerHTML="";
+
+  GEM_PACKS.forEach(pack=>{
+    const el=document.createElement("div");
+    el.className="shop-item";
+
+    el.innerHTML=`
+      <div class="info">
+        <div class="title">💎 ${pack.gems.toLocaleString("ru")} гемов</div>
+        <div class="price">${pack.stars.toLocaleString("ru")} ⭐</div>
+      </div>
+      <button disabled>Скоро</button>
+    `;
+
+    list.appendChild(el);
+  });
+
   document.getElementById("buyGemsModal").classList.add("open");
 };
 
+/* ============ ПОКУПКА МОНЕТ ============ */
 document.getElementById("buyCoinsBtn").onclick=()=>{
-  const list=document.getElementById("coinsShopList");list.innerHTML="";
+  const list=document.getElementById("coinsShopList");
+  list.innerHTML="";
+
   COIN_PACKS.forEach(pack=>{
-    const el=document.createElement("div");el.className="shop-item";
+    const el=document.createElement("div");
+    el.className="shop-item";
+
     const canBuy=(myProfile.gems||0)>=pack.gems;
-    el.innerHTML=`<div class="info"><div class="title">🪙 ${pack.coins.toLocaleString("ru")} монет</div><div class="price">${pack.gems.toLocaleString("ru")} 💎</div></div><button ${canBuy?"":"disabled"}>Купить</button>`;
-    el.querySelector("button").onclick=async()=>{await buyCoins(pack.gems,pack.coins)};
+
+    el.innerHTML=`
+      <div class="info">
+        <div class="title">🪙 ${pack.coins.toLocaleString("ru")} монет</div>
+        <div class="price">${pack.gems.toLocaleString("ru")} 💎</div>
+      </div>
+      <button ${canBuy?"":"disabled"}>Купить</button>
+    `;
+
+    el.querySelector("button").onclick=async()=>{
+      await buyCoins(pack.gems,pack.coins);
+    };
+
     list.appendChild(el);
   });
+
   document.getElementById("buyCoinsModal").classList.add("open");
 };
 
 async function buyCoins(gemsCost,coinsAmount){
-  if((myProfile.gems||0)<gemsCost){alert("Недостаточно гемов");return}
+  if((myProfile.gems||0)<gemsCost){
+    alert("Недостаточно гемов");
+    return;
+  }
+
   if(!myUid)return;
+
   const userRef=firebase.database().ref("users/"+myUid);
   let success=false;
+
   try{
-    await userRef.child("gems").transaction(v=>{if((v||0)<gemsCost)return;success=true;return(v||0)-gemsCost});
-    if(!success){alert("Ошибка");return}
+    await userRef.child("gems").transaction(v=>{
+      if((v||0)<gemsCost)return;
+      success=true;
+      return(v||0)-gemsCost;
+    });
+
+    if(!success){
+      alert("Ошибка");
+      return;
+    }
+
     await userRef.child("coins").transaction(v=>(v||0)+coinsAmount);
+
     document.getElementById("buyCoinsModal").classList.remove("open");
     SFX.win();
+
     alert(`✅ Куплено ${coinsAmount.toLocaleString("ru")} монет!`);
-  }catch(e){alert("Ошибка: "+e.message)}
+  }catch(e){
+    alert("Ошибка: "+e.message);
+  }
 }
 
+/* ============ БОНУС ============ */
 function updateBonusBox(){
   const box=document.getElementById("bonusBox");
   const btn=document.getElementById("claimBonusBtn");
-  if(!myUid){box.style.display="none";return}
-  const now=Date.now();const last=myProfile.lastBonus||0;const elapsed=now-last;
+
+  if(!myUid){
+    box.style.display="none";
+    return;
+  }
+
+  const now=Date.now();
+  const last=myProfile.lastBonus||0;
+  const elapsed=now-last;
   const eligible=(myProfile.coins||0)<BONUS_THRESHOLD;
-  if(!eligible){box.style.display="none";return}
-  if(elapsed>=HOUR){box.style.display="flex";btn.disabled=false;btn.textContent=`Забрать ${BONUS_COINS}🪙`}
-  else{const left=HOUR-elapsed;const m=Math.floor(left/60000);const s=Math.floor((left%60000)/1000);box.style.display="flex";btn.disabled=true;btn.textContent=`⏳ ${m}:${String(s).padStart(2,"0")}`}
+
+  if(!eligible){
+    box.style.display="none";
+    return;
+  }
+
+  if(elapsed>=HOUR){
+    box.style.display="flex";
+    btn.disabled=false;
+    btn.textContent=`Забрать ${BONUS_COINS}🪙`;
+  }else{
+    const left=HOUR-elapsed;
+    const m=Math.floor(left/60000);
+    const s=Math.floor((left%60000)/1000);
+
+    box.style.display="flex";
+    btn.disabled=true;
+    btn.textContent=`⏳ ${m}:${String(s).padStart(2,"0")}`;
+  }
 }
+
 document.getElementById("claimBonusBtn").onclick=async()=>{
   if(!myUid)return;
   if((myProfile.coins||0)>=BONUS_THRESHOLD)return;
   if(Date.now()-(myProfile.lastBonus||0)<HOUR)return;
+
   const userRef=firebase.database().ref("users/"+myUid);
+
   await userRef.child("coins").transaction(v=>(v||0)+BONUS_COINS);
   await userRef.child("lastBonus").set(Date.now());
+
   SFX.win();
 };
+
 setInterval(updateBonusBox,1000);
 
+/* ============ МАГАЗИН СКИНОВ ============ */
 function renderShop(){
-  const list=document.getElementById("shopList");list.innerHTML="";
+  const list=document.getElementById("shopList");
+  list.innerHTML="";
+
   SKINS.forEach(skin=>{
     const ownedList=skin.type==="piece"?myPieceSkins:myBoardSkins;
-    const equipped=skin.type==="piece"?equippedPieceSkin===skin.id:equippedBoardSkin===skin.id;
+
+    const equipped=skin.type==="piece"
+      ?equippedPieceSkin===skin.id
+      :equippedBoardSkin===skin.id;
+
     const owned=ownedList.includes(skin.id);
-    const row=document.createElement("div");row.className="skin-item";
-    const priceText=skin.currency==="coins"?`🪙 ${skin.price.toLocaleString("ru")}`:`💎 ${skin.price.toLocaleString("ru")}`;
+
+    const row=document.createElement("div");
+    row.className="skin-item";
+
+    const priceText=skin.currency==="coins"
+      ?`🪙 ${skin.price.toLocaleString("ru")}`
+      :`💎 ${skin.price.toLocaleString("ru")}`;
+
     let previewClass;
-    if(skin.type==="piece")previewClass=skin.id;
-    else if(skin.id==="emperor-board")previewClass="board-emperor";
-    else previewClass="board-"+(skin.id==="jade"?"jade":"ice");
-    row.innerHTML=`<div class="skin-preview ${previewClass}"></div><div class="skin-info"><div class="skin-name">${skin.name}</div><div class="skin-price">${priceText}</div></div><button></button>`;
+
+    if(skin.type==="piece"){
+      previewClass=skin.id;
+    }else if(skin.id==="emperor-board"){
+      previewClass="board-emperor";
+    }else{
+      previewClass="board-"+(skin.id==="jade"?"jade":"ice");
+    }
+
+    row.innerHTML=`
+      <div class="skin-preview ${previewClass}"></div>
+      <div class="skin-info">
+        <div class="skin-name">${skin.name}</div>
+        <div class="skin-price">${priceText}</div>
+      </div>
+      <button></button>
+    `;
+
     const btn=row.querySelector("button");
-    if(equipped){btn.textContent="✅ Надето";btn.className="equipped";btn.onclick=async()=>await unequipSkin(skin)}
-    else if(owned){btn.textContent="Надеть";btn.className="owned";btn.onclick=async()=>await equipSkin(skin.id,skin.type)}
-    else{
+
+    if(equipped){
+      btn.textContent="✅ Надето";
+      btn.className="equipped";
+      btn.onclick=async()=>await unequipSkin(skin);
+    }else if(owned){
+      btn.textContent="Надеть";
+      btn.className="owned";
+      btn.onclick=async()=>await equipSkin(skin.id,skin.type);
+    }else{
       btn.textContent="Купить";
-      const canBuy=skin.currency==="coins"?(myProfile.coins||0)>=skin.price:(myProfile.gems||0)>=skin.price;
+
+      const canBuy=skin.currency==="coins"
+        ?(myProfile.coins||0)>=skin.price
+        :(myProfile.gems||0)>=skin.price;
+
       btn.disabled=!canBuy;
       btn.onclick=async()=>await buySkin(skin);
     }
+
     list.appendChild(row);
   });
 }
 
 async function buySkin(skin){
   if(!myUid)return;
+
   const userRef=firebase.database().ref("users/"+myUid);
   let success=false;
+
   if(skin.currency==="coins"){
-    if((myProfile.coins||0)<skin.price){alert("Недостаточно монет");return}
-    await userRef.child("coins").transaction(v=>{if((v||0)<skin.price)return;success=true;return(v||0)-skin.price});
+    if((myProfile.coins||0)<skin.price){
+      alert("Недостаточно монет");
+      return;
+    }
+
+    await userRef.child("coins").transaction(v=>{
+      if((v||0)<skin.price)return;
+      success=true;
+      return(v||0)-skin.price;
+    });
   }else{
-    if((myProfile.gems||0)<skin.price){alert("Недостаточно гемов");return}
-    await userRef.child("gems").transaction(v=>{if((v||0)<skin.price)return;success=true;return(v||0)-skin.price});
+    if((myProfile.gems||0)<skin.price){
+      alert("Недостаточно гемов");
+      return;
+    }
+
+    await userRef.child("gems").transaction(v=>{
+      if((v||0)<skin.price)return;
+      success=true;
+      return(v||0)-skin.price;
+    });
   }
-  if(!success){alert("Ошибка при покупке");return}
+
+  if(!success){
+    alert("Ошибка при покупке");
+    return;
+  }
+
   const path=skin.type==="piece"?"pieceSkins":"boardSkins";
   const snap=await userRef.child(path).once("value");
   const currentSkins=snap.val()||[];
-  if(!currentSkins.includes(skin.id)){currentSkins.push(skin.id);await userRef.child(path).set(currentSkins)}
-  if(skin.type==="piece")myPieceSkins=currentSkins;else myBoardSkins=currentSkins;
-  SFX.win();renderShop();
+
+  if(!currentSkins.includes(skin.id)){
+    currentSkins.push(skin.id);
+    await userRef.child(path).set(currentSkins);
+  }
+
+  if(skin.type==="piece")myPieceSkins=currentSkins;
+  else myBoardSkins=currentSkins;
+
+  SFX.win();
+  renderShop();
+
   alert(`✅ Куплено: ${skin.name}`);
 }
 
 async function equipSkin(skinId,type){
   const userRef=firebase.database().ref("users/"+myUid);
   const path=type==="piece"?"equippedPieceSkin":"equippedBoardSkin";
+
   await userRef.child(path).set(skinId);
-  if(type==="piece")equippedPieceSkin=skinId;else equippedBoardSkin=skinId;
+
+  if(type==="piece")equippedPieceSkin=skinId;
+  else equippedBoardSkin=skinId;
+
   renderShop();
 }
 
 async function unequipSkin(skin){
   const userRef=firebase.database().ref("users/"+myUid);
   const path=skin.type==="piece"?"equippedPieceSkin":"equippedBoardSkin";
+
   await userRef.child(path).remove();
-  if(skin.type==="piece")equippedPieceSkin=null;else equippedBoardSkin=null;
+
+  if(skin.type==="piece")equippedPieceSkin=null;
+  else equippedBoardSkin=null;
+
   renderShop();
 }
 
-document.getElementById("btnShop").onclick=()=>{renderShop();document.getElementById("shopModal").classList.add("open")};
+document.getElementById("btnShop").onclick=()=>{
+  renderShop();
+  document.getElementById("shopModal").classList.add("open");
+};
 
+/* ============ НИЧЬЯ ============ */
 const drawBtn=document.getElementById("draw");
 const acceptDrawBtn=document.getElementById("acceptDraw");
 const declineDrawBtn=document.getElementById("declineDraw");
+
 let pendingDrawOffer=null;
 
 function updateDrawButtons(){
-  drawBtn.textContent="🤝 Ничья";drawBtn.disabled=false;drawBtn.style.opacity="1";
+  drawBtn.textContent="🤝 Ничья";
+  drawBtn.disabled=false;
+  drawBtn.style.opacity="1";
+
   if(gameOver||!lobbyData||lobbyData.status==="waiting"){
-    drawBtn.style.display="none";acceptDrawBtn.style.display="none";declineDrawBtn.style.display="none";return;
+    drawBtn.style.display="none";
+    acceptDrawBtn.style.display="none";
+    declineDrawBtn.style.display="none";
+    return;
   }
-  drawBtn.style.display="block";acceptDrawBtn.style.display="none";declineDrawBtn.style.display="none";
+
+  drawBtn.style.display="block";
+  acceptDrawBtn.style.display="none";
+  declineDrawBtn.style.display="none";
+
   if(!pendingDrawOffer)return;
-  if(pendingDrawOffer===myColor){drawBtn.textContent="⏳ Ждём...";drawBtn.disabled=true;drawBtn.style.opacity="0.6"}
-  else{drawBtn.style.display="none";acceptDrawBtn.style.display="block";declineDrawBtn.style.display="block"}
+
+  if(pendingDrawOffer===myColor){
+    drawBtn.textContent="⏳ Ждём...";
+    drawBtn.disabled=true;
+    drawBtn.style.opacity="0.6";
+  }else{
+    drawBtn.style.display="none";
+    acceptDrawBtn.style.display="block";
+    declineDrawBtn.style.display="block";
+  }
 }
 
-drawBtn.onclick=async()=>{if(gameOver||!lobbyRef||pendingDrawOffer)return;await lobbyRef.update({drawOffer:myColor})};
+drawBtn.onclick=async()=>{
+  if(gameOver||!lobbyRef||pendingDrawOffer)return;
+  await lobbyRef.update({drawOffer:myColor});
+};
+
 acceptDrawBtn.onclick=async()=>{
   if(gameOver||!lobbyRef)return;
   if(!pendingDrawOffer||pendingDrawOffer===myColor)return;
-  await lobbyRef.update({gameOver:true,result:"draw",status:"finished"});
+
+  await lobbyRef.update({
+    gameOver:true,
+    result:"draw",
+    status:"finished"
+  });
+
   await lobbyRef.child("drawOffer").remove();
 };
+
 declineDrawBtn.onclick=async()=>{
   if(!lobbyRef)return;
   if(!pendingDrawOffer||pendingDrawOffer===myColor)return;
+
   await lobbyRef.child("drawOffer").remove();
 };
 
+/* ============ ЭКРАНЫ ============ */
 const menuScreen=document.getElementById("menuScreen");
 const gameScreen=document.getElementById("gameScreen");
 
-function showMenu(){menuScreen.classList.remove("hidden");gameScreen.style.display="none"}
-function showGame(){menuScreen.classList.add("hidden");gameScreen.style.display="block"}
+function showMenu(){
+  menuScreen.classList.remove("hidden");
+  gameScreen.style.display="none";
+}
 
+function showGame(){
+  menuScreen.classList.add("hidden");
+  gameScreen.style.display="block";
+}
+
+/* ============ ТАЙМЕР ============ */
 function paintTimers(){
   const fmt=s=>"0:"+String(Math.max(0,s)).padStart(2,"0");
+
   const t1=document.getElementById("t1");
   const t2=document.getElementById("t2");
-  t1.textContent=fmt(time.white);t2.textContent=fmt(time.black);
+
+  t1.textContent=fmt(time.white);
+  t2.textContent=fmt(time.black);
+
   t1.classList.toggle("low",time.white<=5&&current==="white"&&!gameOver);
   t2.classList.toggle("low",time.black<=5&&current==="black"&&!gameOver);
 }
 
-function resetMoveTimer(){time.white=MOVE_TIME;time.black=MOVE_TIME;paintTimers()}
+function resetMoveTimer(){
+  time.white=MOVE_TIME;
+  time.black=MOVE_TIME;
+  paintTimers();
+}
 
 let lastTickSecond=Math.floor(Date.now()/1000);
+
 setInterval(()=>{
   if(gameOver||!onlineReady||!lobbyRef||!lobbyData||lobbyData.status!=="playing")return;
+
   const nowSec=Math.floor(Date.now()/1000);
+
   if(nowSec===lastTickSecond)return;
   lastTickSecond=nowSec;
-  time[current]=Math.max(0,time[current]-1);paintTimers();
+
+  time[current]=Math.max(0,time[current]-1);
+  paintTimers();
+
   if(time[current]<=0){
     const winner=current==="white"?"black":"white";
-    gameOver=true;lastResult=winner;
+
+    gameOver=true;
+    lastResult=winner;
+
     turnEl.textContent=winner==="white"?"⏱️ Победили белые":"⏱️ Победили чёрные";
     msgEl.textContent="Время на ход вышло.";
-    SFX.lose();showRestart();
-    lobbyRef.update({board:B,current,gameOver:true,result:winner,status:"finished"});
+
+    SFX.lose();
+    showRestart();
+
+    lobbyRef.update({
+      board:B,
+      current,
+      gameOver:true,
+      result:winner,
+      status:"finished"
+    });
   }
 },1000);
 
+/* ============ FIREBASE ============ */
 const firebaseConfig={
   apiKey:"AIzaSyA8USWXMVE4EEOUGWcMeu_RHButvCZRewQ",
   authDomain:"checkersbot-c6311.firebaseapp.com",
@@ -1010,63 +1457,158 @@ const firebaseConfig={
 
 window.addEventListener("load",()=>{
   firebase.initializeApp(firebaseConfig);
+
   firebase.auth().signInAnonymously().then(async result=>{
     myUid=result.user.uid;
+
     const userRef=firebase.database().ref("users/"+myUid);
     const snap=await userRef.once("value");
     const d=snap.val();
+
     if(d){
-      myProfile={name:d.name||"",wins:Number(d.wins)||0,losses:Number(d.losses)||0,draws:Number(d.draws)||0,coins:Number(d.coins)||0,gems:Number(d.gems)||0,lastBonus:Number(d.lastBonus)||0};
+      myProfile={
+        name:d.name||"",
+        wins:Number(d.wins)||0,
+        losses:Number(d.losses)||0,
+        draws:Number(d.draws)||0,
+        coins:Number(d.coins)||0,
+        gems:Number(d.gems)||0,
+        lastBonus:Number(d.lastBonus)||0
+      };
+
       myPieceSkins=d.pieceSkins||d.skins||[];
       equippedPieceSkin=d.equippedPieceSkin||d.equippedSkin||null;
+
       myBoardSkins=d.boardSkins||[];
       equippedBoardSkin=d.equippedBoardSkin||null;
     }else{
-      await userRef.set({name:"",wins:0,losses:0,draws:0,coins:START_COINS,gems:START_GEMS,lastBonus:0});
-      myProfile.coins=START_COINS;myProfile.gems=START_GEMS;
-      myPieceSkins=[];equippedPieceSkin=null;myBoardSkins=[];equippedBoardSkin=null;
+      await userRef.set({
+        name:"",
+        wins:0,
+        losses:0,
+        draws:0,
+        coins:START_COINS,
+        gems:START_GEMS,
+        lastBonus:0
+      });
+
+      myProfile.coins=START_COINS;
+      myProfile.gems=START_GEMS;
+
+      myPieceSkins=[];
+      equippedPieceSkin=null;
+      myBoardSkins=[];
+      equippedBoardSkin=null;
     }
+
     if(!myProfile.name){
       const entered=prompt("Как вас зовут?","Игрок");
       myProfile.name=(entered||"Игрок").trim().slice(0,20)||"Игрок";
       await userRef.update({name:myProfile.name});
     }
+
     updateProfileUI();
+
     userRef.on("value",snap=>{
-      const x=snap.val();if(!x)return;
-      myProfile={name:x.name||"",wins:Number(x.wins)||0,losses:Number(x.losses)||0,draws:Number(x.draws)||0,coins:Number(x.coins)||0,gems:Number(x.gems)||0,lastBonus:Number(x.lastBonus)||0};
+      const x=snap.val();
+      if(!x)return;
+
+      myProfile={
+        name:x.name||"",
+        wins:Number(x.wins)||0,
+        losses:Number(x.losses)||0,
+        draws:Number(x.draws)||0,
+        coins:Number(x.coins)||0,
+        gems:Number(x.gems)||0,
+        lastBonus:Number(x.lastBonus)||0
+      };
+
       myPieceSkins=x.pieceSkins||x.skins||[];
       equippedPieceSkin=x.equippedPieceSkin||x.equippedSkin||null;
+
       myBoardSkins=x.boardSkins||[];
       equippedBoardSkin=x.equippedBoardSkin||null;
+
       updateProfileUI();
     });
+
     document.getElementById("saveNameBtn").onclick=async()=>{
       const newName=nameInput.value.trim().slice(0,20);
-      if(!newName){alert("Введите имя");return}
+
+      if(!newName){
+        alert("Введите имя");
+        return;
+      }
+
       await userRef.update({name:newName});
       alert("✅ Имя сохранено");
     };
-    onlineReady=true;render();showMenu();
-  }).catch(err=>{alert("Firebase: "+(err.code||"")+"\n"+(err.message||""))});
+
+    onlineReady=true;
+    render();
+    showMenu();
+
+  }).catch(err=>{
+    alert("Firebase: "+(err.code||"")+"\n"+(err.message||""));
+  });
 });
 
-function generateLobbyId(){return "l"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+/* ============ ЛОББИ ============ */
+function generateLobbyId(){
+  return "l"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
+}
 
 async function createLobby(bet){
-  if((myProfile.coins||0)<bet){alert("Недостаточно монет для этой ставки");return}
+  if((myProfile.coins||0)<bet){
+    alert("Недостаточно монет для этой ставки");
+    return;
+  }
+
   const lobbyId=generateLobbyId();
   const newLobbyRef=firebase.database().ref("lobbies/"+lobbyId);
   const userRef=firebase.database().ref("users/"+myUid);
+
   let success=false;
-  await userRef.child("coins").transaction(v=>{if((v||0)<bet)return;success=true;return(v||0)-bet});
-  if(!success){alert("Недостаточно монет");return}
-  const skins={white:equippedPieceSkin||null,black:null};
-  const boardSkins={white:equippedBoardSkin||null,black:null};
-  await newLobbyRef.set({
-    bet,status:"waiting",createdAt:Date.now(),creator:myUid,board:makeFreshBoard(),current:"white",gameOver:false,whiteTime:MOVE_TIME,blackTime:MOVE_TIME,skins,boardSkins,
-    players:{white:myUid,whiteName:myProfile.name||"Игрок 1"}
+
+  await userRef.child("coins").transaction(v=>{
+    if((v||0)<bet)return;
+    success=true;
+    return(v||0)-bet;
   });
+
+  if(!success){
+    alert("Недостаточно монет");
+    return;
+  }
+
+  const skins={
+    white:equippedPieceSkin||null,
+    black:null
+  };
+
+  const boardSkins={
+    white:equippedBoardSkin||null,
+    black:null
+  };
+
+  await newLobbyRef.set({
+    bet,
+    status:"waiting",
+    createdAt:Date.now(),
+    creator:myUid,
+    board:makeFreshBoard(),
+    current:"white",
+    gameOver:false,
+    whiteTime:MOVE_TIME,
+    blackTime:MOVE_TIME,
+    skins,
+    boardSkins,
+    players:{
+      white:myUid,
+      whiteName:myProfile.name||"Игрок 1"
+    }
+  });
+
   enterLobby(lobbyId,"white");
 }
 
@@ -1074,264 +1616,525 @@ async function joinLobby(lobbyId){
   const lob=firebase.database().ref("lobbies/"+lobbyId);
   const snap=await lob.once("value");
   const data=snap.val();
-  if(!data){alert("Лобби не найдено");return}
-  if(data.status!=="waiting"){alert("Лобби уже занято");return}
-  if(data.players?.white===myUid){enterLobby(lobbyId,"white");return}
-  if((myProfile.coins||0)<data.bet){alert("Недостаточно монет");return}
+
+  if(!data){
+    alert("Лобби не найдено");
+    return;
+  }
+
+  if(data.status!=="waiting"){
+    alert("Лобби уже занято");
+    return;
+  }
+
+  if(data.players?.white===myUid){
+    enterLobby(lobbyId,"white");
+    return;
+  }
+
+  if((myProfile.coins||0)<data.bet){
+    alert("Недостаточно монет");
+    return;
+  }
+
   const userRef=firebase.database().ref("users/"+myUid);
   let success=false;
-  await userRef.child("coins").transaction(v=>{if((v||0)<data.bet)return;success=true;return(v||0)-data.bet});
-  if(!success){alert("Недостаточно монет");return}
+
+  await userRef.child("coins").transaction(v=>{
+    if((v||0)<data.bet)return;
+    success=true;
+    return(v||0)-data.bet;
+  });
+
+  if(!success){
+    alert("Недостаточно монет");
+    return;
+  }
+
   const whiteSkin=data.skins?.white||null;
   const whiteBoardSkin=data.boardSkins?.white||null;
-  const skins={white:whiteSkin,black:equippedPieceSkin||null};
-  const boardSkins={white:whiteBoardSkin,black:equippedBoardSkin||null};
-  await lob.update({"players/black":myUid,"players/blackName":myProfile.name||"Игрок 2",status:"playing",skins,boardSkins});
+
+  const skins={
+    white:whiteSkin,
+    black:equippedPieceSkin||null
+  };
+
+  const boardSkins={
+    white:whiteBoardSkin,
+    black:equippedBoardSkin||null
+  };
+
+  await lob.update({
+    "players/black":myUid,
+    "players/blackName":myProfile.name||"Игрок 2",
+    status:"playing",
+    skins,
+    boardSkins
+  });
+
   enterLobby(lobbyId,"black");
 }
 
+/* ============ ВХОД В ИГРУ ============ */
 function enterLobby(lobbyId,color){
-  currentLobbyId=lobbyId;myColor=color;
+  currentLobbyId=lobbyId;
+  myColor=color;
+
   lobbyRef=firebase.database().ref("lobbies/"+lobbyId);
   payoutDone=false;
-  if(lobbyUnsubscribe){lobbyUnsubscribe();lobbyUnsubscribe=null}
+
+  if(lobbyUnsubscribe){
+    lobbyUnsubscribe();
+    lobbyUnsubscribe=null;
+  }
+
   document.getElementById("p1name").textContent="Игрок 1";
   document.getElementById("p2name").textContent="Игрок 2";
   document.getElementById("msg").textContent="Ожидание соперника...";
   document.getElementById("turn").textContent="⏳ Ожидание...";
-  showGame();resetMoveTimer();
-  B=makeFreshBoard();render();
+
+  showGame();
+  resetMoveTimer();
+
+  B=makeFreshBoard();
+  render();
 
   const handler=lobbyRef.on("value",snap=>{
     const d=snap.val();
+
     if(!d){
-      if(lobbyUnsubscribe){lobbyUnsubscribe();lobbyUnsubscribe=null}
-      exitToMenu();return;
+      if(lobbyUnsubscribe){
+        lobbyUnsubscribe();
+        lobbyUnsubscribe=null;
+      }
+
+      exitToMenu();
+      return;
     }
+
     lobbyData=d;
 
-    if(d.status==="waiting"||d.status==="finished"||d.gameOver===true){
-      backBtn.style.display="block";
-    }else{
-      backBtn.style.display="none";
-    }
+    if(d.status==="waiting")backBtn.style.display="block";
+    else backBtn.style.display="none";
 
     if(d.players){
       document.getElementById("p1name").textContent=d.players.whiteName||"Игрок 1";
       document.getElementById("p2name").textContent=d.players.blackName||"Игрок 2";
     }
+
     if(d.players){
       if(d.players.white===myUid)myColor="white";
       else if(d.players.black===myUid)myColor="black";
     }
 
+    /* Определение скина шашек */
     if(d.skins){
       const tW=getSkinTier(d.skins.white);
       const tB=getSkinTier(d.skins.black);
       const maxT=Math.max(tW,tB);
-      matchPieceSkin=maxT===4?"emperor":maxT===3?"diamond":maxT===2?"gold":maxT===1?"ice":null;
-    }else matchPieceSkin=null;
 
+      matchPieceSkin=
+        maxT===4?"emperor":
+        maxT===3?"diamond":
+        maxT===2?"gold":
+        maxT===1?"ice":null;
+    }else{
+      matchPieceSkin=null;
+    }
+
+    /* Определение скина доски */
     if(d.boardSkins){
       const tW=getSkinTier(d.boardSkins.white);
       const tB=getSkinTier(d.boardSkins.black);
       const maxT=Math.max(tW,tB);
-      matchBoardSkin=maxT===3?"emperor-board":maxT===2?"jade":maxT===1?"ice-board":null;
-    }else matchBoardSkin=null;
+
+      matchBoardSkin=
+        maxT===3?"emperor-board":
+        maxT===2?"jade":
+        maxT===1?"ice-board":null;
+    }else{
+      matchBoardSkin=null;
+    }
 
     const fbBoard=d.board||{};
-    B=Array.from({length:8},(_,r)=>Array.from({length:8},(_,c)=>{const v=fbBoard[r]?.[c];return v===undefined||v===null?null:v}));
+
+    B=Array.from({length:8},(_,r)=>
+      Array.from({length:8},(_,c)=>{
+        const v=fbBoard[r]?.[c];
+        return v===undefined||v===null?null:v;
+      })
+    );
+
     current=d.current||"white";
     gameOver=d.gameOver===true;
     lastResult=d.result||null;
     pendingDrawOffer=d.drawOffer||null;
+
     if(d.whiteTime!==undefined)time.white=Number(d.whiteTime)||MOVE_TIME;
     if(d.blackTime!==undefined)time.black=Number(d.blackTime)||MOVE_TIME;
-    paintTimers();updateDrawButtons();
+
+    paintTimers();
+    updateDrawButtons();
 
     if(d.status==="waiting"){
       turnEl.textContent="⏳ Ожидание соперника...";
       msgEl.textContent="Ставка: 🪙 "+d.bet.toLocaleString("ru")+". Ждём игрока.";
-      hideRestart();render();return;
+      hideRestart();
+      render();
+      return;
     }
+
     if(d.status==="playing"&&!gameOver){
       turnEl.textContent=current==="white"?"⚪ Ход игрока 1":"⚫ Ход игрока 2";
       msgEl.textContent=myColor===current?"Ваш ход":"⏳ Ход соперника";
-      hideRestart();render();return;
+      hideRestart();
+      render();
+      return;
     }
+
     if(gameOver){
       showRestart();
-      if(lastResult==="draw"){turnEl.textContent="🤝 Ничья";msgEl.textContent="Ничья. Ставки возвращены."}
-      else if(lastResult){
-        const winnerName=lastResult==="white"?(d.players?.whiteName||"Белые"):(d.players?.blackName||"Чёрные");
+
+      if(lastResult==="draw"){
+        turnEl.textContent="🤝 Ничья";
+        msgEl.textContent="Ничья. Ставки возвращены.";
+      }else if(lastResult){
+        const winnerName=lastResult==="white"
+          ?(d.players?.whiteName||"Белые")
+          :(d.players?.blackName||"Чёрные");
+
         turnEl.textContent=`🏆 Победа: ${winnerName}`;
         msgEl.textContent="Игра завершена";
       }
-      render();payWinner(lastResult);
+
+      render();
+      payWinner(lastResult);
     }
   });
+
   lobbyUnsubscribe=()=>lobbyRef.off("value",handler);
 
   restartBtn.onclick=async()=>{
     if(!lobbyRef)return;
-    await lobbyRef.update({board:makeFreshBoard(),current:"white",gameOver:false,whiteTime:MOVE_TIME,blackTime:MOVE_TIME,result:null,status:"playing"});
+
+    await lobbyRef.update({
+      board:makeFreshBoard(),
+      current:"white",
+      gameOver:false,
+      whiteTime:MOVE_TIME,
+      blackTime:MOVE_TIME,
+      result:null,
+      status:"playing"
+    });
+
     await lobbyRef.child("drawOffer").remove();
     await lobbyRef.child("payoutDone").remove();
-    payoutDone=false;resetMoveTimer();
+
+    payoutDone=false;
+    resetMoveTimer();
   };
 }
 
+/* ============ ВЫПЛАТА ПОБЕДИТЕЛЮ ============ */
 async function payWinner(result){
   if(payoutDone)return;
   if(!lobbyData||!lobbyRef)return;
+
   const snap=await lobbyRef.child("payoutDone").once("value");
+
   if(snap.val()===true)return;
+
   payoutDone=true;
   await lobbyRef.child("payoutDone").set(true);
+
   const bet=lobbyData.bet||0;
   const pot=bet*2;
   const winAmount=Math.floor(pot*0.98);
+
   const uidWhite=lobbyData.players?.white;
   const uidBlack=lobbyData.players?.black;
 
   if(result==="draw"){
-    if(uidWhite)await firebase.database().ref(`users/${uidWhite}/coins`).transaction(v=>(v||0)+bet);
-    if(uidBlack)await firebase.database().ref(`users/${uidBlack}/coins`).transaction(v=>(v||0)+bet);
+    if(uidWhite){
+      await firebase.database().ref(`users/${uidWhite}/coins`).transaction(v=>(v||0)+bet);
+    }
+
+    if(uidBlack){
+      await firebase.database().ref(`users/${uidBlack}/coins`).transaction(v=>(v||0)+bet);
+    }
   }else{
     const winnerUid=result==="white"?uidWhite:uidBlack;
     const loserUid=result==="white"?uidBlack:uidWhite;
+
     if(winnerUid){
       await firebase.database().ref(`users/${winnerUid}/coins`).transaction(v=>(v||0)+winAmount);
       await firebase.database().ref(`users/${winnerUid}/wins`).transaction(v=>(v||0)+1);
       await firebase.database().ref(`users/${winnerUid}/gems`).transaction(v=>(v||0)+1);
     }
-    if(loserUid)await firebase.database().ref(`users/${loserUid}/losses`).transaction(v=>(v||0)+1);
+
+    if(loserUid){
+      await firebase.database().ref(`users/${loserUid}/losses`).transaction(v=>(v||0)+1);
+    }
   }
 
   setTimeout(async()=>{
-    if(lobbyRef)await lobbyRef.remove().catch(()=>{});
+    if(lobbyRef){
+      await lobbyRef.remove().catch(()=>{});
+    }
   },1500);
 }
 
+/* ============ СДАЧА ============ */
 document.getElementById("resign").onclick=()=>{
   if(gameOver||!myColor||!lobbyRef)return;
+
   SFX.lose();
+
   const winner=myColor==="white"?"black":"white";
   const loser=myColor;
-  gameOver=true;lastResult=winner;
+
+  gameOver=true;
+  lastResult=winner;
+
   turnEl.textContent=loser==="white"?"🏳️ Белые сдались":"🏳️ Чёрные сдались";
   msgEl.textContent="Игра окончена";
+
   showRestart();
-  lobbyRef.update({board:B,current,gameOver:true,result:winner,status:"finished"});
+
+  lobbyRef.update({
+    board:B,
+    current,
+    gameOver:true,
+    result:winner,
+    status:"finished"
+  });
 };
 
+/* ============ ХОД ============ */
 function onMove(r,c){
   if(!onlineReady||gameOver)return;
-  if(myColor!==current){msgEl.textContent="⏳ Сейчас ход соперника.";return}
+
+  if(myColor!==current){
+    msgEl.textContent="⏳ Сейчас ход соперника.";
+    return;
+  }
+
   localMove(r,c);
+
   if(lobbyRef){
-    const updateData={board:B,current,gameOver,whiteTime:time.white,blackTime:time.black};
-    if(gameOver&&lastResult){updateData.result=lastResult;updateData.status="finished"}
+    const updateData={
+      board:B,
+      current,
+      gameOver,
+      whiteTime:time.white,
+      blackTime:time.black
+    };
+
+    if(gameOver&&lastResult){
+      updateData.result=lastResult;
+      updateData.status="finished";
+    }
+
     lobbyRef.update(updateData);
   }
 }
 
+/* ============ БЫСТРАЯ ИГРА ============ */
 document.getElementById("btnPlay").onclick=async()=>{
-  if(!onlineReady){alert("Подключение...");return}
-  if(!myProfile.name){alert("Сначала задайте имя");return}
+  if(!onlineReady){
+    alert("Подключение...");
+    return;
+  }
+
+  if(!myProfile.name){
+    alert("Сначала задайте имя");
+    return;
+  }
+
   searching=true;
+
   document.getElementById("searchOverlay").classList.add("open");
   document.getElementById("searchStatus").textContent="Ищем подходящее лобби...";
+
   const lobbiesRef=firebase.database().ref("lobbies");
+
   const tryFind=async snap=>{
     if(!searching)return;
+
     const all=snap.val()||{};
     let found=null;
+
     for(const [id,lob] of Object.entries(all)){
       if(lob.status!=="waiting")continue;
       if(lob.players?.white===myUid)continue;
       if(lob.bet>(myProfile.coins||0))continue;
-      found={id,...lob};break;
+
+      found={id,...lob};
+      break;
     }
+
     if(found){
       searching=false;
-      if(searchListener){lobbiesRef.off("value",searchListener);searchListener=null}
+
+      if(searchListener){
+        lobbiesRef.off("value",searchListener);
+        searchListener=null;
+      }
+
       document.getElementById("searchOverlay").classList.remove("open");
-      await joinLobby(found.id);return;
+
+      await joinLobby(found.id);
+      return;
     }
-    if(searching)setTimeout(()=>{if(searching)lobbiesRef.once("value").then(tryFind)},2000);
+
+    if(searching){
+      setTimeout(()=>{
+        if(searching)lobbiesRef.once("value").then(tryFind);
+      },2000);
+    }
   };
+
   searchListener=snap=>tryFind(snap);
+
   lobbiesRef.on("value",searchListener);
   lobbiesRef.once("value").then(tryFind);
 };
 
 document.getElementById("cancelSearchBtn").onclick=()=>{
   searching=false;
-  if(searchListener){firebase.database().ref("lobbies").off("value",searchListener);searchListener=null}
+
+  if(searchListener){
+    firebase.database().ref("lobbies").off("value",searchListener);
+    searchListener=null;
+  }
+
   document.getElementById("searchOverlay").classList.remove("open");
 };
 
+/* ============ ОТКРЫТЫЕ ЛОББИ ============ */
 document.getElementById("btnLobbies").onclick=()=>{
   const list=document.getElementById("lobbyList");
+
   list.innerHTML="<div style='text-align:center;color:#888;padding:10px'>Загрузка...</div>";
+
   document.getElementById("lobbiesModal").classList.add("open");
+
   firebase.database().ref("lobbies").once("value").then(snap=>{
     const all=snap.val()||{};
-    const arr=Object.entries(all).filter(([_,l])=>l.status==="waiting").map(([id,l])=>({id,...l}));
-    if(arr.length===0){list.innerHTML="<div style='text-align:center;color:#888;padding:20px'>Нет открытых лобби</div>";return}
-    list.innerHTML="";arr.sort((a,b)=>a.bet-b.bet);
+
+    const arr=Object.entries(all)
+      .filter(([_,l])=>l.status==="waiting")
+      .map(([id,l])=>({id,...l}));
+
+    if(arr.length===0){
+      list.innerHTML="<div style='text-align:center;color:#888;padding:20px'>Нет открытых лобби</div>";
+      return;
+    }
+
+    list.innerHTML="";
+    arr.sort((a,b)=>a.bet-b.bet);
+
     arr.forEach(lob=>{
-      const row=document.createElement("div");row.className="lobby-row";
+      const row=document.createElement("div");
+      row.className="lobby-row";
+
       const canJoin=(myProfile.coins||0)>=lob.bet;
       const isMine=lob.players?.white===myUid;
-      row.innerHTML=`<div><div class="bet">🪙 ${lob.bet.toLocaleString("ru")}</div><div style="color:#888;font-size:11px">${lob.players?.whiteName||"?"}${isMine?" (ваше)":""}</div></div><button ${(canJoin||isMine)?"":"disabled"}>${isMine?"Вернуться":(canJoin?"Войти":"Мало монет")}</button>`;
+
+      row.innerHTML=`
+        <div>
+          <div class="bet">🪙 ${lob.bet.toLocaleString("ru")}</div>
+          <div style="color:#888;font-size:11px">
+            ${lob.players?.whiteName||"?"}${isMine?" (ваше)":""}
+          </div>
+        </div>
+        <button ${(canJoin||isMine)?"":"disabled"}>
+          ${isMine?"Вернуться":(canJoin?"Войти":"Мало монет")}
+        </button>
+      `;
+
       row.querySelector("button").onclick=()=>{
         document.getElementById("lobbiesModal").classList.remove("open");
-        if(isMine)enterLobby(lob.id,"white");else joinLobby(lob.id);
+
+        if(isMine)enterLobby(lob.id,"white");
+        else joinLobby(lob.id);
       };
+
       list.appendChild(row);
     });
   });
 };
 
+/* ============ СОЗДАНИЕ ЛОББИ ============ */
 document.getElementById("btnCreate").onclick=()=>{
-  const grid=document.getElementById("betGrid");grid.innerHTML="";
+  const grid=document.getElementById("betGrid");
+  grid.innerHTML="";
+
   BET_AMOUNTS.forEach(bet=>{
-    const btn=document.createElement("button");btn.className="bet-btn";
+    const btn=document.createElement("button");
+
+    btn.className="bet-btn";
     btn.textContent=`🪙 ${bet.toLocaleString("ru")}`;
     btn.disabled=(myProfile.coins||0)<bet;
-    btn.onclick=async()=>{document.getElementById("createModal").classList.remove("open");await createLobby(bet)};
+
+    btn.onclick=async()=>{
+      document.getElementById("createModal").classList.remove("open");
+      await createLobby(bet);
+    };
+
     grid.appendChild(btn);
   });
+
   document.getElementById("createModal").classList.add("open");
 };
 
+/* ============ ВЫХОД В МЕНЮ ============ */
 backBtn.onclick=async()=>{
   if(lobbyData&&lobbyData.status==="waiting"&&lobbyData.players?.white===myUid){
     if(!confirm("Выйти из лобби? Ставка вернётся."))return;
+
     const userRef=firebase.database().ref("users/"+myUid);
+
     await userRef.child("coins").transaction(v=>(v||0)+(lobbyData.bet||0));
+
     if(lobbyRef)await lobbyRef.remove();
-  }else if(lobbyData?.status==="playing"&&!gameOver){
+  }else if(!gameOver){
     return;
   }
+
   exitToMenu();
 };
 
 function exitToMenu(){
-  if(lobbyUnsubscribe){lobbyUnsubscribe();lobbyUnsubscribe=null}
-  currentLobbyId=null;lobbyRef=null;lobbyData=null;gameOver=false;payoutDone=false;myColor=null;
-  backBtn.style.display="none";showMenu();
+  if(lobbyUnsubscribe){
+    lobbyUnsubscribe();
+    lobbyUnsubscribe=null;
+  }
+
+  currentLobbyId=null;
+  lobbyRef=null;
+  lobbyData=null;
+  gameOver=false;
+  payoutDone=false;
+  myColor=null;
+
+  backBtn.style.display="none";
+  showMenu();
 }
 
-document.getElementById("btnSettings").onclick=()=>{document.getElementById("settingsModal").classList.add("open")};
+/* ============ ЗАПУСК ============ */
+document.getElementById("btnSettings").onclick=()=>{
+  document.getElementById("settingsModal").classList.add("open");
+};
 
 resetMoveTimer();
 render();
 showMenu();
 
-document.addEventListener("pointerdown",function unlock(){getAudio();document.removeEventListener("pointerdown",unlock)},{once:true});
+document.addEventListener("pointerdown",function unlock(){
+  getAudio();
+  document.removeEventListener("pointerdown",unlock);
+},{once:true});
 </script>
 </body>
 </html>
