@@ -518,7 +518,6 @@ let currentLobbyId=null;
 let lobbyRef=null;
 let lobbyData=null;
 let lobbyUnsubscribe=null;
-let payoutDone=false;
 
 let searching=false;
 let searchListener=null;
@@ -1087,7 +1086,6 @@ async function joinLobby(lobbyId){
 function enterLobby(lobbyId,color){
   currentLobbyId=lobbyId;myColor=color;
   lobbyRef=firebase.database().ref("lobbies/"+lobbyId);
-  payoutDone=false;
   if(lobbyUnsubscribe){lobbyUnsubscribe();lobbyUnsubscribe=null}
   document.getElementById("p1name").textContent="Игрок 1";
   document.getElementById("p2name").textContent="Игрок 2";
@@ -1167,12 +1165,16 @@ function enterLobby(lobbyId,color){
 }
 
 async function payWinner(result){
-  if(payoutDone)return;
   if(!lobbyData||!lobbyRef)return;
-  const snap=await lobbyRef.child("payoutDone").once("value");
-  if(snap.val()===true)return;
-  payoutDone=true;
-  await lobbyRef.child("payoutDone").set(true);
+
+  // Атомарный захват, чтобы только ОДИН клиент произвел выплату
+  const payoutRef = await lobbyRef.child("payoutDone").transaction(v => {
+    if (v === true) return; // уже обработано
+    return true;
+  });
+
+  if (!payoutRef.committed) return; // если уже обработано другим игроком
+
   const bet=lobbyData.bet||0;
   const pot=bet*2;
   const winAmount=Math.floor(pot*0.98);
@@ -1180,9 +1182,16 @@ async function payWinner(result){
   const uidBlack=lobbyData.players?.black;
 
   if(result==="draw"){
-    if(uidWhite)await firebase.database().ref(`users/${uidWhite}/coins`).transaction(v=>(v||0)+bet);
-    if(uidBlack)await firebase.database().ref(`users/${uidBlack}/coins`).transaction(v=>(v||0)+bet);
-  }else{
+    // Возврат ставки и добавление статистики ничьей
+    if(uidWhite){
+      await firebase.database().ref(`users/${uidWhite}/coins`).transaction(v=>(v||0)+bet);
+      await firebase.database().ref(`users/${uidWhite}/draws`).transaction(v=>(v||0)+1);
+    }
+    if(uidBlack){
+      await firebase.database().ref(`users/${uidBlack}/coins`).transaction(v=>(v||0)+bet);
+      await firebase.database().ref(`users/${uidBlack}/draws`).transaction(v=>(v||0)+1);
+    }
+  } else {
     const winnerUid=result==="white"?uidWhite:uidBlack;
     const loserUid=result==="white"?uidBlack:uidWhite;
     if(winnerUid){
@@ -1193,13 +1202,13 @@ async function payWinner(result){
     if(loserUid)await firebase.database().ref(`users/${loserUid}/losses`).transaction(v=>(v||0)+1);
   }
 
-  // Удаляем лобби полностью из базы через 1.5 секунды
-  setTimeout(async()=>{
-    if(lobbyRef){
-      await lobbyRef.remove().catch(()=>{});
-      exitToMenu(); // Принудительно выкидываем в меню
-    }
-  },1500);
+  // Безвозвратное удаление лобби из Firebase
+  await lobbyRef.remove().catch(()=>{});
+
+  // Выход в меню (с небольшой задержкой, чтобы игрок увидел текст)
+  setTimeout(() => {
+    exitToMenu();
+  }, 1500);
 }
 
 document.getElementById("resign").onclick=()=>{
@@ -1309,7 +1318,7 @@ backBtn.onclick=async()=>{
 
 function exitToMenu(){
   if(lobbyUnsubscribe){lobbyUnsubscribe();lobbyUnsubscribe=null}
-  currentLobbyId=null;lobbyRef=null;lobbyData=null;gameOver=false;payoutDone=false;myColor=null;
+  currentLobbyId=null;lobbyRef=null;lobbyData=null;gameOver=false;myColor=null;
   backBtn.style.display="none";showMenu();
 }
 
