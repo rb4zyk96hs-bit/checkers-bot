@@ -11,16 +11,17 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 
 /* ============ МЕНЮ ============ */
 .menu-screen{
-  position:fixed;inset:0;
-  /* Деревянный фон */
-  background-color: #2e1a10;
-  background-image: 
-    repeating-linear-gradient(90deg, transparent 0px, transparent 50px, rgba(0,0,0,0.15) 50px, rgba(0,0,0,0.15) 52px),
-    repeating-linear-gradient(180deg, transparent 0px, transparent 4px, rgba(255,255,255,0.03) 4px, rgba(255,255,255,0.03) 6px),
-    url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.02 0.4' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.3' fill='%235a331c'/%3E%3C/svg%3E"),
-    linear-gradient(135deg, #3b2011 0%, #1a0d06 100%);
-  background-size: 100% 100%, 100% 100%, 200px 200px, 100% 100%;
-  display:flex;flex-direction:column;padding:20px;z-index:500;overflow-y:auto;
+position:fixed;
+inset:0;
+background:
+radial-gradient(ellipse at 15% 15%, rgba(0,140,255,.20), transparent 45%),
+radial-gradient(ellipse at 85% 80%, rgba(125,60,255,.18), transparent 45%),
+linear-gradient(135deg,#080d18 0%,#111b2b 50%,#090d18 100%);
+display:flex;
+flex-direction:column;
+padding:20px;
+z-index:500;
+overflow-y:auto;
 }
 .menu-screen.hidden{display:none}
 .menu-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:auto;gap:10px}
