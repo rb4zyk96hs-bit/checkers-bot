@@ -129,7 +129,6 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;font-size:14px;cursor:pointer}
 .draw{background:#28751d}
 .resign{background:#ad2922}
-.restart{background:#2a4f8a;grid-column:1/-1}
 
 /* ============ МОДАЛКИ ============ */
 .modal{position:fixed;inset:0;background:#000a;z-index:1000;align-items:center;justify-content:center;padding:20px;display:none}
@@ -429,7 +428,6 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
       <button id="resign" class="resign">🏳️ Сдаться</button>
       <button id="acceptDraw" class="draw" style="display:none">✅ Принять</button>
       <button id="declineDraw" class="resign" style="display:none">❌ Отклонить</button>
-      <button id="restart" class="restart" style="display:none">🔄 Новая игра</button>
     </div>
   </div>
 </div>
@@ -482,7 +480,6 @@ function getSkinTier(skinId){
 const boardEl=document.getElementById("board");
 const turnEl=document.getElementById("turn");
 const msgEl=document.getElementById("msg");
-const restartBtn=document.getElementById("restart");
 const backBtn=document.getElementById("backBtn");
 const boardNums=document.getElementById("boardNums");
 const boardLetters=document.getElementById("boardLetters");
@@ -746,7 +743,7 @@ function localMove(r,c){
     turnEl.textContent=winner==="white"?"🏆 Победили белые":"🏆 Победили чёрные";
     msgEl.textContent="У соперника не осталось шашек.";
     if(myColor===winner)SFX.win();else SFX.lose();
-    showRestart();render();return;
+    render();return;
   }
 
   if(!hasMove(current)){
@@ -756,7 +753,7 @@ function localMove(r,c){
     turnEl.textContent=winner==="white"?"🏆 Победили белые":"🏆 Победили чёрные";
     msgEl.textContent="У соперника нет возможных ходов.";
     if(myColor===winner)SFX.win();else SFX.lose();
-    showRestart();render();return;
+    render();return;
   }
 
   resetMoveTimer();
@@ -764,9 +761,6 @@ function localMove(r,c){
   msgEl.textContent=current==="white"?"Ход белых.":"Ход чёрных.";
   updateDrawButtons();render();
 }
-
-function showRestart(){restartBtn.style.display="block"}
-function hideRestart(){restartBtn.style.display="none"}
 
 let audioCtx=null;
 function getAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();return audioCtx}
@@ -993,7 +987,7 @@ setInterval(()=>{
     gameOver=true;lastResult=winner;
     turnEl.textContent=winner==="white"?"⏱️ Победили белые":"⏱️ Победили чёрные";
     msgEl.textContent="Время на ход вышло.";
-    SFX.lose();showRestart();
+    SFX.lose();
     lobbyRef.update({board:B,current,gameOver:true,result:winner,status:"finished"});
   }
 },1000);
@@ -1152,15 +1146,14 @@ function enterLobby(lobbyId,color){
     if(d.status==="waiting"){
       turnEl.textContent="⏳ Ожидание соперника...";
       msgEl.textContent="Ставка: 🪙 "+d.bet.toLocaleString("ru")+". Ждём игрока.";
-      hideRestart();render();return;
+      render();return;
     }
     if(d.status==="playing"&&!gameOver){
       turnEl.textContent=current==="white"?"⚪ Ход игрока 1":"⚫ Ход игрока 2";
       msgEl.textContent=myColor===current?"Ваш ход":"⏳ Ход соперника";
-      hideRestart();render();return;
+      render();return;
     }
     if(gameOver){
-      showRestart();
       if(lastResult==="draw"){turnEl.textContent="🤝 Ничья";msgEl.textContent="Ничья. Ставки возвращены."}
       else if(lastResult){
         const winnerName=lastResult==="white"?(d.players?.whiteName||"Белые"):(d.players?.blackName||"Чёрные");
@@ -1171,14 +1164,6 @@ function enterLobby(lobbyId,color){
     }
   });
   lobbyUnsubscribe=()=>lobbyRef.off("value",handler);
-
-  restartBtn.onclick=async()=>{
-    if(!lobbyRef)return;
-    await lobbyRef.update({board:makeFreshBoard(),current:"white",gameOver:false,whiteTime:MOVE_TIME,blackTime:MOVE_TIME,result:null,status:"playing"});
-    await lobbyRef.child("drawOffer").remove();
-    await lobbyRef.child("payoutDone").remove();
-    payoutDone=false;resetMoveTimer();
-  };
 }
 
 async function payWinner(result){
@@ -1208,8 +1193,12 @@ async function payWinner(result){
     if(loserUid)await firebase.database().ref(`users/${loserUid}/losses`).transaction(v=>(v||0)+1);
   }
 
+  // Удаляем лобби полностью из базы через 1.5 секунды
   setTimeout(async()=>{
-    if(lobbyRef)await lobbyRef.remove().catch(()=>{});
+    if(lobbyRef){
+      await lobbyRef.remove().catch(()=>{});
+      exitToMenu(); // Принудительно выкидываем в меню
+    }
   },1500);
 }
 
@@ -1221,7 +1210,6 @@ document.getElementById("resign").onclick=()=>{
   gameOver=true;lastResult=winner;
   turnEl.textContent=loser==="white"?"🏳️ Белые сдались":"🏳️ Чёрные сдались";
   msgEl.textContent="Игра окончена";
-  showRestart();
   lobbyRef.update({board:B,current,gameOver:true,result:winner,status:"finished"});
 };
 
