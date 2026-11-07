@@ -9,20 +9,49 @@
 *{box-sizing:border-box}
 body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 
+/* ============ МЕНЮ ============ */
 .menu-screen{
-  position:fixed;inset:0;
-  background-color:#3a1f0e;
+  position:fixed;
+  inset:0;
+  background-color: #3a1f0e;
   background-image:
-    linear-gradient(90deg,rgba(0,0,0,0.65) 0%,rgba(0,0,0,0) 3%,rgba(0,0,0,0) 97%,rgba(0,0,0,0.5) 100%),
-    linear-gradient(90deg,rgba(255,200,150,0) 0%,rgba(255,200,150,0.06) 50%,rgba(255,200,150,0) 100%),
-    repeating-linear-gradient(180deg,transparent 0px,transparent 3px,rgba(0,0,0,0.08) 3px,rgba(0,0,0,0.08) 4px,transparent 4px,transparent 7px,rgba(255,200,150,0.04) 7px,rgba(255,200,150,0.04) 8px),
-    radial-gradient(ellipse 40% 8% at 30% 20%,rgba(0,0,0,0.15),transparent 60%),
-    radial-gradient(ellipse 60% 6% at 70% 55%,rgba(0,0,0,0.12),transparent 60%),
-    radial-gradient(ellipse 50% 10% at 20% 75%,rgba(255,180,120,0.05),transparent 60%),
-    linear-gradient(180deg,#4a2814 0%,#3a1f0e 50%,#2a1508 100%);
-  background-size:120px 100%,120px 100%,100% 100%,100% 100%,100% 100%,100% 100%,100% 100%;
-  background-repeat:repeat-x,repeat-x,repeat,no-repeat,no-repeat,no-repeat,no-repeat;
-  display:flex;flex-direction:column;padding:20px;z-index:500;overflow-y:auto;
+    linear-gradient(90deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0) 3%, rgba(0,0,0,0) 97%, rgba(0,0,0,0.5) 100%),
+    linear-gradient(90deg, rgba(255,200,150,0) 0%, rgba(255,200,150,0.06) 50%, rgba(255,200,150,0) 100%),
+    repeating-linear-gradient(180deg,
+      transparent 0px,
+      transparent 3px,
+      rgba(0,0,0,0.08) 3px,
+      rgba(0,0,0,0.08) 4px,
+      transparent 4px,
+      transparent 7px,
+      rgba(255,200,150,0.04) 7px,
+      rgba(255,200,150,0.04) 8px
+    ),
+    radial-gradient(ellipse 40% 8% at 30% 20%, rgba(0,0,0,0.15), transparent 60%),
+    radial-gradient(ellipse 60% 6% at 70% 55%, rgba(0,0,0,0.12), transparent 60%),
+    radial-gradient(ellipse 50% 10% at 20% 75%, rgba(255,180,120,0.05), transparent 60%),
+    linear-gradient(180deg, #4a2814 0%, #3a1f0e 50%, #2a1508 100%);
+  background-size:
+    120px 100%,
+    120px 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%,
+    100% 100%;
+  background-repeat:
+    repeat-x,
+    repeat-x,
+    repeat,
+    no-repeat,
+    no-repeat,
+    no-repeat,
+    no-repeat;
+  display:flex;
+  flex-direction:column;
+  padding:20px;
+  z-index:500;
+  overflow-y:auto;
 }
 .menu-screen.hidden{display:none}
 .menu-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:auto;gap:10px}
@@ -38,7 +67,7 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 .menu-avatar{width:32px;height:32px;border-radius:50%;background:#2a4f8a;display:flex;align-items:center;justify-content:center;font-size:18px}
 #menuNick{font-weight:bold;font-size:14px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .menu-buttons{display:flex;flex-direction:column;gap:14px;max-width:360px;width:100%;margin:30px auto 40px}
-.menu-btn{border:0;border-radius:14px;padding:18px 20px;color:white;font-weight:bold;font-size:17px;text-align:left;cursor:pointer;transition:transform .1s,filter .15s;box-shadow:0 4px 12px #0006}
+.menu-btn{border:0;border-radius:14px;padding:18px 20px;color:white;font-weight:bold;font-size:17px;text-align:left;cursor:pointer;transition:transform .1s, filter .15s;box-shadow:0 4px 12px #0006}
 .menu-btn:hover{filter:brightness(1.1)}
 .menu-btn:active{transform:scale(0.98)}
 .menu-btn.play{background:linear-gradient(135deg,#28751d,#3aa52a)}
@@ -50,6 +79,7 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 .bonus-box button{background:#28751d;border:0;border-radius:8px;padding:8px 14px;color:white;font-weight:bold;font-size:13px;cursor:pointer}
 .bonus-box button:disabled{opacity:.5;cursor:not-allowed}
 
+/* ============ ИГРА ============ */
 .game{max-width:520px;margin:auto;padding:10px}
 .game-header{display:flex;align-items:center;gap:10px;margin-bottom:8px}
 .back-btn{background:#34383c;border:0;border-radius:10px;padding:8px 14px;color:white;font-weight:bold;font-size:14px;cursor:pointer}
@@ -68,7 +98,7 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 .frame{display:grid;grid-template-columns:24px 1fr;gap:3px;background:#4d2c1a;border:3px solid #754625;border-radius:9px;padding:5px;transition:all .3s ease}
 .nums{display:grid;grid-template-rows:repeat(8,1fr);align-items:center;text-align:center;font-weight:bold;transition:color .3s ease}
 .board{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));grid-template-rows:repeat(8,minmax(0,1fr));aspect-ratio:1;overflow:hidden;transition:background .3s}
-.cell{display:flex;align-items:center;justify-content:center;touch-action:none;user-select:none;-webkit-user-select:none;transition:background .3s,box-shadow .3s}
+.cell{display:flex;align-items:center;justify-content:center;touch-action:none;user-select:none;-webkit-user-select:none;transition:background .3s, box-shadow .3s}
 .light{background:#e6c38a}
 .dark{background:#744521}
 .sel{box-shadow:inset 0 0 0 4px #f1d16b !important}
@@ -77,15 +107,31 @@ body{margin:0;background:#101315;color:white;font-family:Arial,sans-serif}
 .piece.black{background:radial-gradient(circle at 35% 28%,#555,#101010 68%)}
 .piece.white{background:radial-gradient(circle at 35% 28%,#fff,#d0cbc0 70%)}
 .king{border:3px solid #c49b45}
-.crown{position:absolute;top:-18%;left:50%;transform:translateX(-50%);font-size:58%;line-height:1;pointer-events:none;filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 4px #ffd700);z-index:10;animation:crownGlow 2s ease-in-out infinite}
-@keyframes crownGlow{0%,100%{filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 2px #ffd700)}50%{filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 6px #ffd700)}}
+.crown{
+  position:absolute;
+  top:-18%;
+  left:50%;
+  transform:translateX(-50%);
+  font-size:58%;
+  line-height:1;
+  pointer-events:none;
+  filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 4px #ffd700);
+  z-index:10;
+  animation:crownGlow 2s ease-in-out infinite;
+}
+@keyframes crownGlow{
+  0%,100%{filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 2px #ffd700)}
+  50%{filter:drop-shadow(0 1px 2px #000) drop-shadow(0 0 6px #ffd700)}
+}
 .letters{display:grid;grid-template-columns:24px repeat(8,1fr);text-align:center;font-weight:bold;font-size:13px;margin-top:3px;transition:color .3s ease}
 .msg{text-align:center;background:#171a1d;border-radius:9px;padding:8px;margin-top:8px;color:#ccc;font-size:13px}
 .buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
 button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;font-size:14px;cursor:pointer}
 .draw{background:#28751d}
 .resign{background:#ad2922}
+.restart{background:#2a4f8a;grid-column:1/-1}
 
+/* ============ МОДАЛКИ ============ */
 .modal{position:fixed;inset:0;background:#000a;z-index:1000;align-items:center;justify-content:center;padding:20px;display:none}
 .modal.open{display:flex}
 .modal-content{background:#1c1f22;border:1px solid #34383c;border-radius:15px;padding:20px;max-width:400px;width:100%;color:white;position:relative;max-height:90vh;overflow-y:auto}
@@ -128,36 +174,49 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 .drag-ghost{position:fixed;width:40px;height:40px;margin-left:-20px;margin-top:-20px;pointer-events:none;z-index:9999;transform:scale(1.15);box-shadow:0 8px 18px #000a}
 .drag-origin{opacity:0.25}
 
+/* ============ МАГАЗИН ============ */
 .skin-item{background:#101315;border:1px solid #34383c;border-radius:10px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:12px}
 .skin-item .skin-info{flex:1}
 .skin-item .skin-name{font-weight:bold;font-size:15px;margin-bottom:4px}
 .skin-item .skin-price{font-size:12px;color:#f1d16b}
 .skin-item .skin-preview{width:40px;height:40px;border-radius:50%;margin-right:10px;flex-shrink:0;border:2px solid #555;position:relative}
-.skin-preview.ice{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill='none' stroke='rgba(200,235,255,0.6)' stroke-width='1.5' stroke-linecap='round'><path d='M10 8 L18 20 L14 30 L22 42'/><path d='M18 20 L28 16 L36 24'/><path d='M28 16 L34 8'/><path d='M36 24 L46 30 L42 42 L50 50'/><path d='M14 30 L6 36 L10 46'/><path d='M22 42 L30 50'/><path d='M42 42 L38 52'/></g></svg>"),radial-gradient(circle at 30% 25%,#e0f7ff,#7fb7d9 60%,#3a6f8f 100%);background-size:cover,100% 100%;border:2px solid #a0d8f0;box-shadow:inset 0 2px 6px rgba(255,255,255,0.6),inset 0 -2px 6px rgba(0,0,0,0.4)}
-.skin-preview.gold{background:radial-gradient(circle at 30% 25%,#fff5cc,#e6b800 40%,#b38f00 70%,#664d00 100%);border:2px solid #d4af37;box-shadow:inset 0 2px 6px rgba(255,255,255,0.6),inset 0 -2px 6px rgba(0,0,0,0.7)}
-.skin-preview.diamond{background:conic-gradient(from 45deg,#b0ffff,#ffffff,#7fffd4,#40e0d0,#b0ffff);border:2px solid #00ffff;box-shadow:inset 0 2px 6px rgba(255,255,255,0.8),inset 0 -2px 6px rgba(0,0,0,0.5),0 0 10px #00ffff}
+.skin-preview.ice{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill='none' stroke='rgba(200,235,255,0.6)' stroke-width='1.5' stroke-linecap='round'><path d='M10 8 L18 20 L14 30 L22 42'/><path d='M18 20 L28 16 L36 24'/><path d='M28 16 L34 8'/><path d='M36 24 L46 30 L42 42 L50 50'/><path d='M14 30 L6 36 L10 46'/><path d='M22 42 L30 50'/><path d='M42 42 L38 52'/></g></svg>"),radial-gradient(circle at 30% 25%, #e0f7ff, #7fb7d9 60%, #3a6f8f 100%);background-size:cover, 100% 100%;border:2px solid #a0d8f0;box-shadow:inset 0 2px 6px rgba(255,255,255,0.6), inset 0 -2px 6px rgba(0,0,0,0.4)}
+.skin-preview.gold{background:radial-gradient(circle at 30% 25%, #fff5cc, #e6b800 40%, #b38f00 70%, #664d00 100%);border:2px solid #d4af37;box-shadow:inset 0 2px 6px rgba(255,255,255,0.6), inset 0 -2px 6px rgba(0,0,0,0.7)}
+.skin-preview.diamond{background:conic-gradient(from 45deg, #b0ffff, #ffffff, #7fffd4, #40e0d0, #b0ffff);border:2px solid #00ffff;box-shadow:inset 0 2px 6px rgba(255,255,255,0.8), inset 0 -2px 6px rgba(0,0,0,0.5), 0 0 10px #00ffff}
 .skin-item button{background:#28751d;border:0;border-radius:8px;padding:8px 14px;color:white;font-weight:bold;font-size:13px;cursor:pointer;white-space:nowrap}
 .skin-item button.owned{background:#b8903a}
 .skin-item button.equipped{background:#ad2922}
 .skin-item button:disabled{opacity:.5;cursor:not-allowed;background:#555}
 
-.piece.skin-ice{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill='none' stroke='rgba(200,235,255,0.6)' stroke-width='1.2' stroke-linecap='round'><path d='M10 8 L18 20 L14 30 L22 42'/><path d='M18 20 L28 16 L36 24'/><path d='M28 16 L34 8'/><path d='M36 24 L46 30 L42 42 L50 50'/><path d='M14 30 L6 36 L10 46'/><path d='M22 42 L30 50'/><path d='M42 42 L38 52'/></g></svg>"),radial-gradient(circle at 30% 25%,#e0f7ff,#7fb7d9 60%,#3a6f8f 100%)!important;background-size:cover,100% 100%!important;border:2px solid #a0d8f0!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.7),inset 0 -3px 6px rgba(0,0,0,0.4),0 3px 8px rgba(0,0,0,0.5)!important}
-.piece.skin-ice.king{border:3px solid #5a9ab8!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.7),inset 0 -3px 6px rgba(0,0,0,0.4),0 0 12px #a0d8f0!important}
-.piece.skin-ice.white{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill='none' stroke='rgba(140,180,220,0.6)' stroke-width='1.2' stroke-linecap='round'><path d='M10 8 L18 20 L14 30 L22 42'/><path d='M18 20 L28 16 L36 24'/><path d='M28 16 L34 8'/><path d='M36 24 L46 30 L42 42 L50 50'/><path d='M14 30 L6 36 L10 46'/><path d='M22 42 L30 50'/><path d='M42 42 L38 52'/></g></svg>"),radial-gradient(circle at 30% 25%,#ffffff,#d0e8f5 60%,#a0c8e0 100%)!important;background-size:cover,100% 100%!important;border:2px solid #b0d8f0!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.9),inset 0 -3px 6px rgba(0,0,0,0.3),0 3px 8px rgba(0,0,0,0.4)!important}
-.piece.skin-ice.white.king{border:3px solid #7aa8c4!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.9),inset 0 -3px 6px rgba(0,0,0,0.3),0 0 12px #b0d8f0!important}
+/* ============ СКИНЫ ШАШЕК ============ */
+.piece.skin-ice{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill='none' stroke='rgba(200,235,255,0.6)' stroke-width='1.2' stroke-linecap='round'><path d='M10 8 L18 20 L14 30 L22 42'/><path d='M18 20 L28 16 L36 24'/><path d='M28 16 L34 8'/><path d='M36 24 L46 30 L42 42 L50 50'/><path d='M14 30 L6 36 L10 46'/><path d='M22 42 L30 50'/><path d='M42 42 L38 52'/></g></svg>"),radial-gradient(circle at 30% 25%, #e0f7ff, #7fb7d9 60%, #3a6f8f 100%)!important;background-size:cover, 100% 100%!important;border:2px solid #a0d8f0!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.7), inset 0 -3px 6px rgba(0,0,0,0.4), 0 3px 8px rgba(0,0,0,0.5)!important}
+.piece.skin-ice.king{border:3px solid #5a9ab8!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.7), inset 0 -3px 6px rgba(0,0,0,0.4), 0 0 12px #a0d8f0!important}
+.piece.skin-ice.white{background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'><g fill='none' stroke='rgba(140,180,220,0.6)' stroke-width='1.2' stroke-linecap='round'><path d='M10 8 L18 20 L14 30 L22 42'/><path d='M18 20 L28 16 L36 24'/><path d='M28 16 L34 8'/><path d='M36 24 L46 30 L42 42 L50 50'/><path d='M14 30 L6 36 L10 46'/><path d='M22 42 L30 50'/><path d='M42 42 L38 52'/></g></svg>"),radial-gradient(circle at 30% 25%, #ffffff, #d0e8f5 60%, #a0c8e0 100%)!important;background-size:cover, 100% 100%!important;border:2px solid #b0d8f0!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.9), inset 0 -3px 6px rgba(0,0,0,0.3), 0 3px 8px rgba(0,0,0,0.4)!important}
+.piece.skin-ice.white.king{border:3px solid #7aa8c4!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.9), inset 0 -3px 6px rgba(0,0,0,0.3), 0 0 12px #b0d8f0!important}
 
-.piece.skin-gold{background:radial-gradient(circle at 30% 25%,#fff5cc,#e6b800 40%,#b38f00 70%,#664d00 100%)!important;border:2px solid #d4af37!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.6),inset 0 -3px 8px rgba(0,0,0,0.7),0 0 10px rgba(212,175,55,0.6)!important}
-.piece.skin-gold.king{border:3px solid #ffd700!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.6),inset 0 -3px 8px rgba(0,0,0,0.7),0 0 15px #ffd700!important}
-.piece.skin-gold.white{background:radial-gradient(circle at 30% 25%,#ffffff,#fff5cc 40%,#e6b800 80%,#b38f00 100%)!important;border:2px solid #ffe066!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.9),inset 0 -3px 8px rgba(0,0,0,0.4),0 0 10px rgba(255,215,0,0.5)!important}
-.piece.skin-gold.white.king{border:3px solid #ffc107!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.9),inset 0 -3px 8px rgba(0,0,0,0.4),0 0 15px #ffc107!important}
+.piece.skin-gold{background:radial-gradient(circle at 30% 25%, #fff5cc, #e6b800 40%, #b38f00 70%, #664d00 100%)!important;border:2px solid #d4af37!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.6), inset 0 -3px 8px rgba(0,0,0,0.7), 0 0 10px rgba(212,175,55,0.6)!important}
+.piece.skin-gold.king{border:3px solid #ffd700!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.6), inset 0 -3px 8px rgba(0,0,0,0.7), 0 0 15px #ffd700!important}
+.piece.skin-gold.white{background:radial-gradient(circle at 30% 25%, #ffffff, #fff5cc 40%, #e6b800 80%, #b38f00 100%)!important;border:2px solid #ffe066!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.9), inset 0 -3px 8px rgba(0,0,0,0.4), 0 0 10px rgba(255,215,0,0.5)!important}
+.piece.skin-gold.white.king{border:3px solid #ffc107!important;box-shadow:inset 0 3px 6px rgba(255,255,255,0.9), inset 0 -3px 8px rgba(0,0,0,0.4), 0 0 15px #ffc107!important}
 
-.piece.skin-diamond{background:conic-gradient(from 45deg,#b0ffff,#ffffff,#7fffd4,#40e0d0,#b0ffff)!important;border:2px solid #00ffff!important;box-shadow:inset 0 4px 8px rgba(255,255,255,0.8),inset 0 -4px 8px rgba(0,0,0,0.5),0 0 12px rgba(0,255,255,0.7)!important}
-.piece.skin-diamond.king{border:3px solid #00bfff!important;box-shadow:inset 0 4px 8px rgba(255,255,255,0.8),inset 0 -4px 8px rgba(0,0,0,0.5),0 0 18px #00ffff!important}
-.piece.skin-diamond.white{background:conic-gradient(from 135deg,#ffffff,#e0ffff,#b0ffff,#7fffd4,#ffffff)!important;border:2px solid #b0e0e6!important;box-shadow:inset 0 4px 8px rgba(255,255,255,0.9),inset 0 -4px 8px rgba(0,0,0,0.3),0 0 12px rgba(176,224,230,0.7)!important}
-.piece.skin-diamond.white.king{border:3px solid #5f9ea0!important;box-shadow:inset 0 4px 8px rgba(255,255,255,0.9),inset 0 -4px 8px rgba(0,0,0,0.3),0 0 18px #b0e0e6!important}
+.piece.skin-diamond{background:conic-gradient(from 45deg, #b0ffff, #ffffff, #7fffd4, #40e0d0, #b0ffff)!important;border:2px solid #00ffff!important;box-shadow:inset 0 4px 8px rgba(255,255,255,0.8), inset 0 -4px 8px rgba(0,0,0,0.5), 0 0 12px rgba(0,255,255,0.7)!important}
+.piece.skin-diamond.king{border:3px solid #00bfff!important;box-shadow:inset 0 4px 8px rgba(255,255,255,0.8), inset 0 -4px 8px rgba(0,0,0,0.5), 0 0 18px #00ffff!important}
+.piece.skin-diamond.white{background:conic-gradient(from 135deg, #ffffff, #e0ffff, #b0ffff, #7fffd4, #ffffff)!important;border:2px solid #b0e0e6!important;box-shadow:inset 0 4px 8px rgba(255,255,255,0.9), inset 0 -4px 8px rgba(0,0,0,0.3), 0 0 12px rgba(176,224,230,0.7)!important}
+.piece.skin-diamond.white.king{border:3px solid #5f9ea0!important;box-shadow:inset 0 4px 8px rgba(255,255,255,0.9), inset 0 -4px 8px rgba(0,0,0,0.3), 0 0 18px #b0e0e6!important}
 
-.skin-preview.board-jade{border-radius:8px;background:linear-gradient(135deg,#6bbd94 50%,#216b48 50%);border:2px solid #3e9b6d;box-shadow:inset 0 2px 5px rgba(255,255,255,0.3)}
-.skin-preview.board-ice{border-radius:8px;background:linear-gradient(135deg,#cceeff 50%,#3b7b9e 50%);border:2px solid #6ab0d6;box-shadow:inset 0 2px 5px rgba(255,255,255,0.5)}
+/* ============ СКИНЫ ДОСОК ============ */
+.skin-preview.board-jade{
+  border-radius:8px;
+  background:linear-gradient(135deg,#6bbd94 50%,#216b48 50%);
+  border:2px solid #3e9b6d;
+  box-shadow:inset 0 2px 5px rgba(255,255,255,0.3);
+}
+.skin-preview.board-ice{
+  border-radius:8px;
+  background:linear-gradient(135deg,#cceeff 50%,#3b7b9e 50%);
+  border:2px solid #6ab0d6;
+  box-shadow:inset 0 2px 5px rgba(255,255,255,0.5);
+}
 .board.skin-jade .light{background:#6bbd94!important;box-shadow:inset 0 0 8px rgba(255,255,255,0.2)}
 .board.skin-jade .dark{background:#216b48!important;box-shadow:inset 0 0 8px rgba(0,0,0,0.4)}
 .frame.frame-jade{background:#143d2a!important;border-color:#3e9b6d!important;box-shadow:0 0 15px rgba(33,107,72,0.4)}
@@ -167,16 +226,87 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 .frame.frame-ice-board{background:#1e4d66!important;border-color:#6ab0d6!important;box-shadow:0 0 15px rgba(59,123,158,0.5)}
 .nums.text-ice-board,.letters.text-ice-board{color:#aee2ff!important;text-shadow:0 0 5px rgba(174,226,255,0.7)}
 
-.skin-preview.emperor{background:radial-gradient(circle at center,#888 0 10%,#282828 13% 25%,#b99b62 28% 33%,#202020 36% 55%,#b99b62 58% 64%,#171717 68% 78%,#d1b47c 81% 86%,#171717 89%);border:2px solid #c6a66c;box-shadow:0 0 8px #b99b6288,inset 0 2px 4px #fff7}
-.skin-preview.board-emperor{border-radius:5px;background:repeating-conic-gradient(#663c2b 0% 25%,#e8c9a7 0% 50%) 50% / 20px 20px;border:3px solid #c49a62;box-shadow:inset 0 0 5px #fff8,0 0 6px #0008}
-.piece.skin-emperor{border:3px solid #b99b62!important;background:radial-gradient(circle at 50% 50%,#a9a9a9 0 5%,#343434 8% 15%,#9c865d 17% 21%,#252525 24% 38%,#b99b62 40% 44%,#181818 47% 65%,#a78b56 68% 72%,#151515 75% 88%,#c6a66c 91% 95%,#171717 98%)!important;box-shadow:inset 0 3px 6px #fff8,inset 0 -4px 7px #000,0 3px 7px #000b!important}
-.piece.skin-emperor::before{content:"";position:absolute;inset:10%;border:1px solid #d6bd88;border-radius:50%;box-shadow:inset 0 0 4px #d6bd88,0 0 3px #000}
-.piece.skin-emperor.white{border-color:#d7b66d!important;background:radial-gradient(circle at 50% 50%,#ffe4a0 0 5%,#8f682e 8% 15%,#d6b66e 17% 21%,#704c20 24% 38%,#e0bd75 40% 44%,#503517 47% 65%,#d0a95e 68% 72%,#4c3015 75% 88%,#e2c17c 91% 95%,#503316 98%)!important;box-shadow:inset 0 3px 6px #fff9,inset 0 -4px 7px #0008,0 3px 7px #000b!important}
+/* ============ ГЕРЦОГСКИЕ СКИНЫ ============ */
+.skin-preview.emperor{
+  background:
+    radial-gradient(circle at center,#888 0 10%,#282828 13% 25%,
+    #b99b62 28% 33%,#202020 36% 55%,#b99b62 58% 64%,
+    #171717 68% 78%,#d1b47c 81% 86%,#171717 89%);
+  border:2px solid #c6a66c;
+  box-shadow:0 0 8px #b99b6288,inset 0 2px 4px #fff7;
+}
+.skin-preview.board-emperor{
+  border-radius:5px;
+  background:repeating-conic-gradient(#663c2b 0% 25%,#e8c9a7 0% 50%) 50% / 20px 20px;
+  border:3px solid #c49a62;
+  box-shadow:inset 0 0 5px #fff8,0 0 6px #0008;
+}
+.piece.skin-emperor{
+  border:3px solid #b99b62!important;
+  background:
+    radial-gradient(circle at 50% 50%,
+      #a9a9a9 0 5%,
+      #343434 8% 15%,
+      #9c865d 17% 21%,
+      #252525 24% 38%,
+      #b99b62 40% 44%,
+      #181818 47% 65%,
+      #a78b56 68% 72%,
+      #151515 75% 88%,
+      #c6a66c 91% 95%,
+      #171717 98%)!important;
+  box-shadow:
+    inset 0 3px 6px #fff8,
+    inset 0 -4px 7px #000,
+    0 3px 7px #000b!important;
+}
+.piece.skin-emperor::before{
+  content:"";
+  position:absolute;
+  inset:10%;
+  border:1px solid #d6bd88;
+  border-radius:50%;
+  box-shadow:inset 0 0 4px #d6bd88,0 0 3px #000;
+}
+.piece.skin-emperor.white{
+  border-color:#d7b66d!important;
+  background:
+    radial-gradient(circle at 50% 50%,
+      #ffe4a0 0 5%,
+      #8f682e 8% 15%,
+      #d6b66e 17% 21%,
+      #704c20 24% 38%,
+      #e0bd75 40% 44%,
+      #503517 47% 65%,
+      #d0a95e 68% 72%,
+      #4c3015 75% 88%,
+      #e2c17c 91% 95%,
+      #503316 98%)!important;
+  box-shadow:
+    inset 0 3px 6px #fff9,
+    inset 0 -4px 7px #0008,
+    0 3px 7px #000b!important;
+}
 .piece.skin-emperor.king{border-width:4px!important;box-shadow:0 0 10px #d8b66c,inset 0 2px 5px #fff8!important}
-.board.skin-emperor-board .light{background:repeating-linear-gradient(45deg,#efd8bd 0 3px,#e7c9a9 3px 6px)!important;box-shadow:inset 0 0 5px #fff5}
-.board.skin-emperor-board .dark{background:repeating-linear-gradient(45deg,#573324 0 3px,#663d2c 3px 6px)!important;box-shadow:inset 0 0 6px #0008}
-.frame.frame-emperor-board{background:#d9b992!important;border:5px solid #9a6b3d!important;box-shadow:0 0 0 2px #d8b77f,0 5px 15px #0009}
-.nums.text-emperor-board,.letters.text-emperor-board{color:#80552b!important;text-shadow:1px 1px 1px #f8e2bd}
+.board.skin-emperor-board .light{
+  background:
+    repeating-linear-gradient(45deg,#efd8bd 0 3px,#e7c9a9 3px 6px)!important;
+  box-shadow:inset 0 0 5px #fff5;
+}
+.board.skin-emperor-board .dark{
+  background:
+    repeating-linear-gradient(45deg,#573324 0 3px,#663d2c 3px 6px)!important;
+  box-shadow:inset 0 0 6px #0008;
+}
+.frame.frame-emperor-board{
+  background:#d9b992!important;
+  border:5px solid #9a6b3d!important;
+  box-shadow:0 0 0 2px #d8b77f,0 5px 15px #0009;
+}
+.nums.text-emperor-board,.letters.text-emperor-board{
+  color:#80552b!important;
+  text-shadow:1px 1px 1px #f8e2bd;
+}
 </style>
 </head>
 <body>
@@ -295,10 +425,11 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
     <div class="letters" id="boardLetters"><span></span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div>
     <div id="msg" class="msg">Ожидание...</div>
     <div class="buttons">
-      <button id="draw" class="draw" style="display:none">🤝 Ничья</button>
-      <button id="resign" class="resign" style="display:none">🏳️ Сдаться</button>
+      <button id="draw" class="draw">🤝 Ничья</button>
+      <button id="resign" class="resign">🏳️ Сдаться</button>
       <button id="acceptDraw" class="draw" style="display:none">✅ Принять</button>
       <button id="declineDraw" class="resign" style="display:none">❌ Отклонить</button>
+      <button id="restart" class="restart" style="display:none">🔄 Новая игра</button>
     </div>
   </div>
 </div>
@@ -337,6 +468,7 @@ const SKINS = [
   {id:"gold",name:"🏆 Золотые шашки",price:299,currency:"gems",tier:2,type:"piece"},
   {id:"diamond",name:"💎 Бриллиантовые шашки",price:499,currency:"gems",tier:3,type:"piece"},
   {id:"emperor",name:"👑 Шашки герцога",price:899,currency:"gems",tier:4,type:"piece"},
+
   {id:"jade",name:"🐉 Нефритовая доска",price:199,currency:"gems",tier:2,type:"board"},
   {id:"ice-board",name:"❄️ Ледяная доска",price:50000,currency:"coins",tier:1,type:"board"},
   {id:"emperor-board",name:"👑 Доска герцога",price:799,currency:"gems",tier:3,type:"board"}
@@ -350,14 +482,11 @@ function getSkinTier(skinId){
 const boardEl=document.getElementById("board");
 const turnEl=document.getElementById("turn");
 const msgEl=document.getElementById("msg");
+const restartBtn=document.getElementById("restart");
 const backBtn=document.getElementById("backBtn");
 const boardNums=document.getElementById("boardNums");
 const boardLetters=document.getElementById("boardLetters");
 const boardFrame=document.querySelector(".frame");
-const drawBtn=document.getElementById("draw");
-const resignBtn=document.getElementById("resign");
-const acceptDrawBtn=document.getElementById("acceptDraw");
-const declineDrawBtn=document.getElementById("declineDraw");
 
 let B=Array.from({length:8},()=>Array(8).fill(null));
 let current="white";
@@ -392,8 +521,7 @@ let currentLobbyId=null;
 let lobbyRef=null;
 let lobbyData=null;
 let lobbyUnsubscribe=null;
-let paidMe=false;
-let exiting=false;
+let payoutDone=false;
 
 let searching=false;
 let searchListener=null;
@@ -618,7 +746,7 @@ function localMove(r,c){
     turnEl.textContent=winner==="white"?"🏆 Победили белые":"🏆 Победили чёрные";
     msgEl.textContent="У соперника не осталось шашек.";
     if(myColor===winner)SFX.win();else SFX.lose();
-    render();return;
+    showRestart();render();return;
   }
 
   if(!hasMove(current)){
@@ -628,7 +756,7 @@ function localMove(r,c){
     turnEl.textContent=winner==="white"?"🏆 Победили белые":"🏆 Победили чёрные";
     msgEl.textContent="У соперника нет возможных ходов.";
     if(myColor===winner)SFX.win();else SFX.lose();
-    render();return;
+    showRestart();render();return;
   }
 
   resetMoveTimer();
@@ -636,6 +764,9 @@ function localMove(r,c){
   msgEl.textContent=current==="white"?"Ход белых.":"Ход чёрных.";
   updateDrawButtons();render();
 }
+
+function showRestart(){restartBtn.style.display="block"}
+function hideRestart(){restartBtn.style.display="none"}
 
 let audioCtx=null;
 function getAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();return audioCtx}
@@ -804,6 +935,35 @@ async function unequipSkin(skin){
 
 document.getElementById("btnShop").onclick=()=>{renderShop();document.getElementById("shopModal").classList.add("open")};
 
+const drawBtn=document.getElementById("draw");
+const acceptDrawBtn=document.getElementById("acceptDraw");
+const declineDrawBtn=document.getElementById("declineDraw");
+let pendingDrawOffer=null;
+
+function updateDrawButtons(){
+  drawBtn.textContent="🤝 Ничья";drawBtn.disabled=false;drawBtn.style.opacity="1";
+  if(gameOver||!lobbyData||lobbyData.status==="waiting"){
+    drawBtn.style.display="none";acceptDrawBtn.style.display="none";declineDrawBtn.style.display="none";return;
+  }
+  drawBtn.style.display="block";acceptDrawBtn.style.display="none";declineDrawBtn.style.display="none";
+  if(!pendingDrawOffer)return;
+  if(pendingDrawOffer===myColor){drawBtn.textContent="⏳ Ждём...";drawBtn.disabled=true;drawBtn.style.opacity="0.6"}
+  else{drawBtn.style.display="none";acceptDrawBtn.style.display="block";declineDrawBtn.style.display="block"}
+}
+
+drawBtn.onclick=async()=>{if(gameOver||!lobbyRef||pendingDrawOffer)return;await lobbyRef.update({drawOffer:myColor})};
+acceptDrawBtn.onclick=async()=>{
+  if(gameOver||!lobbyRef)return;
+  if(!pendingDrawOffer||pendingDrawOffer===myColor)return;
+  await lobbyRef.update({gameOver:true,result:"draw",status:"finished"});
+  await lobbyRef.child("drawOffer").remove();
+};
+declineDrawBtn.onclick=async()=>{
+  if(!lobbyRef)return;
+  if(!pendingDrawOffer||pendingDrawOffer===myColor)return;
+  await lobbyRef.child("drawOffer").remove();
+};
+
 const menuScreen=document.getElementById("menuScreen");
 const gameScreen=document.getElementById("gameScreen");
 
@@ -833,7 +993,7 @@ setInterval(()=>{
     gameOver=true;lastResult=winner;
     turnEl.textContent=winner==="white"?"⏱️ Победили белые":"⏱️ Победили чёрные";
     msgEl.textContent="Время на ход вышло.";
-    SFX.lose();
+    SFX.lose();showRestart();
     lobbyRef.update({board:B,current,gameOver:true,result:winner,status:"finished"});
   }
 },1000);
@@ -933,8 +1093,7 @@ async function joinLobby(lobbyId){
 function enterLobby(lobbyId,color){
   currentLobbyId=lobbyId;myColor=color;
   lobbyRef=firebase.database().ref("lobbies/"+lobbyId);
-  paidMe=false;
-  exiting=false;
+  payoutDone=false;
   if(lobbyUnsubscribe){lobbyUnsubscribe();lobbyUnsubscribe=null}
   document.getElementById("p1name").textContent="Игрок 1";
   document.getElementById("p2name").textContent="Игрок 2";
@@ -985,6 +1144,7 @@ function enterLobby(lobbyId,color){
     current=d.current||"white";
     gameOver=d.gameOver===true;
     lastResult=d.result||null;
+    pendingDrawOffer=d.drawOffer||null;
     if(d.whiteTime!==undefined)time.white=Number(d.whiteTime)||MOVE_TIME;
     if(d.blackTime!==undefined)time.black=Number(d.blackTime)||MOVE_TIME;
     paintTimers();updateDrawButtons();
@@ -992,14 +1152,15 @@ function enterLobby(lobbyId,color){
     if(d.status==="waiting"){
       turnEl.textContent="⏳ Ожидание соперника...";
       msgEl.textContent="Ставка: 🪙 "+d.bet.toLocaleString("ru")+". Ждём игрока.";
-      render();return;
+      hideRestart();render();return;
     }
     if(d.status==="playing"&&!gameOver){
       turnEl.textContent=current==="white"?"⚪ Ход игрока 1":"⚫ Ход игрока 2";
       msgEl.textContent=myColor===current?"Ваш ход":"⏳ Ход соперника";
-      render();return;
+      hideRestart();render();return;
     }
     if(gameOver){
+      showRestart();
       if(lastResult==="draw"){turnEl.textContent="🤝 Ничья";msgEl.textContent="Ничья. Ставки возвращены."}
       else if(lastResult){
         const winnerName=lastResult==="white"?(d.players?.whiteName||"Белые"):(d.players?.blackName||"Чёрные");
@@ -1010,79 +1171,46 @@ function enterLobby(lobbyId,color){
     }
   });
   lobbyUnsubscribe=()=>lobbyRef.off("value",handler);
+
+  restartBtn.onclick=async()=>{
+    if(!lobbyRef)return;
+    await lobbyRef.update({board:makeFreshBoard(),current:"white",gameOver:false,whiteTime:MOVE_TIME,blackTime:MOVE_TIME,result:null,status:"playing"});
+    await lobbyRef.child("drawOffer").remove();
+    await lobbyRef.child("payoutDone").remove();
+    payoutDone=false;resetMoveTimer();
+  };
 }
-
-function updateDrawButtons(){
-  if(gameOver||!lobbyData||lobbyData.status==="waiting"){
-    drawBtn.style.display="none";acceptDrawBtn.style.display="none";declineDrawBtn.style.display="none";resignBtn.style.display="none";return;
-  }
-  drawBtn.style.display="block";acceptDrawBtn.style.display="none";declineDrawBtn.style.display="none";resignBtn.style.display="block";
-  drawBtn.textContent="🤝 Ничья";drawBtn.disabled=false;drawBtn.style.opacity="1";
-  if(!pendingDrawOffer)return;
-  if(pendingDrawOffer===myColor){drawBtn.textContent="⏳ Ждём...";drawBtn.disabled=true;drawBtn.style.opacity="0.6"}
-  else{drawBtn.style.display="none";acceptDrawBtn.style.display="block";declineDrawBtn.style.display="block"}
-}
-
-let pendingDrawOffer=null;
-
-drawBtn.onclick=async()=>{if(gameOver||!lobbyRef||pendingDrawOffer)return;await lobbyRef.update({drawOffer:myColor})};
-acceptDrawBtn.onclick=async()=>{
-  if(gameOver||!lobbyRef)return;
-  if(!pendingDrawOffer||pendingDrawOffer===myColor)return;
-  await lobbyRef.update({gameOver:true,result:"draw",status:"finished"});
-  await lobbyRef.child("drawOffer").remove();
-};
-declineDrawBtn.onclick=async()=>{
-  if(!lobbyRef)return;
-  if(!pendingDrawOffer||pendingDrawOffer===myColor)return;
-  await lobbyRef.child("drawOffer").remove();
-};
 
 async function payWinner(result){
+  if(payoutDone)return;
   if(!lobbyData||!lobbyRef)return;
-  if(paidMe)return;
-  paidMe=true;
+  const snap=await lobbyRef.child("payoutDone").once("value");
+  if(snap.val()===true)return;
+  payoutDone=true;
+  await lobbyRef.child("payoutDone").set(true);
+  const bet=lobbyData.bet||0;
+  const pot=bet*2;
+  const winAmount=Math.floor(pot*0.98);
+  const uidWhite=lobbyData.players?.white;
+  const uidBlack=lobbyData.players?.black;
 
-  const bet=Number(lobbyData.bet)||0;
-  const winAmount=Math.floor(bet*2*0.98);
-
-  try{
-    if(result==="draw"){
-      await firebase.database().ref(`users/${myUid}/coins`).transaction(v=>(v||0)+bet);
-      await firebase.database().ref(`users/${myUid}/draws`).transaction(v=>(v||0)+1);
-    }else if(result===myColor){
-      await firebase.database().ref(`users/${myUid}/coins`).transaction(v=>(v||0)+winAmount);
-      await firebase.database().ref(`users/${myUid}/wins`).transaction(v=>(v||0)+1);
-      await firebase.database().ref(`users/${myUid}/gems`).transaction(v=>(v||0)+1);
-    }else{
-      await firebase.database().ref(`users/${myUid}/losses`).transaction(v=>(v||0)+1);
+  if(result==="draw"){
+    if(uidWhite)await firebase.database().ref(`users/${uidWhite}/coins`).transaction(v=>(v||0)+bet);
+    if(uidBlack)await firebase.database().ref(`users/${uidBlack}/coins`).transaction(v=>(v||0)+bet);
+  }else{
+    const winnerUid=result==="white"?uidWhite:uidBlack;
+    const loserUid=result==="white"?uidBlack:uidWhite;
+    if(winnerUid){
+      await firebase.database().ref(`users/${winnerUid}/coins`).transaction(v=>(v||0)+winAmount);
+      await firebase.database().ref(`users/${winnerUid}/wins`).transaction(v=>(v||0)+1);
+      await firebase.database().ref(`users/${winnerUid}/gems`).transaction(v=>(v||0)+1);
     }
-    await lobbyRef.child(`paid/${myColor}`).set(true);
-  }catch(e){
-    console.error("Ошибка начисления:",e);
+    if(loserUid)await firebase.database().ref(`users/${loserUid}/losses`).transaction(v=>(v||0)+1);
   }
 
-  setTimeout(()=>{
-    if(exiting)return;
-    if(result==="draw")alert("🤝 Ничья! Ставки возвращены.");
-    else if(myColor===result)alert(`🏆 Победа! Выигрыш: +${winAmount} монет.`);
-    else alert(`🏳️ Поражение. Потеряно: -${bet} монет.`);
-    exitToMenu();
-  },1800);
-}
-
-async function tryDeleteLobbyIfBothPaid(){
-  if(!lobbyRef||!lobbyData)return;
-  if(!(lobbyData.paid?.white&&lobbyData.paid?.black))return;
-  const payoutRef=await lobbyRef.child("payoutDone").transaction(v=>{
-    if(v===true)return;
-    return true;
-  });
-  if(payoutRef.committed){
-    setTimeout(async()=>{
-      if(lobbyRef)await lobbyRef.remove().catch(()=>{});
-    },800);
-  }
+  setTimeout(async()=>{
+    if(lobbyRef)await lobbyRef.remove().catch(()=>{});
+  },1500);
 }
 
 document.getElementById("resign").onclick=()=>{
@@ -1093,6 +1221,7 @@ document.getElementById("resign").onclick=()=>{
   gameOver=true;lastResult=winner;
   turnEl.textContent=loser==="white"?"🏳️ Белые сдались":"🏳️ Чёрные сдались";
   msgEl.textContent="Игра окончена";
+  showRestart();
   lobbyRef.update({board:B,current,gameOver:true,result:winner,status:"finished"});
 };
 
@@ -1184,35 +1313,17 @@ backBtn.onclick=async()=>{
     const userRef=firebase.database().ref("users/"+myUid);
     await userRef.child("coins").transaction(v=>(v||0)+(lobbyData.bet||0));
     if(lobbyRef)await lobbyRef.remove();
-    exitToMenu();
-  }else if(lobbyData&&lobbyData.status==="waiting"&&lobbyData.players?.black===myUid){
-    if(!confirm("Выйти из лобби? Ставка вернётся."))return;
-    const userRef=firebase.database().ref("users/"+myUid);
-    await userRef.child("coins").transaction(v=>(v||0)+(lobbyData.bet||0));
-    if(lobbyRef)await lobbyRef.child("players/black").remove();
-    exitToMenu();
   }else if(lobbyData?.status==="playing"&&!gameOver){
     return;
-  }else{
-    exitToMenu();
   }
+  exitToMenu();
 };
 
 function exitToMenu(){
-  if(exiting)return;
-  exiting=true;
   if(lobbyUnsubscribe){lobbyUnsubscribe();lobbyUnsubscribe=null}
-  currentLobbyId=null;lobbyRef=null;lobbyData=null;gameOver=false;myColor=null;paidMe=false;
-  backBtn.style.display="none";
-  showMenu();
-  setTimeout(()=>{exiting=false},500);
+  currentLobbyId=null;lobbyRef=null;lobbyData=null;gameOver=false;payoutDone=false;myColor=null;
+  backBtn.style.display="none";showMenu();
 }
-
-window.addEventListener("beforeunload",()=>{
-  if(lobbyData&&lobbyData.status==="waiting"&&myColor==="white"&&lobbyRef){
-    lobbyRef.remove().catch(()=>{});
-  }
-});
 
 document.getElementById("btnSettings").onclick=()=>{document.getElementById("settingsModal").classList.add("open")};
 
