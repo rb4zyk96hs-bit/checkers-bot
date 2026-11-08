@@ -425,8 +425,8 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
     <div class="letters" id="boardLetters"><span></span><span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span></div>
     <div id="msg" class="msg">Ожидание...</div>
     <div class="buttons">
-      <button id="draw" class="draw">🤝 Ничья</button>
-      <button id="resign" class="resign">🏳️ Сдаться</button>
+      <button id="draw" class="draw" style="display:none">🤝 Ничья</button>
+<button id="resign" class="resign" style="display:none">🏳️ Сдаться</button>
       <button id="acceptDraw" class="draw" style="display:none">✅ Принять</button>
       <button id="declineDraw" class="resign" style="display:none">❌ Отклонить</button>
       <button id="restart" class="restart" style="display:none">🔄 Новая игра</button>
@@ -941,14 +941,39 @@ const declineDrawBtn=document.getElementById("declineDraw");
 let pendingDrawOffer=null;
 
 function updateDrawButtons(){
-  drawBtn.textContent="🤝 Ничья";drawBtn.disabled=false;drawBtn.style.opacity="1";
-  if(gameOver||!lobbyData||lobbyData.status==="waiting"){
-    drawBtn.style.display="none";acceptDrawBtn.style.display="none";declineDrawBtn.style.display="none";return;
+function updateDrawButtons(){
+  const resignBtn = document.getElementById("resign");
+
+  drawBtn.textContent="🤝 Ничья";
+  drawBtn.disabled=false;
+  drawBtn.style.opacity="1";
+
+  // Скрываем ВСЁ в ожидании и после игры
+  if(gameOver || !lobbyData || lobbyData.status === "waiting"){
+    drawBtn.style.display="none";
+    acceptDrawBtn.style.display="none";
+    declineDrawBtn.style.display="none";
+    resignBtn.style.display="none";
+    return;
   }
-  drawBtn.style.display="block";acceptDrawBtn.style.display="none";declineDrawBtn.style.display="none";
+
+  // Игра идёт — показываем «Ничья» и «Сдаться»
+  drawBtn.style.display="block";
+  resignBtn.style.display="block";
+  acceptDrawBtn.style.display="none";
+  declineDrawBtn.style.display="none";
+
   if(!pendingDrawOffer)return;
-  if(pendingDrawOffer===myColor){drawBtn.textContent="⏳ Ждём...";drawBtn.disabled=true;drawBtn.style.opacity="0.6"}
-  else{drawBtn.style.display="none";acceptDrawBtn.style.display="block";declineDrawBtn.style.display="block"}
+
+  if(pendingDrawOffer===myColor){
+    drawBtn.textContent="⏳ Ждём...";
+    drawBtn.disabled=true;
+    drawBtn.style.opacity="0.6";
+  }else{
+    drawBtn.style.display="none";
+    acceptDrawBtn.style.display="block";
+    declineDrawBtn.style.display="block";
+  }
 }
 
 drawBtn.onclick=async()=>{if(gameOver||!lobbyRef||pendingDrawOffer)return;await lobbyRef.update({drawOffer:myColor})};
