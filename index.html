@@ -1003,22 +1003,30 @@ function paintTimers(){
 
 function resetMoveTimer(){time.white=MOVE_TIME;time.black=MOVE_TIME;paintTimers()}
 
-let lastTickSecond=Math.floor(Date.now()/1000);
 setInterval(()=>{
   if(gameOver||!onlineReady||!lobbyRef||!lobbyData||lobbyData.status!=="playing")return;
-  const nowSec=Math.floor(Date.now()/1000);
-  if(nowSec===lastTickSecond)return;
-  lastTickSecond=nowSec;
-  time[current]=Math.max(0,time[current]-1);paintTimers();
-  if(time[current]<=0){
-    const winner=current==="white"?"black":"white";
-    gameOver=true;lastResult=winner;
-    turnEl.textContent=winner==="white"?"⏱️ Победили белые":"⏱️ Победили чёрные";
-    msgEl.textContent="Время на ход вышло.";
-    SFX.lose();showRestart();
-    lobbyRef.update({board:B,current,gameOver:true,result:winner,status:"finished"});
+  if(!lobbyData.moveDeadline)return;
+
+  // Пересчитываем оставшееся время от timestamp в БД
+  const leftMs = lobbyData.moveDeadline - Date.now();
+  const leftSec = Math.max(0, Math.ceil(leftMs/1000));
+
+  if(current==="white") time.white = leftSec;
+  else time.black = leftSec;
+
+  paintTimers();
+
+  // Если время вышло — поражение тому, чей ход
+  if(leftMs <= 0 && !gameOver){
+    const winner = current==="white" ? "black" : "white";
+    gameOver = true;
+    lastResult = winner;
+    turnEl.textContent = winner==="white" ? "⏱️ Победили белые" : "⏱️ Победили чёрные";
+    msgEl.textContent = "Время на ход вышло.";
+    SFX.lose();
+    lobbyRef.update({board:B,current,gameOver:true,result:winner,status:"finished",moveDeadline:null});
   }
-},1000);
+},500);
 
 const firebaseConfig={
   apiKey:"AIzaSyA8USWXMVE4EEOUGWcMeu_RHButvCZRewQ",
@@ -1129,7 +1137,7 @@ async function createLobby(bet){
   const skins={white:equippedPieceSkin||null,black:null};
   const boardSkins={white:equippedBoardSkin||null,black:null};
   await newLobbyRef.set({
-    bet,status:"waiting",createdAt:Date.now(),creator:myUid,board:makeFreshBoard(),current:"white",gameOver:false,whiteTime:MOVE_TIME,blackTime:MOVE_TIME,skins,boardSkins,
+    bet,status:"waiting",createdAt:Date.now(),creator:myUid,board:makeFreshBoard(),current:"white",gameOver:false,whiteTime:MOVE_TIME,blackTime:MOVE_TIME,moveDeadline:null,skins,boardSkins,
     players:{white:myUid,whiteName:myProfile.name||"Игрок 1"}
   });
   enterLobby(lobbyId,"white");
@@ -1151,7 +1159,7 @@ async function joinLobby(lobbyId){
   const whiteBoardSkin=data.boardSkins?.white||null;
   const skins={white:whiteSkin,black:equippedPieceSkin||null};
   const boardSkins={white:whiteBoardSkin,black:equippedBoardSkin||null};
-  await lob.update({"players/black":myUid,"players/blackName":myProfile.name||"Игрок 2",status:"playing",skins,boardSkins});
+await lob.update({"players/black":myUid,"players/blackName":myProfile.name||"Игрок 2",status:"playing",moveDeadline:Date.now()+MOVE_TIME*1000,skins,boardSkins});
   enterLobby(lobbyId,"black");
 }
 
@@ -1222,11 +1230,15 @@ function enterLobby(lobbyId,color){
       hideRestart();render();return;
     }
     if(d.status==="playing"&&!gameOver){
-      clearWaitingTimer(); // ⚡ Соперник зашёл — таймер больше не нужен
-      turnEl.textContent=current==="white"?"⚪ Ход игрока 1":"⚫ Ход игрока 2";
-      msgEl.textContent=myColor===current?"Ваш ход":"⏳ Ход соперника";
-      hideRestart();render();return;
-    }
+  clearWaitingTimer();
+  // Если moveDeadline ещё не установлен — поставить сейчас
+  if(!d.moveDeadline){
+    lobbyRef.update({moveDeadline:Date.now()+MOVE_TIME*1000});
+  }
+  turnEl.textContent=current==="white"?"⚪ Ход игрока 1":"⚫ Ход игрока 2";
+  msgEl.textContent=myColor===current?"Ваш ход":"⏳ Ход соперника";
+  hideRestart();render();return;
+}
     if(gameOver){
       showRestart();
       if(lastResult==="draw"){turnEl.textContent="🤝 Ничья";msgEl.textContent="Ничья. Ставки возвращены."}
@@ -1309,8 +1321,8 @@ function onMove(r,c){
   if(myColor!==current){msgEl.textContent="⏳ Сейчас ход соперника.";return}
   localMove(r,c);
   if(lobbyRef){
-    const updateData={board:B,current,gameOver,whiteTime:time.white,blackTime:time.black};
-    if(gameOver&&lastResult){updateData.result=lastResult;updateData.status="finished"}
+    const updateData={board:B,current,gameOver,whiteTime:time.white,blackTime:time.black,moveDeadline:Date.now()+MOVE_TIME*1000};
+    if(gameOver&&lastResult){updateData.result=lastResult;updateData.status="finished";updateData.moveDeadline=null;}
     lobbyRef.update(updateData);
   }
 }
