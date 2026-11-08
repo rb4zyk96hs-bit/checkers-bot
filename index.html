@@ -948,7 +948,6 @@ function updateDrawButtons(){
   drawBtn.disabled=false;
   drawBtn.style.opacity="1";
 
-  // Скрываем ВСЁ в ожидании и после игры
   if(gameOver || !lobbyData || lobbyData.status === "waiting"){
     drawBtn.style.display="none";
     acceptDrawBtn.style.display="none";
@@ -957,7 +956,6 @@ function updateDrawButtons(){
     return;
   }
 
-  // Игра идёт — показываем «Ничья» и «Сдаться»
   drawBtn.style.display="block";
   resignBtn.style.display="block";
   acceptDrawBtn.style.display="none";
