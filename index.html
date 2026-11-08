@@ -429,7 +429,6 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 <button id="resign" class="resign" style="display:none">🏳️ Сдаться</button>
       <button id="acceptDraw" class="draw" style="display:none">✅ Принять</button>
       <button id="declineDraw" class="resign" style="display:none">❌ Отклонить</button>
-      <button id="restart" class="restart" style="display:none">🔄 Новая игра</button>
     </div>
   </div>
 </div>
@@ -482,7 +481,6 @@ function getSkinTier(skinId){
 const boardEl=document.getElementById("board");
 const turnEl=document.getElementById("turn");
 const msgEl=document.getElementById("msg");
-const restartBtn=document.getElementById("restart");
 const backBtn=document.getElementById("backBtn");
 const boardNums=document.getElementById("boardNums");
 const boardLetters=document.getElementById("boardLetters");
@@ -764,10 +762,10 @@ function localMove(r,c){
   msgEl.textContent=current==="white"?"Ход белых.":"Ход чёрных.";
   updateDrawButtons();render();
 }
-
-function showRestart(){restartBtn.style.display="block"}
-function hideRestart(){restartBtn.style.display="none"}
-
+  
+function showRestart(){}
+function hideRestart(){}
+  
 let audioCtx=null;
 function getAudio(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==="suspended")audioCtx.resume();return audioCtx}
 function playTone(freq,duration,type="sine",volume=0.15){
