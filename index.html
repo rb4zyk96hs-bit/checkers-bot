@@ -520,6 +520,8 @@ let lobbyRef=null;
 let lobbyData=null;
 let lobbyUnsubscribe=null;
 let payoutDone=false;
+let waitingTimer=null;
+let waitingSecondsLeft=0;
 
 let searching=false;
 let searchListener=null;
@@ -1072,7 +1074,50 @@ window.addEventListener("load",()=>{
 });
 
 function generateLobbyId(){return "l"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)}
+/* ============ ТАЙМЕР ОЖИДАНИЯ 30 СЕК ============ */
+function clearWaitingTimer(){
+  if(waitingTimer){ clearInterval(waitingTimer); waitingTimer = null; }
+  waitingSecondsLeft = 0;
+}
 
+function startWaitingTimer(){
+  clearWaitingTimer();
+  waitingSecondsLeft = 30;
+
+  waitingTimer = setInterval(async ()=>{
+    if(!lobbyData || lobbyData.status !== "waiting"){
+      clearWaitingTimer();
+      return;
+    }
+
+    waitingSecondsLeft--;
+
+    // Показываем счётчик в сообщении
+    if(lobbyData.status === "waiting"){
+      msgEl.textContent = "Ставка: 🪙 " + (lobbyData.bet||0).toLocaleString("ru") + ". Ждём игрока (" + waitingSecondsLeft + " сек)...";
+    }
+
+    if(waitingSecondsLeft <= 0){
+      clearWaitingTimer();
+
+      // Проверяем ещё раз — вдруг только что кто-то зашёл
+      try{
+        const snap = await lobbyRef.once("value");
+        const d = snap.val();
+        if(d && d.status === "waiting"){
+          // Никто не зашёл — возвращаем ставку и удаляем
+          if(myColor === "white"){
+            const userRef = firebase.database().ref("users/" + myUid);
+            await userRef.child("coins").transaction(v => (v||0) + (d.bet||0));
+          }
+          await lobbyRef.remove();
+          alert("⌛ Соперник не найден. Ставка возвращена.");
+          exitToMenu();
+        }
+      }catch(e){ console.error(e); }
+    }
+  }, 1000);
+}
 async function createLobby(bet){
   if((myProfile.coins||0)<bet){alert("Недостаточно монет для этой ставки");return}
   const lobbyId=generateLobbyId();
@@ -1171,10 +1216,13 @@ function enterLobby(lobbyId,color){
 
     if(d.status==="waiting"){
       turnEl.textContent="⏳ Ожидание соперника...";
-      msgEl.textContent="Ставка: 🪙 "+d.bet.toLocaleString("ru")+". Ждём игрока.";
+      msgEl.textContent="Ставка: 🪙 "+d.bet.toLocaleString("ru")+". Ждём игрока (30 сек)...";
+      // Запускаем таймер только один раз
+      if(!waitingTimer) startWaitingTimer();
       hideRestart();render();return;
     }
     if(d.status==="playing"&&!gameOver){
+      clearWaitingTimer(); // ⚡ Соперник зашёл — таймер больше не нужен
       turnEl.textContent=current==="white"?"⚪ Ход игрока 1":"⚫ Ход игрока 2";
       msgEl.textContent=myColor===current?"Ваш ход":"⏳ Ход соперника";
       hideRestart();render();return;
@@ -1351,6 +1399,7 @@ backBtn.onclick=async()=>{
 };
 
 function exitToMenu(){
+  clearWaitingTimer(); // ⚡ Отменяем таймер если он был
   if(lobbyUnsubscribe){lobbyUnsubscribe();lobbyUnsubscribe=null}
   currentLobbyId=null;lobbyRef=null;lobbyData=null;gameOver=false;payoutDone=false;myColor=null;
   backBtn.style.display="none";showMenu();
