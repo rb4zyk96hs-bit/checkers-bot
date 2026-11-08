@@ -1361,7 +1361,14 @@ document.getElementById("btnSettings").onclick=()=>{document.getElementById("set
 resetMoveTimer();
 render();
 showMenu();
-
+window.addEventListener("beforeunload", ()=>{
+  if(lobbyData && lobbyData.status === "waiting" && myColor === "white" && lobbyRef && myUid){
+    try{
+      lobbyRef.remove();
+      firebase.database().ref(`users/${myUid}/coins`).transaction(v=>(v||0)+(lobbyData.bet||0));
+    }catch(e){}
+  }
+});
 document.addEventListener("pointerdown",function unlock(){getAudio();document.removeEventListener("pointerdown",unlock)},{once:true});
 </script>
 </body>
