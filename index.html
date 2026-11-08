@@ -1183,34 +1183,45 @@ function enterLobby(lobbyId,color){
 
 async function payWinner(result){
   if(payoutDone)return;
-  if(!lobbyData||!lobbyRef)return;
-  const snap=await lobbyRef.child("payoutDone").once("value");
-  if(snap.val()===true)return;
+  if(!lobbyData||!lobbyRef||!myUid)return;
   payoutDone=true;
-  await lobbyRef.child("payoutDone").set(true);
-  const bet=lobbyData.bet||0;
-  const pot=bet*2;
-  const winAmount=Math.floor(pot*0.98);
-  const uidWhite=lobbyData.players?.white;
-  const uidBlack=lobbyData.players?.black;
 
-  if(result==="draw"){
-    if(uidWhite)await firebase.database().ref(`users/${uidWhite}/coins`).transaction(v=>(v||0)+bet);
-    if(uidBlack)await firebase.database().ref(`users/${uidBlack}/coins`).transaction(v=>(v||0)+bet);
-  }else{
-    const winnerUid=result==="white"?uidWhite:uidBlack;
-    const loserUid=result==="white"?uidBlack:uidWhite;
-    if(winnerUid){
-      await firebase.database().ref(`users/${winnerUid}/coins`).transaction(v=>(v||0)+winAmount);
-      await firebase.database().ref(`users/${winnerUid}/wins`).transaction(v=>(v||0)+1);
-      await firebase.database().ref(`users/${winnerUid}/gems`).transaction(v=>(v||0)+1);
+  const bet=Number(lobbyData.bet)||0;
+  const winAmount=Math.floor(bet*2*0.98);
+
+  // 1. Каждый начисляет ТОЛЬКО СЕБЕ (правила Firebase это разрешают)
+  try{
+    if(result==="draw"){
+      await firebase.database().ref(`users/${myUid}/coins`).transaction(v=>(v||0)+bet);
+      await firebase.database().ref(`users/${myUid}/draws`).transaction(v=>(v||0)+1);
+    }else if(result===myColor){
+      await firebase.database().ref(`users/${myUid}/coins`).transaction(v=>(v||0)+winAmount);
+      await firebase.database().ref(`users/${myUid}/wins`).transaction(v=>(v||0)+1);
+      await firebase.database().ref(`users/${myUid}/gems`).transaction(v=>(v||0)+1);
+    }else{
+      await firebase.database().ref(`users/${myUid}/losses`).transaction(v=>(v||0)+1);
     }
-    if(loserUid)await firebase.database().ref(`users/${loserUid}/losses`).transaction(v=>(v||0)+1);
+  }catch(e){
+    console.error("Ошибка начисления:",e);
   }
 
-  setTimeout(async()=>{
-    if(lobbyRef)await lobbyRef.remove().catch(()=>{});
-  },1500);
+  // 2. Помечаем, что Я рассчитался
+  try{
+    await lobbyRef.child(`paid/${myColor}`).set(true);
+  }catch(e){console.error(e)}
+
+  // 3. Только ОДИН клиент удаляет лобби (через транзакцию)
+  try{
+    const cleanupRef = await lobbyRef.child("payoutDone").transaction(v=>{
+      if(v===true)return; // уже кто-то удаляет
+      return true;
+    });
+    if(cleanupRef.committed){
+      setTimeout(async()=>{
+        if(lobbyRef)await lobbyRef.remove().catch(()=>{});
+      },1500);
+    }
+  }catch(e){console.error(e)}
 }
 
 document.getElementById("resign").onclick=()=>{
