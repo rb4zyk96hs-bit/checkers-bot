@@ -465,6 +465,8 @@ let gameOver=false;
 let lastResult=null;
 let time={white:MOVE_TIME,black:MOVE_TIME};
 
+let chainLock=false;
+
 let myColor=null;
 let onlineReady=false;
 let myUid=null;
@@ -650,6 +652,11 @@ function hasMove(color){
   return false;
 }
 
+function colorName(col){
+  if(col==="white")return lobbyData?.players?.whiteName||"Белые";
+  return lobbyData?.players?.blackName||"Чёрные";
+}
+
 /* ============ ОТРИСОВКА ДОСКИ ============ */
 function render(){
   boardEl.className="board"+(matchBoardSkin?" skin-"+matchBoardSkin:"");
@@ -708,6 +715,7 @@ let dragStarted=false;
 
 function onPointerDownPiece(r,c,e){
   if(!onlineReady||gameOver)return;
+  if(!lobbyData||lobbyData.status!=="playing")return;
   if(myColor!==current)return;
   if(B[r]?.[c]?.color!==myColor)return;
 
@@ -799,9 +807,16 @@ function onPointerUpGlobal(e){
 
 function onCellClick(r,c){
   if(!onlineReady||gameOver)return;
+  if(!lobbyData||lobbyData.status!=="playing")return;
 
   if(myColor!==current){
     msgEl.textContent="⏳ Сейчас ход соперника.";
+    return;
+  }
+
+  if(chainLock&&selected&&!(selected.r===r&&selected.c===c)){
+    msgEl.textContent="🔄 Продолжайте бой этой шашкой.";
+    SFX.error();
     return;
   }
 
@@ -816,6 +831,12 @@ function onCellClick(r,c){
 }
 
 function localSelect(r,c){
+  if(chainLock){
+    msgEl.textContent="🔄 Продолжайте бой этой шашкой.";
+    SFX.error();
+    return;
+  }
+
   const p=B[r]?.[c];
   if(!p)return;
 
@@ -840,6 +861,7 @@ function localSelect(r,c){
 
 function localMove(r,c){
   if(gameOver)return;
+  if(!lobbyData||lobbyData.status!=="playing")return;
 
   if(!selected){
     if(B[r]?.[c])localSelect(r,c);
@@ -879,12 +901,14 @@ function localMove(r,c){
 
   if(target.cr!==undefined&&getCaptures(r,c).length){
     selected={r,c};
+    chainLock=true;
     msgEl.textContent="🔄 Продолжите взятие.";
     render();
     return;
   }
 
   selected=null;
+  chainLock=false;
   current=current==="white"?"black":"white";
 
   if(!hasPieces(current)){
@@ -892,7 +916,7 @@ function localMove(r,c){
     const winner=current==="white"?"black":"white";
     lastResult=winner;
 
-    turnEl.textContent=winner==="white"?"🏆 Победили белые":"🏆 Победили чёрные";
+    turnEl.textContent=`🏆 Победа: ${colorName(winner)}`;
     msgEl.textContent="У соперника не осталось шашек.";
 
     if(myColor===winner)SFX.win();
@@ -908,7 +932,7 @@ function localMove(r,c){
     const winner=current==="white"?"black":"white";
     lastResult=winner;
 
-    turnEl.textContent=winner==="white"?"🏆 Победили белые":"🏆 Победили чёрные";
+    turnEl.textContent=`🏆 Победа: ${colorName(winner)}`;
     msgEl.textContent="У соперника нет возможных ходов.";
 
     if(myColor===winner)SFX.win();
@@ -921,8 +945,8 @@ function localMove(r,c){
 
   resetMoveTimer();
 
-  turnEl.textContent=current==="white"?"⚪ Ход игрока 1":"⚫ Ход игрока 2";
-  msgEl.textContent=current==="white"?"Ход белых.":"Ход чёрных.";
+  turnEl.textContent=current==="white"?`⚪ Ход: ${colorName("white")}`:`⚫ Ход: ${colorName("black")}`;
+  msgEl.textContent=myColor===current?"Ваш ход":"⏳ Ход соперника";
 
   updateDrawButtons();
   render();
@@ -1422,17 +1446,25 @@ setInterval(()=>{
   time[current]=Math.max(0,time[current]-1);
   paintTimers();
 
+  /* Синхронизация таймера: игрок, чей ход, пишет время в базу */
+  if(myColor===current&&lobbyRef){
+    lobbyRef.child(myColor+"Time").set(time[current]).catch(()=>{});
+  }
+
   if(time[current]<=0){
     const winner=current==="white"?"black":"white";
 
     gameOver=true;
     lastResult=winner;
 
-    turnEl.textContent=winner==="white"?"⏱️ Победили белые":"⏱️ Победили чёрные";
+    turnEl.textContent=`⏱️ Победа: ${colorName(winner)}`;
     msgEl.textContent="Время на ход вышло.";
 
-    SFX.lose();
+    if(myColor===winner)SFX.win();
+    else SFX.lose();
+
     showRestart();
+    backBtn.style.display="block";
 
     lobbyRef.update({
       board:B,
@@ -1651,25 +1683,33 @@ async function joinLobby(lobbyId){
     return;
   }
 
+  /* Атомарный захват места чёрных, чтобы двое не вошли в одно лобби */
+  const seatTx=await lob.child("players/black").transaction(v=>{
+    if(v)return; /* место занято — отменяем */
+    return myUid;
+  });
+
+  if(!seatTx.committed){
+    /* Место успел занять кто-то другой — возвращаем монеты */
+    await userRef.child("coins").transaction(v=>(v||0)+data.bet);
+    alert("Лобби уже занято. Монеты возвращены.");
+    return;
+  }
+
   const whiteSkin=data.skins?.white||null;
   const whiteBoardSkin=data.boardSkins?.white||null;
 
-  const skins={
-    white:whiteSkin,
-    black:equippedPieceSkin||null
-  };
-
-  const boardSkins={
-    white:whiteBoardSkin,
-    black:equippedBoardSkin||null
-  };
-
   await lob.update({
-    "players/black":myUid,
     "players/blackName":myProfile.name||"Игрок 2",
     status:"playing",
-    skins,
-    boardSkins
+    skins:{
+      white:whiteSkin,
+      black:equippedPieceSkin||null
+    },
+    boardSkins:{
+      white:whiteBoardSkin,
+      black:equippedBoardSkin||null
+    }
   });
 
   enterLobby(lobbyId,"black");
@@ -1693,10 +1733,14 @@ function enterLobby(lobbyId,color){
   document.getElementById("msg").textContent="Ожидание соперника...";
   document.getElementById("turn").textContent="⏳ Ожидание...";
 
+  backBtn.style.display="none";
+  hideRestart();
+
   showGame();
   resetMoveTimer();
 
   B=makeFreshBoard();
+  chainLock=false;
   render();
 
   const handler=lobbyRef.on("value",snap=>{
@@ -1714,15 +1758,13 @@ function enterLobby(lobbyId,color){
 
     lobbyData=d;
 
-    if(d.status==="waiting")backBtn.style.display="block";
-    else backBtn.style.display="none";
+    /* Кнопка «Назад»: видна в ожидании и после конца партии */
+    backBtn.style.display=(d.status==="waiting"||d.gameOver===true)?"block":"none";
 
     if(d.players){
       document.getElementById("p1name").textContent=d.players.whiteName||"Игрок 1";
       document.getElementById("p2name").textContent=d.players.blackName||"Игрок 2";
-    }
 
-    if(d.players){
       if(d.players.white===myUid)myColor="white";
       else if(d.players.black===myUid)myColor="black";
     }
@@ -1778,14 +1820,14 @@ function enterLobby(lobbyId,color){
 
     if(d.status==="waiting"){
       turnEl.textContent="⏳ Ожидание соперника...";
-      msgEl.textContent="Ставка: 🪙 "+d.bet.toLocaleString("ru")+". Ждём игрока.";
+      msgEl.textContent="Ставка: 🪙 "+(d.bet||0).toLocaleString("ru")+". Ждём игрока.";
       hideRestart();
       render();
       return;
     }
 
     if(d.status==="playing"&&!gameOver){
-      turnEl.textContent=current==="white"?"⚪ Ход игрока 1":"⚫ Ход игрока 2";
+      turnEl.textContent=current==="white"?`⚪ Ход: ${colorName("white")}`:`⚫ Ход: ${colorName("black")}`;
       msgEl.textContent=myColor===current?"Ваш ход":"⏳ Ход соперника";
       hideRestart();
       render();
@@ -1799,12 +1841,11 @@ function enterLobby(lobbyId,color){
         turnEl.textContent="🤝 Ничья";
         msgEl.textContent="Ничья. Ставки возвращены.";
       }else if(lastResult){
-        const winnerName=lastResult==="white"
-          ?(d.players?.whiteName||"Белые")
-          :(d.players?.blackName||"Чёрные");
-
-        turnEl.textContent=`🏆 Победа: ${winnerName}`;
+        turnEl.textContent=`🏆 Победа: ${colorName(lastResult)}`;
         msgEl.textContent="Игра завершена";
+
+        if(myColor===lastResult)SFX.win();
+        else SFX.lose();
       }
 
       render();
@@ -1817,20 +1858,32 @@ function enterLobby(lobbyId,color){
   restartBtn.onclick=async()=>{
     if(!lobbyRef)return;
 
-    await lobbyRef.update({
-      board:makeFreshBoard(),
-      current:"white",
-      gameOver:false,
-      whiteTime:MOVE_TIME,
-      blackTime:MOVE_TIME,
-      result:null,
-      status:"playing"
+    /* Транзакция: если лобби уже удалено после выплаты, не создаём пустое */
+    const tx=await lobbyRef.transaction(cur=>{
+      if(!cur)return cur;
+      return {
+        ...cur,
+        board:makeFreshBoard(),
+        current:"white",
+        gameOver:false,
+        whiteTime:MOVE_TIME,
+        blackTime:MOVE_TIME,
+        result:null,
+        status:"playing"
+      };
     });
 
+    if(!tx.committed){
+      alert("Партия больше не активна");
+      exitToMenu();
+      return;
+    }
+
     await lobbyRef.child("drawOffer").remove();
-    await lobbyRef.child("payoutDone").remove();
 
     payoutDone=false;
+    chainLock=false;
+    selected=null;
     resetMoveTimer();
   };
 }
@@ -1840,12 +1893,15 @@ async function payWinner(result){
   if(payoutDone)return;
   if(!lobbyData||!lobbyRef)return;
 
-  const snap=await lobbyRef.child("payoutDone").once("value");
+  /* Транзакция вместо чтения-записи: исключает двойную выплату при гонке */
+  const tx=await lobbyRef.child("payoutDone").transaction(v=>{
+    if(v===true)return; /* уже выплачено — отмена */
+    return true;
+  });
 
-  if(snap.val()===true)return;
+  if(!tx.committed)return;
 
   payoutDone=true;
-  await lobbyRef.child("payoutDone").set(true);
 
   const bet=lobbyData.bet||0;
   const pot=bet*2;
@@ -1887,6 +1943,7 @@ async function payWinner(result){
 /* ============ СДАЧА ============ */
 document.getElementById("resign").onclick=()=>{
   if(gameOver||!myColor||!lobbyRef)return;
+  if(!lobbyData||lobbyData.status!=="playing")return;
 
   SFX.lose();
 
@@ -1900,6 +1957,7 @@ document.getElementById("resign").onclick=()=>{
   msgEl.textContent="Игра окончена";
 
   showRestart();
+  backBtn.style.display="block";
 
   lobbyRef.update({
     board:B,
@@ -1913,6 +1971,7 @@ document.getElementById("resign").onclick=()=>{
 /* ============ ХОД ============ */
 function onMove(r,c){
   if(!onlineReady||gameOver)return;
+  if(!lobbyData||lobbyData.status!=="playing")return;
 
   if(myColor!==current){
     msgEl.textContent="⏳ Сейчас ход соперника.";
@@ -1933,6 +1992,7 @@ function onMove(r,c){
     if(gameOver&&lastResult){
       updateData.result=lastResult;
       updateData.status="finished";
+      backBtn.style.display="block";
     }
 
     lobbyRef.update(updateData);
@@ -2117,9 +2177,21 @@ function exitToMenu(){
   gameOver=false;
   payoutDone=false;
   myColor=null;
+  selected=null;
+  chainLock=false;
+  pendingDrawOffer=null;
+  matchPieceSkin=null;
+  matchBoardSkin=null;
 
   backBtn.style.display="none";
+  hideRestart();
+  resetMoveTimer();
+
+  B=makeFreshBoard();
+  current="white";
+
   showMenu();
+  render();
 }
 
 /* ============ ЗАПУСК ============ */
