@@ -439,6 +439,12 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 
 <script>
 const MOVE_TIME = 20;
+/* ============ БОТЫ ============ */
+const BOTS = [
+  { uid: "bot_easy_001",   name: "🟢 Слабый Бот",  level: "easy",   bet: 100,  avatar: "🟢" },
+  { uid: "bot_medium_001", name: "🟡 Средний Бот", level: "medium", bet: 500,  avatar: "🟡" },
+  { uid: "bot_hard_001",   name: "🔴 Сложный Бот", level: "hard",   bet: 2500, avatar: "🔴" }
+];
 const START_COINS = 4500;
 const START_GEMS = 25;
 const HOUR = 3600 * 1000;
@@ -1118,6 +1124,7 @@ window.addEventListener("load",()=>{
   alert("✅ Имя сохранено");
 };
     onlineReady=true;render();showMenu();
+startBotWatcher();
   }).catch(err=>{alert("Firebase: "+(err.code||"")+"\n"+(err.message||""))});
 });
 
@@ -1270,15 +1277,16 @@ function enterLobby(lobbyId,color){
       hideRestart();render();return;
     }
     if(d.status==="playing"&&!gameOver){
-  clearWaitingTimer();
-  // Если moveDeadline ещё не установлен — поставить сейчас
-  if(!d.moveDeadline){
-    lobbyRef.update({moveDeadline:Date.now()+MOVE_TIME*1000});
-  }
-  turnEl.textContent=current==="white"?"⚪ Ход игрока 1":"⚫ Ход игрока 2";
-  msgEl.textContent=myColor===current?"Ваш ход":"⏳ Ход соперника";
-  hideRestart();render();return;
-}
+      clearWaitingTimer();
+      turnEl.textContent=current==="white"?"⚪ Ход игрока 1":"⚫ Ход игрока 2";
+      msgEl.textContent=myColor===current?"Ваш ход":"⏳ Ход соперника";
+      hideRestart();render();
+
+      if(d.isBot === true && current !== myColor){
+        scheduleBotMove(d);
+      }
+      return;
+    }
     if(gameOver){
       showRestart();
       if(lastResult==="draw"){turnEl.textContent="🤝 Ничья";msgEl.textContent="Ничья. Ставки возвращены."}
@@ -1483,6 +1491,268 @@ async function releaseNick(nick){
     if(current === myUid) return null;
     return current;
   });
+}
+/* ============ СОЗДАНИЕ ЛОББИ БОТОВ ============ */
+async function ensureBotLobbies(){
+  const lobbiesRef = firebase.database().ref("lobbies");
+
+  for(const bot of BOTS){
+    const botLobbyId = "bot_" + bot.uid;
+
+    try{
+      const snap = await lobbiesRef.child(botLobbyId).once("value");
+      const existing = snap.val();
+
+      if(existing && existing.status === "waiting" && existing.isBot === true){
+        continue;
+      }
+      if(existing && existing.status === "playing"){
+        continue;
+      }
+
+      await lobbiesRef.child(botLobbyId).set({
+        bet: bot.bet,
+        status: "waiting",
+        createdAt: Date.now(),
+        creator: bot.uid,
+        isBot: true,
+        botLevel: bot.level,
+        board: makeFreshBoard(),
+        current: "white",
+        gameOver: false,
+        whiteTime: MOVE_TIME,
+        blackTime: MOVE_TIME,
+        moveDeadline: null,
+        skins: { white: null, black: null },
+        boardSkins: { white: null, black: null },
+        players: {
+          white: bot.uid,
+          whiteName: bot.name
+        }
+      });
+    }catch(e){
+      console.error("Ошибка создания лобби бота:", e);
+    }
+  }
+}
+/* ============ СТОРОЖ — обновляет лобби ботов ============ */
+let botWatcherInterval = null;
+
+function startBotWatcher(){
+  if(botWatcherInterval) clearInterval(botWatcherInterval);
+  setTimeout(()=>ensureBotLobbies(), 2000);
+  botWatcherInterval = setInterval(()=>ensureBotLobbies(), 30000);
+}
+/* ============ AI БОТОВ ============ */
+function botGetAllMoves(board, color){
+  const moves = [];
+  const anyCap = boardHasCapture(board, color);
+
+  for(let r=0; r<8; r++){
+    for(let c=0; c<8; c++){
+      const p = board[r][c];
+      if(!p || p.color !== color) continue;
+
+      let pieceMoves;
+      if(p.king){
+        pieceMoves = botKingMoves(board, r, c, anyCap);
+      }else{
+        pieceMoves = botManMoves(board, r, c, anyCap);
+      }
+      for(const m of pieceMoves){
+        moves.push({ fromR: r, fromC: c, ...m });
+      }
+    }
+  }
+  return moves;
+}
+
+function boardHasCapture(board, color){
+  for(let r=0; r<8; r++){
+    for(let c=0; c<8; c++){
+      const p = board[r][c];
+      if(p && p.color === color){
+        const caps = p.king ? botKingMoves(board, r, c, true) : botManMoves(board, r, c, true);
+        if(caps.length && caps[0].cr !== undefined) return true;
+      }
+    }
+  }
+  return false;
+}
+
+function botManMoves(board, r, c, onlyCaptures){
+  const p = board[r][c];
+  const out = [];
+
+  for(const dr of [-1,1]) for(const dc of [-1,1]){
+    const er=r+dr, ec=c+dc, lr=r+2*dr, lc=c+2*dc;
+    if(inside(lr,lc) && board[er]?.[ec] && board[er][ec].color !== p.color && !board[lr][lc]){
+      out.push({ r: lr, c: lc, cr: er, cc: ec });
+    }
+  }
+
+  if(out.length) return out;
+  if(onlyCaptures) return [];
+
+  const dr = p.color === "white" ? -1 : 1;
+  for(const dc of [-1,1]){
+    const nr=r+dr, nc=c+dc;
+    if(inside(nr,nc) && !board[nr][nc]) out.push({ r: nr, c: nc });
+  }
+  return out;
+}
+
+function botKingMoves(board, r, c, onlyCaptures){
+  const p = board[r][c];
+  const out = [];
+
+  for(const dr of [-1,1]) for(const dc of [-1,1]){
+    let nr = r+dr, nc = c+dc;
+    let enemy = null;
+    while(inside(nr,nc)){
+      const q = board[nr][nc];
+      if(!q){
+        if(enemy) out.push({ r: nr, c: nc, cr: enemy.r, cc: enemy.c });
+        nr += dr; nc += dc; continue;
+      }
+      if(!enemy){
+        if(q.color === p.color) break;
+        enemy = { r: nr, c: nc };
+        nr += dr; nc += dc; continue;
+      }
+      break;
+    }
+  }
+
+  if(out.length) return out;
+  if(onlyCaptures) return [];
+
+  for(const dr of [-1,1]) for(const dc of [-1,1]){
+    let nr = r+dr, nc = c+dc;
+    while(inside(nr,nc) && !board[nr][nc]){
+      out.push({ r: nr, c: nc });
+      nr += dr; nc += dc;
+    }
+  }
+  return out;
+}
+
+function botMakeMove(board, fromR, fromC, target){
+  const newBoard = board.map(row => row.map(cell => cell ? { ...cell } : null));
+  const p = newBoard[fromR][fromC];
+  if(!p) return null;
+
+  newBoard[target.r][target.c] = p;
+  newBoard[fromR][fromC] = null;
+
+  if(target.cr !== undefined) newBoard[target.cr][target.cc] = null;
+
+  if(!p.king &&
+     ((p.color === "white" && target.r === 0) || (p.color === "black" && target.r === 7))){
+    newBoard[target.r][target.c].king = true;
+  }
+
+  return newBoard;
+}
+
+function botSimpleEval(board, botColor){
+  let score = 0;
+  for(let r=0; r<8; r++){
+    for(let c=0; c<8; c++){
+      const p = board[r][c];
+      if(!p) continue;
+      const val = p.king ? 5 : 1;
+      score += (p.color === botColor ? val : -val);
+    }
+  }
+  return score;
+}
+
+function botChooseMove(board, color, level){
+  const moves = botGetAllMoves(board, color);
+  if(!moves.length) return null;
+
+  if(level === "easy"){
+    return moves[Math.floor(Math.random() * moves.length)];
+  }
+
+  if(level === "medium"){
+    const captures = moves.filter(m => m.cr !== undefined);
+    if(captures.length) return captures[Math.floor(Math.random() * captures.length)];
+    return moves[Math.floor(Math.random() * moves.length)];
+  }
+
+  let best = null;
+  let bestScore = -Infinity;
+  const oppColor = color === "white" ? "black" : "white";
+
+  for(const m of moves){
+    const afterMy = botMakeMove(board, m.fromR, m.fromC, m);
+    if(!afterMy) continue;
+
+    const oppMoves = botGetAllMoves(afterMy, oppColor);
+    let worstScore = Infinity;
+
+    if(!oppMoves.length){
+      worstScore = botSimpleEval(afterMy, color);
+    } else {
+      for(const om of oppMoves){
+        const afterOpp = botMakeMove(afterMy, om.fromR, om.fromC, om);
+        if(!afterOpp) continue;
+        const s = botSimpleEval(afterOpp, color);
+        if(s < worstScore) worstScore = s;
+      }
+    }
+
+    if(worstScore > bestScore){
+      bestScore = worstScore;
+      best = m;
+    }
+  }
+
+  return best || moves[0];
+}
+/* ============ ХОД БОТА (на клиенте игрока) ============ */
+let botMoveScheduled = false;
+
+function scheduleBotMove(d){
+  if(botMoveScheduled) return;
+  botMoveScheduled = true;
+
+  const delay = 1000 + Math.random() * 1500;
+
+  setTimeout(async ()=>{
+    botMoveScheduled = false;
+
+    const snap = await lobbyRef.once("value");
+    const data = snap.val();
+    if(!data || data.gameOver) return;
+    if(data.current === myColor) return;
+
+    const fbBoard = data.board || {};
+    const board = Array.from({length:8}, (_,r)=>
+      Array.from({length:8}, (_,c)=>{
+        const v = fbBoard[r]?.[c];
+        return v === undefined || v === null ? null : v;
+      })
+    );
+
+    const botColor = data.current;
+    const level = data.botLevel || "medium";
+    const move = botChooseMove(board, botColor, level);
+    if(!move) return;
+
+    const newBoard = botMakeMove(board, move.fromR, move.fromC, move);
+    if(!newBoard) return;
+
+    const nextColor = botColor === "white" ? "black" : "white";
+
+    await lobbyRef.update({
+      board: newBoard,
+      current: nextColor,
+      moveDeadline: Date.now() + MOVE_TIME * 1000
+    });
+  }, delay);
 }
 resetMoveTimer();
 render();
