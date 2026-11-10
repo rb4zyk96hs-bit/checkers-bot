@@ -1057,10 +1057,28 @@ window.addEventListener("load",()=>{
       myPieceSkins=[];equippedPieceSkin=null;myBoardSkins=[];equippedBoardSkin=null;
     }
     if(!myProfile.name){
-      const entered=prompt("Как вас зовут?","Игрок");
-      myProfile.name=(entered||"Игрок").trim().slice(0,20)||"Игрок";
-      await userRef.update({name:myProfile.name});
+  let done = false;
+  while(!done){
+    const entered = prompt("Как вас зовут?", "Игрок");
+    if(entered === null){
+      // Отмена — генерируем случайный ник
+      const rand = "Игрок" + Math.floor(Math.random()*90000+10000);
+      if(await claimNick(rand)){ myProfile.name = rand; done = true; }
+      continue;
     }
+    const name = (entered||"").trim().slice(0,20);
+    if(!name){ alert("Введите имя"); continue; }
+
+    const ok = await claimNick(name);
+    if(ok){
+      myProfile.name = name;
+      done = true;
+    }else{
+      alert("❌ Это имя уже занято. Выберите другое.");
+    }
+  }
+  await userRef.update({name:myProfile.name});
+}
     updateProfileUI();
     userRef.on("value",snap=>{
       const x=snap.val();if(!x)return;
@@ -1072,11 +1090,33 @@ window.addEventListener("load",()=>{
       updateProfileUI();
     });
     document.getElementById("saveNameBtn").onclick=async()=>{
-      const newName=nameInput.value.trim().slice(0,20);
-      if(!newName){alert("Введите имя");return}
-      await userRef.update({name:newName});
-      alert("✅ Имя сохранено");
-    };
+  const newName = nameInput.value.trim().slice(0,20);
+  if(!newName){ alert("Введите имя"); return; }
+
+  const oldName = myProfile.name || "";
+
+  // Если ник не изменился — просто выходим
+  if(newName.toLowerCase() === oldName.toLowerCase()){
+    alert("✅ Имя сохранено");
+    return;
+  }
+
+  // Пробуем занять новый ник
+  const ok = await claimNick(newName);
+  if(!ok){
+    alert("❌ Это имя уже занято. Выберите другое.");
+    return;
+  }
+
+  // Освобождаем старый ник
+  if(oldName) await releaseNick(oldName);
+
+  // Сохраняем в профиль
+  await userRef.update({name:newName});
+  myProfile.name = newName;
+  updateProfileUI();
+  alert("✅ Имя сохранено");
+};
     onlineReady=true;render();showMenu();
   }).catch(err=>{alert("Firebase: "+(err.code||"")+"\n"+(err.message||""))});
 });
@@ -1418,7 +1458,32 @@ function exitToMenu(){
 }
 
 document.getElementById("btnSettings").onclick=()=>{document.getElementById("settingsModal").classList.add("open")};
+async function isNickTaken(nick){
+  const key = nick.toLowerCase().trim();
+  if(!key) return true;
+  const snap = await firebase.database().ref("nicknames/"+key).once("value");
+  const owner = snap.val();
+  return owner && owner !== myUid;
+}
 
+async function claimNick(nick){
+  const key = nick.toLowerCase().trim();
+  if(!key) return false;
+  const result = await firebase.database().ref("nicknames/"+key).transaction(current=>{
+    if(current === null || current === myUid) return myUid;
+    return;
+  });
+  return result.committed === true;
+}
+
+async function releaseNick(nick){
+  const key = nick.toLowerCase().trim();
+  if(!key) return;
+  await firebase.database().ref("nicknames/"+key).transaction(current=>{
+    if(current === myUid) return null;
+    return current;
+  });
+}
 resetMoveTimer();
 render();
 showMenu();
