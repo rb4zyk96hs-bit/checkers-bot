@@ -1342,33 +1342,14 @@ async function payWinner(result){
   }catch(e){
     console.error("Ошибка начисления:",e);
   }
-  
+
   try{
     await lobbyRef.child(`paid/${myColor}`).set(true);
   }catch(e){console.error(e)}
 
-  // 3. Только ОДИН клиент удаляет лобби
   try{
     const cleanupRef = await lobbyRef.child("payoutDone").transaction(v=>{
       if(v===true)return;
-      return true;
-    });
-    if(cleanupRef.committed){
-      setTimeout(async()=>{
-        if(lobbyRef)await lobbyRef.remove().catch(()=>{});
-      },1500);
-    }
-  }catch(e){console.error(e)}
-}
-  // 2. Помечаем, что Я рассчитался
-  try{
-    await lobbyRef.child(`paid/${myColor}`).set(true);
-  }catch(e){console.error(e)}
-
-  // 3. Только ОДИН клиент удаляет лобби (через транзакцию)
-  try{
-    const cleanupRef = await lobbyRef.child("payoutDone").transaction(v=>{
-      if(v===true)return; // уже кто-то удаляет
       return true;
     });
     if(cleanupRef.committed){
