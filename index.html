@@ -1247,7 +1247,8 @@ async function joinLobby(lobbyId){
     status: "playing",
     moveDeadline: Date.now() + MOVE_TIME * 1000
   });
-  enterLobby(lobbyId, joinColor);
+enterLobby(lobbyId, joinColor);
+}
 
 function enterLobby(lobbyId,color){
   currentLobbyId=lobbyId;myColor=color;
