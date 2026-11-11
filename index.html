@@ -1868,11 +1868,28 @@ function scheduleBotMove(d){
 
     const nextColor = botColor === "white" ? "black" : "white";
 
-    await lobbyRef.update({
+    // ⚡ Проверяем: остались ли у игрока шашки и ходы
+    const oldB = B;
+    B = newBoard;
+    const myHasPieces = hasPieces(myColor);
+    const myHasMoves = myHasPieces && hasMove(myColor);
+    B = oldB;
+
+    const update = {
       board: newBoard,
       current: nextColor,
       moveDeadline: Date.now() + MOVE_TIME * 1000
-    });
+    };
+
+    // Если у игрока нет шашек или нет ходов — бот победил
+    if(!myHasPieces || !myHasMoves){
+      update.gameOver = true;
+      update.result = botColor;
+      update.status = "finished";
+      update.moveDeadline = null;
+    }
+
+    await lobbyRef.update(update);
   }, delay);
 }
 resetMoveTimer();
