@@ -1342,8 +1342,7 @@ async function payWinner(result){
   }catch(e){
     console.error("Ошибка начисления:",e);
   }
-
-  // 2. Помечаем, что я рассчитался
+  
   try{
     await lobbyRef.child(`paid/${myColor}`).set(true);
   }catch(e){console.error(e)}
