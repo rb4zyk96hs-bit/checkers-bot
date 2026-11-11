@@ -1317,21 +1317,41 @@ async function payWinner(result){
   const bet=Number(lobbyData.bet)||0;
   const winAmount=Math.floor(bet*2*0.98);
 
-  // 1. Каждый начисляет ТОЛЬКО СЕБЕ (правила Firebase это разрешают)
+  // ⚡ ПРОВЕРКА: играем против бота?
+  const isBotGame = lobbyData.isBot === true;
+  const botLevel = lobbyData.botLevel || null;
+
   try{
     if(result==="draw"){
+      // Возврат ставки при ничьей (всем)
       await firebase.database().ref(`users/${myUid}/coins`).transaction(v=>(v||0)+bet);
-      await firebase.database().ref(`users/${myUid}/draws`).transaction(v=>(v||0)+1);
+      // Статистика ничьих — только с реальным игроком
+      if(!isBotGame){
+        await firebase.database().ref(`users/${myUid}/draws`).transaction(v=>(v||0)+1);
+      }
     }else if(result===myColor){
+      // Победа — монеты даём всегда (это возврат ставки + выигрыш)
       await firebase.database().ref(`users/${myUid}/coins`).transaction(v=>(v||0)+winAmount);
-      await firebase.database().ref(`users/${myUid}/wins`).transaction(v=>(v||0)+1);
-      await firebase.database().ref(`users/${myUid}/gems`).transaction(v=>(v||0)+1);
+      // Статистика побед — только с реальным игроком
+      if(!isBotGame){
+        await firebase.database().ref(`users/${myUid}/wins`).transaction(v=>(v||0)+1);
+      }
+      // Гем — только если НЕ бот ИЛИ бот уровня "hard"
+      if(!isBotGame || botLevel === "hard"){
+        await firebase.database().ref(`users/${myUid}/gems`).transaction(v=>(v||0)+1);
+      }
     }else{
-      await firebase.database().ref(`users/${myUid}/losses`).transaction(v=>(v||0)+1);
+      // Поражение — только с реальным игроком
+      if(!isBotGame){
+        await firebase.database().ref(`users/${myUid}/losses`).transaction(v=>(v||0)+1);
+      }
     }
   }catch(e){
     console.error("Ошибка начисления:",e);
   }
+
+  // ... остальное (удаление лобби и т.д.) — НЕ ТРОГАЙ, оставь как есть ...
+}
 
   // 2. Помечаем, что Я рассчитался
   try{
