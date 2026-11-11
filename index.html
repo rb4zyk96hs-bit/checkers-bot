@@ -1231,15 +1231,8 @@ async function joinLobby(lobbyId){
   if(!success){alert("Недостаточно монет");return}
   // Определяем свободный слот
   let joinColor;
-  if(data.isBot === true){
-    // С ботом — всегда black (бот в white)
-    joinColor = "black";
-  } else {
-    // С реальным игроком — занимаем пустой слот
-    if(!data.players?.white) joinColor = "white";
-    else joinColor = "black";
-  }
-
+  if(!data.players?.white) joinColor = "white";
+  else joinColor = "black";
   await lob.update({
     [`players/${joinColor}`]: myUid,
     [`players/${joinColor}Name`]: myProfile.name || "Игрок",
@@ -1473,7 +1466,7 @@ document.getElementById("btnLobbies").onclick=()=>{
       const row=document.createElement("div");row.className="lobby-row";
       const canJoin=(myProfile.coins||0)>=lob.bet;
       const isMine=lob.players?.white===myUid;
-      row.innerHTML=`<div><div class="bet">🪙 ${lob.bet.toLocaleString("ru")}</div><div style="color:#888;font-size:11px">${lob.players?.whiteName||"?"}${isMine?" (ваше)":""}</div></div><button ${(canJoin||isMine)?"":"disabled"}>${isMine?"Вернуться":(canJoin?"Войти":"Мало монет")}</button>`;
+      row.innerHTML=`<div><div class="bet">🪙 ${lob.bet.toLocaleString("ru")}</div><div style="color:#888;font-size:11px">${lob.players?.whiteName || lob.players?.blackName || "?"}${isMine?" (ваше)":""}</div></div><button ${(canJoin||isMine)?"":"disabled"}>${isMine?"Вернуться":(canJoin?"Войти":"Мало монет")}</button>`;
       row.querySelector("button").onclick=()=>{
         document.getElementById("lobbiesModal").classList.remove("open");
         if(isMine)enterLobby(lob.id,"white");else joinLobby(lob.id);
@@ -1574,10 +1567,12 @@ async function ensureBotLobbies(){
         moveDeadline: null,
         skins: { white: null, black: null },
         boardSkins: { white: null, black: null },
-        players: {
-          white: bot.uid,
-          whiteName: bot.name
-        }
+        players: (()=>{
+          const botColor = Math.random() < 0.5 ? "white" : "black";
+          return botColor === "white"
+            ? {white: bot.uid, whiteName: bot.name}
+            : {black: bot.uid, blackName: bot.name};
+        })()
       });
     }catch(e){
       console.error("Ошибка создания лобби бота:", e);
