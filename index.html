@@ -1181,14 +1181,36 @@ async function createLobby(bet){
   let success=false;
   await userRef.child("coins").transaction(v=>{if((v||0)<bet)return;success=true;return(v||0)-bet});
   if(!success){alert("Недостаточно монет");return}
-  const skins={white:equippedPieceSkin||null,black:null};
-  const boardSkins={white:equippedBoardSkin||null,black:null};
+  const creatorColor = Math.random() < 0.5 ? "white" : "black";
+
+  const skins = creatorColor === "white"
+    ? {white:equippedPieceSkin||null, black:null}
+    : {white:null, black:equippedPieceSkin||null};
+
+  const boardSkins = creatorColor === "white"
+    ? {white:equippedBoardSkin||null, black:null}
+    : {white:null, black:equippedBoardSkin||null};
+
+  const players = creatorColor === "white"
+    ? {white:myUid, whiteName:myProfile.name||"Игрок 1"}
+    : {black:myUid, blackName:myProfile.name||"Игрок"};
+
   await newLobbyRef.set({
-    bet,status:"waiting",createdAt:Date.now(),creator:myUid,board:makeFreshBoard(),current:"white",gameOver:false,whiteTime:MOVE_TIME,blackTime:MOVE_TIME,moveDeadline:null,skins,boardSkins,
-    players:{white:myUid,whiteName:myProfile.name||"Игрок 1"}
+    bet,
+    status:"waiting",
+    createdAt:Date.now(),
+    creator:myUid,
+    board:makeFreshBoard(),
+    current:"white",
+    gameOver:false,
+    whiteTime:MOVE_TIME,
+    blackTime:MOVE_TIME,
+    moveDeadline:null,
+    skins,
+    boardSkins,
+    players
   });
-  enterLobby(lobbyId,"white");
-}
+  enterLobby(lobbyId, creatorColor);
 
 async function joinLobby(lobbyId){
   const lob=firebase.database().ref("lobbies/"+lobbyId);
@@ -1196,19 +1218,36 @@ async function joinLobby(lobbyId){
   const data=snap.val();
   if(!data){alert("Лобби не найдено");return}
   if(data.status!=="waiting"){alert("Лобби уже занято");return}
-  if(data.players?.white===myUid){enterLobby(lobbyId,"white");return}
+  if(data.players?.white===myUid || data.players?.black===myUid){
+    const mySlot = data.players?.white===myUid ? "white" : "black";
+    enterLobby(lobbyId, mySlot);
+    return;
+  }
   if((myProfile.coins||0)<data.bet){alert("Недостаточно монет");return}
   const userRef=firebase.database().ref("users/"+myUid);
   let success=false;
   await userRef.child("coins").transaction(v=>{if((v||0)<data.bet)return;success=true;return(v||0)-data.bet});
   if(!success){alert("Недостаточно монет");return}
-  const whiteSkin=data.skins?.white||null;
-  const whiteBoardSkin=data.boardSkins?.white||null;
-  const skins={white:whiteSkin,black:equippedPieceSkin||null};
-  const boardSkins={white:whiteBoardSkin,black:equippedBoardSkin||null};
-await lob.update({"players/black":myUid,"players/blackName":myProfile.name||"Игрок 2",status:"playing",moveDeadline:Date.now()+MOVE_TIME*1000,skins,boardSkins});
-  enterLobby(lobbyId,"black");
-}
+  // Определяем свободный слот
+  let joinColor;
+  if(data.isBot === true){
+    // С ботом — всегда black (бот в white)
+    joinColor = "black";
+  } else {
+    // С реальным игроком — занимаем пустой слот
+    if(!data.players?.white) joinColor = "white";
+    else joinColor = "black";
+  }
+
+  await lob.update({
+    [`players/${joinColor}`]: myUid,
+    [`players/${joinColor}Name`]: myProfile.name || "Игрок",
+    [`skins/${joinColor}`]: equippedPieceSkin || null,
+    [`boardSkins/${joinColor}`]: equippedBoardSkin || null,
+    status: "playing",
+    moveDeadline: Date.now() + MOVE_TIME * 1000
+  });
+  enterLobby(lobbyId, joinColor);
 
 function enterLobby(lobbyId,color){
   currentLobbyId=lobbyId;myColor=color;
