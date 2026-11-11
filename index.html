@@ -1317,31 +1317,24 @@ async function payWinner(result){
   const bet=Number(lobbyData.bet)||0;
   const winAmount=Math.floor(bet*2*0.98);
 
-  // ⚡ ПРОВЕРКА: играем против бота?
   const isBotGame = lobbyData.isBot === true;
   const botLevel = lobbyData.botLevel || null;
 
   try{
     if(result==="draw"){
-      // Возврат ставки при ничьей (всем)
       await firebase.database().ref(`users/${myUid}/coins`).transaction(v=>(v||0)+bet);
-      // Статистика ничьих — только с реальным игроком
       if(!isBotGame){
         await firebase.database().ref(`users/${myUid}/draws`).transaction(v=>(v||0)+1);
       }
     }else if(result===myColor){
-      // Победа — монеты даём всегда (это возврат ставки + выигрыш)
       await firebase.database().ref(`users/${myUid}/coins`).transaction(v=>(v||0)+winAmount);
-      // Статистика побед — только с реальным игроком
       if(!isBotGame){
         await firebase.database().ref(`users/${myUid}/wins`).transaction(v=>(v||0)+1);
       }
-      // Гем — только если НЕ бот ИЛИ бот уровня "hard"
       if(!isBotGame || botLevel === "hard"){
         await firebase.database().ref(`users/${myUid}/gems`).transaction(v=>(v||0)+1);
       }
     }else{
-      // Поражение — только с реальным игроком
       if(!isBotGame){
         await firebase.database().ref(`users/${myUid}/losses`).transaction(v=>(v||0)+1);
       }
@@ -1350,9 +1343,24 @@ async function payWinner(result){
     console.error("Ошибка начисления:",e);
   }
 
-  // ... остальное (удаление лобби и т.д.) — НЕ ТРОГАЙ, оставь как есть ...
-}
+  // 2. Помечаем, что я рассчитался
+  try{
+    await lobbyRef.child(`paid/${myColor}`).set(true);
+  }catch(e){console.error(e)}
 
+  // 3. Только ОДИН клиент удаляет лобби
+  try{
+    const cleanupRef = await lobbyRef.child("payoutDone").transaction(v=>{
+      if(v===true)return;
+      return true;
+    });
+    if(cleanupRef.committed){
+      setTimeout(async()=>{
+        if(lobbyRef)await lobbyRef.remove().catch(()=>{});
+      },1500);
+    }
+  }catch(e){console.error(e)}
+}
   // 2. Помечаем, что Я рассчитался
   try{
     await lobbyRef.child(`paid/${myColor}`).set(true);
