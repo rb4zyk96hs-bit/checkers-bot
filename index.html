@@ -1212,6 +1212,7 @@ async function createLobby(bet){
     players
   });
   enterLobby(lobbyId, creatorColor);
+}
 
 async function joinLobby(lobbyId){
   const lob=firebase.database().ref("lobbies/"+lobbyId);
