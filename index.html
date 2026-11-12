@@ -472,7 +472,7 @@ const SKINS = [
   {id:"ice",name:"🧊 Ледяные шашки",price:100000,currency:"coins",tier:1,type:"piece"},
   {id:"gold",name:"🏆 Золотые шашки",price:299,currency:"gems",tier:2,type:"piece"},
   {id:"diamond",name:"💎 Бриллиантовые шашки",price:499,currency:"gems",tier:3,type:"piece"},
-  {id:"emperor",name:"👑 Шашки герцога",price:899,currency:"gems",tier:4,type:"piece"},
+  {id:"emperor",name:"👑 Шашки Герцога",price:899,currency:"gems",tier:4,type:"piece"},
 
   {id:"jade",name:"🐉 Нефритовая доска",price:199,currency:"gems",tier:2,type:"board"},
   {id:"ice-board",name:"❄️ Ледяная доска",price:50000,currency:"coins",tier:1,type:"board"},
@@ -1206,12 +1206,12 @@ async function createLobby(bet){
     whiteTime:MOVE_TIME,
     blackTime:MOVE_TIME,
     moveDeadline:null,
+    movesWithoutCapture: 0,
     skins,
     boardSkins,
     players
   });
-enterLobby(lobbyId, creatorColor);
-}
+  enterLobby(lobbyId, creatorColor);
 
 async function joinLobby(lobbyId){
   const lob=firebase.database().ref("lobbies/"+lobbyId);
@@ -1409,10 +1409,39 @@ document.getElementById("resign").onclick=()=>{
 function onMove(r,c){
   if(!onlineReady||gameOver)return;
   if(myColor!==current){msgEl.textContent="⏳ Сейчас ход соперника.";return}
+
+  const hadCapture = selected && legal(selected.r,selected.c).some(m=>m.r===r&&m.c===c&&m.cr!==undefined);
+
   localMove(r,c);
+
   if(lobbyRef){
-    const updateData={board:B,current,gameOver,whiteTime:time.white,blackTime:time.black,moveDeadline:Date.now()+MOVE_TIME*1000};
-    if(gameOver&&lastResult){updateData.result=lastResult;updateData.status="finished";updateData.moveDeadline=null;}
+    const prevCount = Number(lobbyData?.movesWithoutCapture) || 0;
+    const newCount = hadCapture ? 0 : prevCount + 1;
+
+    const updateData={
+      board:B,
+      current,
+      gameOver,
+      whiteTime:time.white,
+      blackTime:time.black,
+      moveDeadline:Date.now()+MOVE_TIME*1000,
+      movesWithoutCapture: newCount
+    };
+
+    if(gameOver&&lastResult){
+      updateData.result=lastResult;
+      updateData.status="finished";
+      updateData.moveDeadline=null;
+    }
+
+    // ⚡ Ничья: 14 полуходов без взятий (7 от каждого)
+    if(!gameOver && newCount >= 14){
+      updateData.gameOver = true;
+      updateData.result = "draw";
+      updateData.status = "finished";
+      updateData.moveDeadline = null;
+    }
+
     lobbyRef.update(updateData);
   }
 }
@@ -1565,6 +1594,7 @@ async function ensureBotLobbies(){
         whiteTime: MOVE_TIME,
         blackTime: MOVE_TIME,
         moveDeadline: null,
+        movesWithoutCapture: 0,
         skins: { white: null, black: null },
         boardSkins: { white: null, black: null },
         players: (()=>{
@@ -1875,16 +1905,29 @@ function scheduleBotMove(d){
     const myHasMoves = myHasPieces && hasMove(myColor);
     B = oldB;
 
+    // ⚡ Счётчик ходов без взятий
+    const botHadCapture = move.cr !== undefined;
+    const prevCount = Number(data.movesWithoutCapture) || 0;
+    const newCount = botHadCapture ? 0 : prevCount + 1;
+
     const update = {
       board: newBoard,
       current: nextColor,
-      moveDeadline: Date.now() + MOVE_TIME * 1000
+      moveDeadline: Date.now() + MOVE_TIME * 1000,
+      movesWithoutCapture: newCount
     };
 
     // Если у игрока нет шашек или нет ходов — бот победил
     if(!myHasPieces || !myHasMoves){
       update.gameOver = true;
       update.result = botColor;
+      update.status = "finished";
+      update.moveDeadline = null;
+    }
+    // ⚡ Ничья: 14 полуходов без взятий
+    else if(newCount >= 14){
+      update.gameOver = true;
+      update.result = "draw";
       update.status = "finished";
       update.moveDeadline = null;
     }
