@@ -1047,12 +1047,8 @@ const firebaseConfig={
 
 window.addEventListener("load",()=>{
   window.addEventListener("load",()=>{
-  const tg = window.Telegram?.WebApp;
-  alert(
-    "Telegram WebApp: " + (tg ? "есть" : "нет") +
-    "\nДанные запуска: " + (tg?.initData ? "есть" : "нет") +
-    "\nПользователь: " + (tg?.initDataUnsafe?.user ? "есть" : "нет")
-  );
+  window.addEventListener("load",()=>{
+  firebase.initializeApp(firebaseConfig);
 
   firebase.initializeApp(firebaseConfig);
   firebase.initializeApp(firebaseConfig);
