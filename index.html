@@ -983,13 +983,28 @@ function updateDrawButtons(){
 drawBtn.onclick=async()=>{
   if(gameOver||!lobbyRef||pendingDrawOffer)return;
 
-  // 🤖 Играем с ботом — бот сам решает
-  if(lobbyData?.isBot === true){
-    const myCount = botCountPieces(B, myColor);
-    const botColor = myColor === "white" ? "black" : "white";
-    const botCount = botCountPieces(B, botColor);
+  // 🤖 Проверяем что играем с ботом (3 способа)
+  const whiteUid = String(lobbyData?.players?.white || "");
+  const blackUid = String(lobbyData?.players?.black || "");
+  const isBotLobby = lobbyData?.isBot === true
+    || whiteUid.startsWith("bot_")
+    || blackUid.startsWith("bot_");
 
-    // ✅ Оба ≤ 3 — бот принимает (3-3, 3-2, 3-1, 2-1, 1-1 и т.д.)
+  if(isBotLobby){
+    // ⚡ Считаем шашки вручную (без botCountPieces)
+    const botColor = myColor === "white" ? "black" : "white";
+    let myCount = 0, botCount = 0;
+
+    for(let r = 0; r < 8; r++){
+      for(let c = 0; c < 8; c++){
+        const p = B[r][c];
+        if(!p) continue;
+        if(p.color === myColor) myCount++;
+        if(p.color === botColor) botCount++;
+      }
+    }
+
+    // ✅ Оба ≤ 3 — бот принимает ничью
     if(myCount <= 3 && botCount <= 3){
       await lobbyRef.update({
         gameOver: true,
