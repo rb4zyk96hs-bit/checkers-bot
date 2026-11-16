@@ -989,8 +989,8 @@ drawBtn.onclick=async()=>{
     const botColor = myColor === "white" ? "black" : "white";
     const botCount = botCountPieces(B, botColor);
 
+    // ✅ Оба ≤ 3 — бот принимает (3-3, 3-2, 3-1, 2-1, 1-1 и т.д.)
     if(myCount <= 3 && botCount <= 3){
-      // Бот принимает ничью
       await lobbyRef.update({
         gameOver: true,
         result: "draw",
@@ -998,14 +998,14 @@ drawBtn.onclick=async()=>{
         moveDeadline: null
       });
     } else {
-      // Бот отклоняет
-      msgEl.textContent = "❌ Бот отклонил ничью. У обоих должно быть ≤ 3 шашек.";
+      // ❌ У кого-то больше 3 — бот отклоняет
+      msgEl.textContent = "❌ Бот отклонил ничью. У обоих должно быть ≤ 3 шашек (сейчас: у вас " + myCount + ", у бота " + botCount + ").";
       SFX.error();
     }
     return;
   }
 
-  // 👤 Играем с реальным игроком — стандартная логика
+  // 👤 С реальным игроком — стандартно
   await lobbyRef.update({drawOffer:myColor});
 };
 acceptDrawBtn.onclick=async()=>{
