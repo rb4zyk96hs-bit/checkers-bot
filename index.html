@@ -980,7 +980,34 @@ function updateDrawButtons(){
   }
 }
 
-drawBtn.onclick=async()=>{if(gameOver||!lobbyRef||pendingDrawOffer)return;await lobbyRef.update({drawOffer:myColor})};
+drawBtn.onclick=async()=>{
+  if(gameOver||!lobbyRef||pendingDrawOffer)return;
+
+  // 🤖 Играем с ботом — бот сам решает
+  if(lobbyData?.isBot === true){
+    const myCount = botCountPieces(B, myColor);
+    const botColor = myColor === "white" ? "black" : "white";
+    const botCount = botCountPieces(B, botColor);
+
+    if(myCount <= 3 && botCount <= 3){
+      // Бот принимает ничью
+      await lobbyRef.update({
+        gameOver: true,
+        result: "draw",
+        status: "finished",
+        moveDeadline: null
+      });
+    } else {
+      // Бот отклоняет
+      msgEl.textContent = "❌ Бот отклонил ничью. У обоих должно быть ≤ 3 шашек.";
+      SFX.error();
+    }
+    return;
+  }
+
+  // 👤 Играем с реальным игроком — стандартная логика
+  await lobbyRef.update({drawOffer:myColor});
+};
 acceptDrawBtn.onclick=async()=>{
   if(gameOver||!lobbyRef)return;
   if(!pendingDrawOffer||pendingDrawOffer===myColor)return;
@@ -1434,14 +1461,6 @@ function onMove(r,c){
       updateData.result=lastResult;
       updateData.status="finished";
       updateData.moveDeadline=null;
-    }
-
-    // ⚡ Ничья: 14 полуходов без взятий (7 от каждого)
-    if(!gameOver && newCount >= 14){
-      updateData.gameOver = true;
-      updateData.result = "draw";
-      updateData.status = "finished";
-      updateData.moveDeadline = null;
     }
 
     lobbyRef.update(updateData);
@@ -1926,14 +1945,7 @@ function scheduleBotMove(d){
       update.status = "finished";
       update.moveDeadline = null;
     }
-    // ⚡ Ничья: 14 полуходов без взятий
-    else if(newCount >= 14){
-      update.gameOver = true;
-      update.result = "draw";
-      update.status = "finished";
-      update.moveDeadline = null;
-    }
-
+    
     await lobbyRef.update(update);
   }, delay);
 }
