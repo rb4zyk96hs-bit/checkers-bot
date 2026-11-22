@@ -194,6 +194,138 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
   padding:0;
 }
 .rating-btn:hover{transform:scale(1.1);box-shadow:0 6px 16px #000c,inset 0 2px 4px #fff8}
+.tournament-btn{
+  background:linear-gradient(135deg,#7a2a8a,#a03ac9);
+  border-color:#5a1e6b;
+  margin-left:8px;
+}
+
+/* ============ ТУРНИР ============ */
+.tournament-modal-content{
+  max-width:520px;
+}
+
+.tournament-info{
+  background:#101315;
+  border:1px solid #34383c;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:12px;
+  text-align:center;
+  font-size:13px;
+}
+.tournament-info b{color:#f1d16b}
+
+.tournament-prizes{
+  background:linear-gradient(135deg,#2a1f0a,#4a3510);
+  border:2px solid #b8903a;
+  border-radius:10px;
+  padding:12px;
+  margin-bottom:12px;
+  font-size:12px;
+}
+.tournament-prizes .prize-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:6px 0;
+  border-bottom:1px solid #b8903a33;
+}
+.tournament-prizes .prize-row:last-child{border-bottom:0}
+.tournament-prizes .prize-place{
+  font-weight:bold;
+  color:#f1d16b;
+  min-width:70px;
+}
+.tournament-prizes .prize-value{color:#ccc}
+
+.tournament-btn-action{
+  width:100%;
+  padding:14px;
+  border-radius:10px;
+  background:#28751d;
+  font-size:15px;
+  font-weight:bold;
+  margin-bottom:12px;
+  border:0;
+  color:white;
+  cursor:pointer;
+}
+.tournament-btn-action:disabled{opacity:.5;cursor:not-allowed;background:#555}
+.tournament-btn-action.cancel{background:#ad2922}
+
+.bracket{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:8px 0;
+}
+.bracket-round{
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  min-width:140px;
+  flex-shrink:0;
+}
+.bracket-round-title{
+  text-align:center;
+  font-size:10px;
+  font-weight:bold;
+  color:#888;
+  margin-bottom:4px;
+  text-transform:uppercase;
+}
+.bracket-match{
+  background:#101315;
+  border:1px solid #34383c;
+  border-radius:8px;
+  padding:6px 8px;
+  font-size:11px;
+}
+.bracket-match.done{border-color:#39743d;background:#0f1f12}
+.bracket-match.my-match{border-color:#f1d16b;box-shadow:0 0 8px #f1d16b55}
+.bracket-player{
+  display:flex;
+  justify-content:space-between;
+  padding:2px 0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.bracket-player.winner{color:#9fbd55;font-weight:bold}
+.bracket-player.loser{color:#666;text-decoration:line-through}
+.bracket-vs{
+  text-align:center;
+  font-size:9px;
+  color:#555;
+  margin:1px 0;
+}
+.bracket-play-btn{
+  width:100%;
+  padding:5px;
+  margin-top:4px;
+  border-radius:6px;
+  background:#28751d;
+  border:0;
+  color:white;
+  font-size:11px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.bracket-play-btn:disabled{opacity:.5;cursor:not-allowed;background:#555}
+
+/* Чемпион */
+.champion-box{
+  text-align:center;
+  padding:20px;
+  background:linear-gradient(135deg,#3a2a0a,#5a4010);
+  border:2px solid #f1d16b;
+  border-radius:15px;
+  margin-bottom:12px;
+}
+.champion-box .champion-icon{font-size:48px;margin-bottom:8px}
+.champion-box .champion-name{font-size:20px;font-weight:bold;color:#f1d16b;margin-bottom:4px}
+.champion-box .champion-label{font-size:12px;color:#ccc}
 .rating-btn:active{transform:scale(0.95)}
 .rating-list{max-height:60vh;overflow-y:auto;padding-right:2px}
 .rating-item{
@@ -362,8 +494,9 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
     </div>
     <div class="menu-profile"><span class="menu-avatar">👤</span><span id="menuNick">Гость</span></div>
   </div>
-  <div class="rating-row">
-    <button id="btnRating" class="rating-btn" title="Рейтинг">🏆</button>
+<div class="rating-row">
+    <button id="btnRating" class="rating-btn" title="Рейтинг">📊</button>
+    <button id="btnTournament" class="rating-btn tournament-btn" title="Турнир">🏆</button>
   </div>
   <div class="bonus-box" id="bonusBox" style="display:none"><span>🎁 Бонус за ожидание!</span><button id="claimBonusBtn">Забрать 1450🪙</button></div>
   <div class="menu-buttons">
@@ -435,6 +568,16 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
     <h2>🏆 Топ-50 по винрейту</h2>
     <p style="text-align:center;font-size:11px;color:#888;margin:0 0 10px">Только игроки с 5+ партиями</p>
     <div id="ratingList" class="rating-list"></div>
+  </div>
+</div>
+  <div id="tournamentModal" class="modal">
+  <div class="modal-content tournament-modal-content">
+    <button class="modal-close" data-close="tournamentModal">✖</button>
+    <h2>🏆 Турнир</h2>
+
+    <div id="tournamentContent">
+      <div style="text-align:center;color:#888;padding:20px">Загрузка...</div>
+    </div>
   </div>
 </div>
   
@@ -584,9 +727,8 @@ let payoutDone=false;
 let waitingTimer=null;
 let waitingSecondsLeft=0;
 
-let searching=false;
-let searchListener=null;
-
+let tournamentListener=null;
+let currentTournamentData=null;
 function makeFreshBoard(){
   const b=Array.from({length:8},()=>Array(8).fill(null));
   for(let r=0;r<3;r++)for(let c=0;c<8;c++)if((r+c)%2===1)b[r][c]={color:"black",king:false};
@@ -1490,6 +1632,16 @@ async function payWinner(result){
       return true;
     });
     if(cleanupRef.committed){
+      // ⚡ Если это турнирное лобби — обновляем сетку
+      if(lobbyData?.isTournament === true && lobbyData?.tournamentMatchId){
+        const winner = result === "draw" ? null : result;
+        if(winner){
+          const winnerUid = winner === "white" ? lobbyData.players.white : lobbyData.players.black;
+          const tRound = Number(lobbyData.tournamentRound) || 0;
+          const tMatch = Number(lobbyData.tournamentMatchIndex) || 0;
+          await reportTournamentWin("current", tRound, tMatch, winnerUid);
+        }
+      }
       setTimeout(async()=>{
         if(lobbyRef)await lobbyRef.remove().catch(()=>{});
       },1500);
@@ -2093,6 +2245,392 @@ arr.forEach(x => {
 document.getElementById("btnRating").onclick = async () => {
   document.getElementById("ratingModal").classList.add("open");
   await loadLeaderboard();
+};
+/* ============ ТУРНИР ============ */
+const TOURNAMENT_SIZE = 32;
+const TOURNAMENT_MIN_GAMES = 10;
+
+const TOURNAMENT_PRIZES = {
+  1: { stars: 100, coins: 50000, gems: 250 },
+  2: { stars: 0, coins: 40000, gems: 200 },
+  3: { stars: 0, coins: 30000, gems: 100 }
+};
+
+function tournamentRef(){
+  return firebase.database().ref("tournaments/current");
+}
+
+async function getUserGameCount(uid){
+  const snap = await firebase.database().ref("users/" + uid).once("value");
+  const d = snap.val();
+  if(!d) return 0;
+  return (Number(d.wins)||0) + (Number(d.losses)||0) + (Number(d.draws)||0);
+}
+
+async function registerForTournament(){
+  if(!myUid) return;
+
+  const tSnap = await tournamentRef().once("value");
+  const t = tSnap.val();
+
+  if(t && t.status !== "registration"){
+    alert("⏳ Регистрация закрыта — турнир уже идёт");
+    return;
+  }
+
+  const games = await getUserGameCount(myUid);
+  if(games < TOURNAMENT_MIN_GAMES){
+    alert("❌ Для турнира нужно минимум " + TOURNAMENT_MIN_GAMES + " партий. У вас: " + games);
+    return;
+  }
+
+  if(t && t.registered && t.registered[myUid]){
+    alert("Вы уже зарегистрированы");
+    return;
+  }
+
+  if(t && t.registered && Object.keys(t.registered).length >= TOURNAMENT_SIZE){
+    alert("❌ Турнир заполнен");
+    return;
+  }
+
+  // Регистрируем
+  await tournamentRef().child("registered/" + myUid).set({
+    uid: myUid,
+    name: myProfile.name || "Игрок",
+    joinedAt: Date.now()
+  });
+
+  // Если это первый — создаём турнир
+  if(!t){
+    await tournamentRef().update({
+      status: "registration",
+      createdAt: Date.now(),
+      currentRound: 0
+    });
+  }
+
+  // Проверяем — если набралось 32 — старт
+  const updated = (await tournamentRef().once("value")).val();
+  if(updated && updated.registered && Object.keys(updated.registered).length >= TOURNAMENT_SIZE){
+    await startTournament(updated);
+  }
+}
+
+async function startTournament(t){
+  const players = Object.values(t.registered || {});
+  if(players.length < TOURNAMENT_SIZE){
+    return;
+  }
+
+  // Берём только первые 32 (на случай если кто-то записался «лишним»)
+  const shuffled = players.slice(0, TOURNAMENT_SIZE).sort(() => Math.random() - 0.5);
+
+  // Создаём раунд 1: 16 матчей
+  const round1 = [];
+  for(let i = 0; i < TOURNAMENT_SIZE; i += 2){
+    round1.push({
+      p1: shuffled[i].uid,
+      p1name: shuffled[i].name,
+      p2: shuffled[i + 1].uid,
+      p2name: shuffled[i + 1].name,
+      winner: null,
+      matchId: "m1_" + i
+    });
+  }
+
+  await tournamentRef().update({
+    status: "playing",
+    currentRound: 0,
+    rounds: [round1]
+  });
+}
+
+async function reportTournamentWin(tournamentId, roundIndex, matchIndex, winnerUid){
+  // Эта функция вызывается когда матч в турнирном лобби завершён
+  const snap = await tournamentRef().once("value");
+  const t = snap.val();
+  if(!t || !t.rounds || !t.rounds[roundIndex]) return;
+
+  const match = t.rounds[roundIndex][matchIndex];
+  if(!match || match.winner) return;
+
+  // Ставим победителя
+  await tournamentRef().child(`rounds/${roundIndex}/${matchIndex}/winner`).set(winnerUid);
+
+  // Проверяем — все ли матчи раунда завершены
+  const updated = (await tournamentRef().once("value")).val();
+  const round = updated.rounds[roundIndex];
+  const allDone = round.every(m => m.winner);
+
+  if(!allDone) return;
+
+  // Раунд завершён — создаём следующий
+  if(roundIndex >= 4){
+    // Это был финал (5-й раунд, 0-4 индексы)
+    // Финалист 0 — победитель, финалист 1 — 2-е место
+    const finalMatch = round[0];
+    const firstPlace = finalMatch.winner;
+    const secondPlace = finalMatch.p1 === firstPlace ? finalMatch.p2 : finalMatch.p1;
+
+    // Но нам нужен и 3-е место — у нас уже был полуфинал с 2 матчами
+    // Берём проигравших полуфинала
+    const semifinal = updated.rounds[3]; // 2 матча
+    let thirdPlace = null;
+    if(semifinal && semifinal.length === 2){
+      const losers = semifinal.map(m => m.winner === m.p1 ? m.p2 : m.p1);
+      // Играют между собой в матче за 3-е место
+      thirdPlace = losers[0]; // без отдельного матча — просто берём первого проигравшего
+      // TODO: сделать отдельный матч за 3-е
+    }
+
+    await tournamentRef().update({
+      status: "finished",
+      finishedAt: Date.now(),
+      winner: firstPlace,
+      second: secondPlace,
+      third: thirdPlace
+    });
+
+    // Начисляем призы
+    await awardTournamentPrizes(firstPlace, secondPlace, thirdPlace);
+    return;
+  }
+
+  // Создаём следующий раунд
+  const nextRound = [];
+  for(let i = 0; i < round.length; i += 2){
+    nextRound.push({
+      p1: round[i].winner,
+      p1name: round[i].winner === round[i].p1 ? round[i].p1name : round[i].p2name,
+      p2: round[i + 1].winner,
+      p2name: round[i + 1].winner === round[i + 1].p1 ? round[i + 1].p1name : round[i + 1].p2name,
+      winner: null,
+      matchId: `m${roundIndex + 2}_${i}`
+    });
+  }
+
+  await tournamentRef().update({
+    rounds: [...updated.rounds.slice(0, roundIndex + 1), nextRound],
+    currentRound: roundIndex + 1
+  });
+}
+
+async function awardTournamentPrizes(first, second, third){
+  const awards = [
+    { uid: first, place: 1 },
+    { uid: second, place: 2 },
+    { uid: third, place: 3 }
+  ];
+
+  for(const a of awards){
+    if(!a.uid) continue;
+    const prize = TOURNAMENT_PRIZES[a.place];
+    if(!prize) continue;
+
+    try{
+      if(prize.coins > 0){
+        await firebase.database().ref(`users/${a.uid}/coins`).transaction(v => (v||0) + prize.coins);
+      }
+      if(prize.gems > 0){
+        await firebase.database().ref(`users/${a.uid}/gems`).transaction(v => (v||0) + prize.gems);
+      }
+      // ⭐ Звёзды не начисляем — выдаёт админ вручную
+    }catch(e){ console.error("Ошибка призов:", e); }
+  }
+}
+
+async function createTournamentLobby(roundIndex, matchIndex){
+  if(!currentTournamentData) return;
+  const match = currentTournamentData.rounds?.[roundIndex]?.[matchIndex];
+  if(!match || match.winner) return;
+
+  // Проверяем что мы в этом матче
+  if(match.p1 !== myUid && match.p2 !== myUid){
+    alert("Это не ваш матч");
+    return;
+  }
+
+  // Ищем уже созданное турнирное лобби для этого матча
+  const lobbiesSnap = await firebase.database().ref("lobbies").once("value");
+  const allLobbies = lobbiesSnap.val() || {};
+  let existingLobbyId = null;
+
+  for(const [id, lob] of Object.entries(allLobbies)){
+    if(lob.tournamentMatchId === match.matchId && lob.status !== "finished"){
+      existingLobbyId = id;
+      break;
+    }
+  }
+
+  if(existingLobbyId){
+    // Заходим в существующее
+    const lobData = allLobbies[existingLobbyId];
+    const mySlot = lobData.players?.white === myUid ? "white" : lobData.players?.black === myUid ? "black" : null;
+    if(mySlot){
+      enterLobby(existingLobbyId, mySlot);
+      return;
+    }
+    // Нас там нет — надо присоединиться
+    await joinLobby(existingLobbyId);
+    return;
+  }
+
+  // Создаём новое
+  const lobbyId = generateLobbyId();
+  const myColor = match.p1 === myUid ? "white" : "black";
+  const oppUid = match.p1 === myUid ? match.p2 : match.p1;
+  const oppName = match.p1 === myUid ? match.p2name : match.p1name;
+
+  const newLobbyRef = firebase.database().ref("lobbies/" + lobbyId);
+  await newLobbyRef.set({
+    bet: 0,
+    status: "playing",
+    createdAt: Date.now(),
+    creator: myUid,
+    isTournament: true,
+    tournamentMatchId: match.matchId,
+    tournamentRound: roundIndex,
+    tournamentMatchIndex: matchIndex,
+    board: makeFreshBoard(),
+    current: "white",
+    gameOver: false,
+    whiteTime: MOVE_TIME,
+    blackTime: MOVE_TIME,
+    moveDeadline: Date.now() + MOVE_TIME * 1000,
+    movesWithoutCapture: 0,
+    skins: { white: null, black: null },
+    boardSkins: { white: null, black: null },
+    players: myColor === "white"
+      ? { white: myUid, whiteName: myProfile.name || "Игрок", black: oppUid, blackName: oppName }
+      : { black: myUid, blackName: myProfile.name || "Игрок", white: oppUid, whiteName: oppName }
+  });
+
+  enterLobby(lobbyId, myColor);
+}
+
+async function renderTournamentModal(){
+  const container = document.getElementById("tournamentContent");
+  container.innerHTML = "<div style='text-align:center;color:#888;padding:15px'>Загрузка...</div>";
+
+  try{
+    const snap = await tournamentRef().once("value");
+    const t = snap.val();
+    currentTournamentData = t;
+
+    if(!t || !t.status){
+      // Турнира нет
+      container.innerHTML = `
+        <div class="tournament-info">Турнир ещё не создан</div>
+        <div class="tournament-prizes">
+          <div class="prize-row"><span class="prize-place">🥇 1-е</span><span class="prize-value">100⭐ + 50 000🪙 + 250💎</span></div>
+          <div class="prize-row"><span class="prize-place">🥈 2-е</span><span class="prize-value">40 000🪙 + 200💎</span></div>
+          <div class="prize-row"><span class="prize-place">🥉 3-е</span><span class="prize-value">30 000🪙 + 100💎</span></div>
+        </div>
+        <button class="tournament-btn-action" id="registerTournamentBtn">📝 Записаться (нужно 10+ партий)</button>
+      `;
+      document.getElementById("registerTournamentBtn").onclick = registerForTournament;
+      return;
+    }
+
+    if(t.status === "registration"){
+      const count = Object.keys(t.registered || {}).length;
+      const isRegistered = t.registered?.[myUid];
+      container.innerHTML = `
+        <div class="tournament-info">Статус: <b>Регистрация</b><br>Записалось: <b>${count} / ${TOURNAMENT_SIZE}</b></div>
+        <div class="tournament-prizes">
+          <div class="prize-row"><span class="prize-place">🥇 1-е</span><span class="prize-value">100⭐ + 50 000🪙 + 250💎</span></div>
+          <div class="prize-row"><span class="prize-place">🥈 2-е</span><span class="prize-value">40 000🪙 + 200💎</span></div>
+          <div class="prize-row"><span class="prize-place">🥉 3-е</span><span class="prize-value">30 000🪙 + 100💎</span></div>
+        </div>
+        ${isRegistered
+          ? `<div style="text-align:center;color:#9fbd55;font-weight:bold;padding:10px">✅ Вы записаны</div>`
+          : `<button class="tournament-btn-action" id="registerTournamentBtn">📝 Записаться (нужно 10+ партий)</button>`
+        }
+      `;
+      if(!isRegistered){
+        const btn = document.getElementById("registerTournamentBtn");
+        btn.onclick = registerForTournament;
+      }
+      return;
+    }
+
+    if(t.status === "playing"){
+      // Показываем сетку
+      let html = `<div class="tournament-info">Статус: <b>Идёт игра</b> · Раунд: <b>${(t.currentRound||0) + 1}</b></div>`;
+      html += `<div class="bracket">`;
+
+      const roundNames = ["1/16", "1/8", "1/4", "Полуфинал", "Финал"];
+
+      (t.rounds || []).forEach((round, rIdx) => {
+        html += `<div class="bracket-round">`;
+        html += `<div class="bracket-round-title">${roundNames[rIdx] || "Раунд " + (rIdx + 1)}</div>`;
+
+        round.forEach((m, mIdx) => {
+          const isDone = m.winner !== null;
+          const isMyMatch = (m.p1 === myUid || m.p2 === myUid) && !isDone;
+          const p1Cls = isDone ? (m.winner === m.p1 ? "winner" : "loser") : "";
+          const p2Cls = isDone ? (m.winner === m.p2 ? "winner" : "loser") : "";
+
+          html += `<div class="bracket-match ${isDone ? 'done' : ''} ${isMyMatch ? 'my-match' : ''}">`;
+          html += `<div class="bracket-player ${p1Cls}">${m.p1name || "?"}</div>`;
+          html += `<div class="bracket-vs">vs</div>`;
+          html += `<div class="bracket-player ${p2Cls}">${m.p2name || "?"}</div>`;
+
+          if(isMyMatch){
+            html += `<button class="bracket-play-btn" data-round="${rIdx}" data-match="${mIdx}">🎮 Играть</button>`;
+          }
+
+          html += `</div>`;
+        });
+
+        html += `</div>`;
+      });
+
+      html += `</div>`;
+      container.innerHTML = html;
+
+      // Навешиваем кнопки
+      container.querySelectorAll(".bracket-play-btn").forEach(btn => {
+        btn.onclick = async () => {
+          const rIdx = Number(btn.dataset.round);
+          const mIdx = Number(btn.dataset.match);
+          document.getElementById("tournamentModal").classList.remove("open");
+          await createTournamentLobby(rIdx, mIdx);
+        };
+      });
+
+      return;
+    }
+
+    if(t.status === "finished"){
+      const winnerSnap = await firebase.database().ref("leaderboard/" + t.winner).once("value");
+      const winnerData = winnerSnap.val();
+      const winnerName = winnerData?.name || "Игрок";
+
+      container.innerHTML = `
+        <div class="champion-box">
+          <div class="champion-icon">🏆</div>
+          <div class="champion-name">${winnerName}</div>
+          <div class="champion-label">Чемпион турнира</div>
+        </div>
+        <div class="tournament-prizes">
+          <div class="prize-row"><span class="prize-place">🥇 1-е</span><span class="prize-value">100⭐ + 50 000🪙 + 250💎</span></div>
+          <div class="prize-row"><span class="prize-place">🥈 2-е</span><span class="prize-value">40 000🪙 + 200💎</span></div>
+          <div class="prize-row"><span class="prize-place">🥉 3-е</span><span class="prize-value">30 000🪙 + 100💎</span></div>
+        </div>
+      `;
+      return;
+    }
+  }catch(e){
+    console.error(e);
+    container.innerHTML = "<div style='text-align:center;color:#ff5252;padding:20px'>Ошибка загрузки</div>";
+  }
+}
+
+document.getElementById("btnTournament").onclick = async () => {
+  document.getElementById("tournamentModal").classList.add("open");
+  await renderTournamentModal();
 };
 resetMoveTimer();
 render();
