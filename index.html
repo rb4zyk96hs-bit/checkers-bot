@@ -2049,14 +2049,16 @@ async function loadLeaderboard(){
     const all = snap.val() || {};
     const arr = Object.values(all).filter(x => x && x.name);
 
-    arr.forEach(x => {
+arr.forEach(x => {
       const total = (x.wins||0) + (x.losses||0) + (x.draws||0);
       x.total = total;
       x.rate = total > 0 ? (x.wins||0) / total : 0;
+      // ⚡ Взвешенный винрейт (защита от «10-0» на первом месте)
+      x.score = (x.wins||0) / (total + 20);
     });
 
     const filtered = arr.filter(x => x.total >= 5);
-    filtered.sort((a, b) => (b.rate - a.rate) || (b.total - a.total));
+    filtered.sort((a, b) => (b.score - a.score) || (b.total - a.total));
     const top = filtered.slice(0, 50);
 
     if(top.length === 0){
