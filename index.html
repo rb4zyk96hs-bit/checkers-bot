@@ -173,6 +173,48 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
 .search-overlay .cancel{margin-top:20px;background:#ad2922;border:0;border-radius:10px;padding:12px 24px;color:white;font-weight:bold;font-size:14px;cursor:pointer}
 .drag-ghost{position:fixed;width:40px;height:40px;margin-left:-20px;margin-top:-20px;pointer-events:none;z-index:9999;transform:scale(1.15);box-shadow:0 8px 18px #000a}
 .drag-origin{opacity:0.25}
+/* ============ РЕЙТИНГ ============ */
+.rating-row{
+  display:flex;
+  justify-content:flex-end;
+  padding:8px 10px 0;
+  margin-bottom:5px;
+}
+.rating-btn{
+  width:52px;height:52px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#b8903a,#f1d16b);
+  color:#2a1508;
+  font-size:24px;
+  border:3px solid #7a5c1e;
+  box-shadow:0 4px 12px #000a,inset 0 2px 4px #fff6;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .15s,box-shadow .15s;
+  padding:0;
+}
+.rating-btn:hover{transform:scale(1.1);box-shadow:0 6px 16px #000c,inset 0 2px 4px #fff8}
+.rating-btn:active{transform:scale(0.95)}
+.rating-list{max-height:60vh;overflow-y:auto;padding-right:2px}
+.rating-item{
+  background:#101315;
+  border:1px solid #34383c;
+  border-radius:10px;
+  padding:10px 12px;
+  margin-bottom:6px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:13px;
+}
+.rating-item.me{border-color:#9fbd55;background:#1a2410}
+.rating-item .rank{font-weight:bold;color:#f1d16b;min-width:32px;font-size:15px;text-align:center}
+.rating-item .rank.gold{color:#ffd700;font-size:20px}
+.rating-item .rank.silver{color:#c0c0c0;font-size:20px}
+.rating-item .rank.bronze{color:#cd7f32;font-size:20px}
+.rating-item .rname{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:bold}
+.rating-item .rpercent{color:#9fbd55;font-weight:bold;font-size:14px;min-width:45px;text-align:right}
+.rating-item .rgames{color:#888;font-size:11px;min-width:50px;text-align:right}
 
 /* ============ МАГАЗИН ============ */
 .skin-item{background:#101315;border:1px solid #34383c;border-radius:10px;padding:14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:12px}
@@ -320,6 +362,9 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
     </div>
     <div class="menu-profile"><span class="menu-avatar">👤</span><span id="menuNick">Гость</span></div>
   </div>
+  <div class="rating-row">
+    <button id="btnRating" class="rating-btn" title="Рейтинг">🏆</button>
+  </div>
   <div class="bonus-box" id="bonusBox" style="display:none"><span>🎁 Бонус за ожидание!</span><button id="claimBonusBtn">Забрать 1450🪙</button></div>
   <div class="menu-buttons">
     <button class="menu-btn play" id="btnPlay">🎮 Быстрая игра</button>
@@ -383,7 +428,16 @@ button{border:0;border-radius:10px;padding:12px;color:white;font-weight:bold;fon
     <div id="betGrid" class="bet-grid"></div>
   </div>
 </div>
-
+  
+<div id="ratingModal" class="modal">
+  <div class="modal-content">
+    <button class="modal-close" data-close="ratingModal">✖</button>
+    <h2>🏆 Топ-50 по винрейту</h2>
+    <p style="text-align:center;font-size:11px;color:#888;margin:0 0 10px">Только игроки с 5+ партиями</p>
+    <div id="ratingList" class="rating-list"></div>
+  </div>
+</div>
+  
 <div id="shopModal" class="modal">
   <div class="modal-content">
     <button class="modal-close" data-close="shopModal">✖</button>
@@ -1164,10 +1218,12 @@ window.addEventListener("load",()=>{
   await userRef.update({name:newName});
   myProfile.name = newName;
   updateProfileUI();
+  await updateLeaderboardEntry();
   alert("✅ Имя сохранено");
 };
     onlineReady=true;render();showMenu();
 startBotWatcher();
+updateLeaderboardEntry();
   }).catch(err=>{alert("Firebase: "+(err.code||"")+"\n"+(err.message||""))});
 });
 
@@ -1417,9 +1473,12 @@ async function payWinner(result){
         await firebase.database().ref(`users/${myUid}/losses`).transaction(v=>(v||0)+1);
       }
     }
-  }catch(e){
+ }catch(e){
     console.error("Ошибка начисления:",e);
   }
+
+  // ⚡ Обновляем запись в таблице лидеров
+  await updateLeaderboardEntry();
 
   try{
     await lobbyRef.child(`paid/${myColor}`).set(true);
@@ -1964,6 +2023,75 @@ function scheduleBotMove(d){
     await lobbyRef.update(update);
   }, delay);
 }
+/* ============ РЕЙТИНГ ============ */
+async function updateLeaderboardEntry(){
+  if(!myUid) return;
+  try{
+    const snap = await firebase.database().ref("users/" + myUid).once("value");
+    const d = snap.val();
+    if(!d) return;
+    await firebase.database().ref("leaderboard/" + myUid).set({
+      uid: myUid,
+      name: d.name || "Игрок",
+      wins: Number(d.wins) || 0,
+      losses: Number(d.losses) || 0,
+      draws: Number(d.draws) || 0
+    });
+  }catch(e){ console.error("Ошибка обновления рейтинга:", e); }
+}
+
+async function loadLeaderboard(){
+  const list = document.getElementById("ratingList");
+  list.innerHTML = "<div style='text-align:center;color:#888;padding:15px'>Загрузка...</div>";
+
+  try{
+    const snap = await firebase.database().ref("leaderboard").once("value");
+    const all = snap.val() || {};
+    const arr = Object.values(all).filter(x => x && x.name);
+
+    arr.forEach(x => {
+      const total = (x.wins||0) + (x.losses||0) + (x.draws||0);
+      x.total = total;
+      x.rate = total > 0 ? (x.wins||0) / total : 0;
+    });
+
+    const filtered = arr.filter(x => x.total >= 5);
+    filtered.sort((a, b) => (b.rate - a.rate) || (b.total - a.total));
+    const top = filtered.slice(0, 50);
+
+    if(top.length === 0){
+      list.innerHTML = "<div style='text-align:center;color:#888;padding:20px'>Пока нет игроков с 5+ партиями</div>";
+      return;
+    }
+
+    list.innerHTML = "";
+    top.forEach((player, idx) => {
+      const row = document.createElement("div");
+      row.className = "rating-item" + (player.uid === myUid ? " me" : "");
+
+      const rankClass = idx === 0 ? "gold" : idx === 1 ? "silver" : idx === 2 ? "bronze" : "";
+      const medal = idx === 0 ? "🥇" : idx === 1 ? "🥈" : idx === 2 ? "🥉" : (idx + 1);
+      const pct = Math.round(player.rate * 100);
+      const isMe = player.uid === myUid ? " (вы)" : "";
+
+      row.innerHTML = `
+        <div class="rank ${rankClass}">${medal}</div>
+        <div class="rname">${player.name}${isMe}</div>
+        <div class="rpercent">${pct}%</div>
+        <div class="rgames">${player.total} игр</div>
+      `;
+      list.appendChild(row);
+    });
+  }catch(e){
+    console.error(e);
+    list.innerHTML = "<div style='text-align:center;color:#ff5252;padding:20px'>Ошибка загрузки</div>";
+  }
+}
+
+document.getElementById("btnRating").onclick = async () => {
+  document.getElementById("ratingModal").classList.add("open");
+  await loadLeaderboard();
+};
 resetMoveTimer();
 render();
 showMenu();
