@@ -2247,7 +2247,7 @@ document.getElementById("btnRating").onclick = async () => {
   await loadLeaderboard();
 };
 /* ============ ТУРНИР ============ */
-const TOURNAMENT_SIZE = 4;
+const TOURNAMENT_SIZE = 32;
 const TOURNAMENT_MIN_GAMES = 10;
 
 const TOURNAMENT_PRIZES = {
@@ -2623,9 +2623,8 @@ async function renderTournamentModal(){
   }
 }
 
-document.getElementById("btnTournament").onclick = async () => {
-  document.getElementById("tournamentModal").classList.add("open");
-  await renderTournamentModal();
+document.getElementById("btnTournament").onclick = () => {
+  alert("🏆 Турниры скоро!\n\nСкоро здесь появятся соревнования на 32 игрока с призами:\n🥇 100⭐ + 50 000🪙 + 250💎\n🥈 40 000🪙 + 200💎\n🥉 30 000🪙 + 100💎");
 };
 resetMoveTimer();
 render();
