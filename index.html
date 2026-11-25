@@ -782,8 +782,65 @@ function quiet(r,c){
   return out;
 }
 
+function maxChainLength(board, r, c){
+  const oldB = B;
+  B = board;
+  const p = B[r]?.[c];
+  if(!p){ B = oldB; return 0; }
+  const caps = p.king ? capturesKing(r, c) : capturesMan(r, c);
+  B = oldB;
+  if(caps.length === 0) return 0;
+
+  let max = 0;
+  for(const cap of caps){
+    const nb = board.map(row => row.map(cell => cell ? { ...cell } : null));
+    nb[cap.r][cap.c] = nb[r][c];
+    nb[r][c] = null;
+    nb[cap.cr][cap.cc] = null;
+
+    const newPiece = nb[cap.r][cap.c];
+    if(!newPiece.king && ((newPiece.color === "white" && cap.r === 0) || (newPiece.color === "black" && cap.r === 7))){
+      newPiece.king = true;
+    }
+
+    const len = 1 + maxChainLength(nb, cap.r, cap.c);
+    if(len > max) max = len;
+  }
+  return max;
+}
+
 function anyCapture(color){for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(B[r][c]?.color===color&&getCaptures(r,c).length)return true;return false}
-function legal(r,c){const p=B[r]?.[c];if(!p||p.color!==current)return[];return anyCapture(current)?getCaptures(r,c):quiet(r,c)}
+function legal(r, c){
+  const p = B[r]?.[c];
+  if(!p || p.color !== current) return [];
+
+  if(!anyCapture(current)) return quiet(r, c);
+
+  const caps = getCaptures(r, c);
+  if(caps.length === 0) return [];
+
+  // ⚡ Фильтр: только максимальные цепочки
+  const results = [];
+  let maxLen = 0;
+
+  for(const cap of caps){
+    const nb = B.map(row => row.map(cell => cell ? { ...cell } : null));
+    nb[cap.r][cap.c] = nb[r][c];
+    nb[r][c] = null;
+    nb[cap.cr][cap.cc] = null;
+
+    const newPiece = nb[cap.r][cap.c];
+    if(!newPiece.king && ((newPiece.color === "white" && cap.r === 0) || (newPiece.color === "black" && cap.r === 7))){
+      newPiece.king = true;
+    }
+
+    const len = 1 + maxChainLength(nb, cap.r, cap.c);
+    results.push({ cap, len });
+    if(len > maxLen) maxLen = len;
+  }
+
+  return results.filter(x => x.len === maxLen).map(x => x.cap);
+}
 function hasPieces(color){for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(B[r][c]?.color===color)return true;return false}
 function hasMove(color){if(anyCapture(color))return true;for(let r=0;r<8;r++)for(let c=0;c<8;c++)if(B[r][c]?.color===color&&quiet(r,c).length)return true;return false}
 
@@ -794,6 +851,9 @@ function render(){
   boardLetters.className="letters"+(matchBoardSkin?" text-"+matchBoardSkin:"");
   boardEl.innerHTML="";
 
+  // ⚡ Считаем ходы ОДИН раз (иначе вызовется 64 раза)
+  const currentMoves = selected ? legal(selected.r, selected.c) : [];
+
   for(let i=0;i<8;i++){
     for(let j=0;j<8;j++){
       const r=myColor==="black"?7-i:i;
@@ -801,7 +861,7 @@ function render(){
       const cell=document.createElement("div");
       cell.className="cell "+((r+c)%2?"dark":"light");
       if(selected&&selected.r===r&&selected.c===c)cell.classList.add("sel");
-      if(selected&&legal(selected.r,selected.c).some(m=>m.r===r&&m.c===c))cell.classList.add("possible");
+      if(currentMoves.some(m=>m.r===r&&m.c===c))cell.classList.add("possible");
 
       const p=B[r]?.[c];
       if(p){
