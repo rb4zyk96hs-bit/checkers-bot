@@ -2365,23 +2365,18 @@ async function reportTournamentWin(tournamentId, roundIndex, matchIndex, winnerU
 
   if(!allDone) return;
 
-  // Раунд завершён — создаём следующий
-  if(roundIndex >= 4){
-    // Это был финал (5-й раунд, 0-4 индексы)
-    // Финалист 0 — победитель, финалист 1 — 2-е место
+ // ⚡ Финал — когда остался ОДИН матч в раунде
+  if(round.length === 1){
     const finalMatch = round[0];
     const firstPlace = finalMatch.winner;
     const secondPlace = finalMatch.p1 === firstPlace ? finalMatch.p2 : finalMatch.p1;
 
-    // Но нам нужен и 3-е место — у нас уже был полуфинал с 2 матчами
-    // Берём проигравших полуфинала
-    const semifinal = updated.rounds[3]; // 2 матча
     let thirdPlace = null;
+    // Ищем полуфинал (предпоследний раунд)
+    const semifinal = updated.rounds[roundIndex - 1];
     if(semifinal && semifinal.length === 2){
       const losers = semifinal.map(m => m.winner === m.p1 ? m.p2 : m.p1);
-      // Играют между собой в матче за 3-е место
-      thirdPlace = losers[0]; // без отдельного матча — просто берём первого проигравшего
-      // TODO: сделать отдельный матч за 3-е
+      thirdPlace = losers[0];
     }
 
     await tournamentRef().update({
@@ -2392,10 +2387,10 @@ async function reportTournamentWin(tournamentId, roundIndex, matchIndex, winnerU
       third: thirdPlace
     });
 
-    // Начисляем призы
     await awardTournamentPrizes(firstPlace, secondPlace, thirdPlace);
     return;
   }
+
 
   // Создаём следующий раунд
   const nextRound = [];
